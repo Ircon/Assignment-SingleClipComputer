@@ -1,6 +1,6 @@
 # SingleChipComputer
 
-目前只有实验课的内容。
+做完课程设计就完结。
 
 
 
