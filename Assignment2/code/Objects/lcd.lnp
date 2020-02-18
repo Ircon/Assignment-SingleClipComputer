@@ -1,0 +1,5 @@
+".\Objects\STARTUP.obj",
+".\Objects\lcd.obj",
+"C:\Keil_v5\C51\LIB\C51S.LIB" 
+TO ".\Objects\lcd" 
+PRINT(".\Listings\lcd.m51")

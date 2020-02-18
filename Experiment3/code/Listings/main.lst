@@ -1,0 +1,350 @@
+A51 MACRO ASSEMBLER  MAIN                                                                 11/26/2019 09:43:25 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\main.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE main.asm SET(SMALL) DEBUG PRINT(.\Listings\main.lst) OBJECT(.\Objects\m
+                      ain.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;’ª¥” 50Hø™ º
+                       2     ;30H 40H ÀÊ±„”√
+                       3     ;------RAM±Ì-------
+  0030                 4     CNT                             DATA 30H
+  0031                 5     SECOND                          DATA 31H
+  0032                 6     MINUTE                          DATA 32H
+  0033                 7     HOUR                            DATA 33H
+  0034                 8     TIMES                           DATA 34H
+                       9     ;------“Ω≈±Ì--------
+  00A0                10     STCP                            EQU p2.0 ; ‰≥ˆ¥Ê¥¢∆˜À¯¥Ê ±÷”œﬂ
+  00A1                11     SHCP                            EQU p2.1 ; æ› ‰»Î ±÷”œﬂ
+  00A2                12     DS_P                            EQU p2.2 ; æ›
+                      13     
+                      14     ;-----≥£¡ø±Ì--------
+  00D7                15     B_DIR                           EQU PSW.7
+  00F0                16     B_REG                           EQU 0F0H
+  0020                17     COS_SEC                         EQU 20H
+  0004                18     COS_TMOD_FUN_WORD       EQU 00000100B
+  0003                19     COS_TH0                         EQU 03H
+  0015                20     COS_TL0                         EQU 15H
+  0000                21     COS_ZERO                        EQU 0H
+                      22     
+                      23     ;#### interrupt ####
+0000                  24     ORG 0000H
+0000 020030           25             LJMP INIT
+000B                  26     ORG 000BH
+000B 120105           27             LCALL T0_int
+001B                  28     org 001BH
+001B 120072           29             LCALL T1_INT
+                      30     ;#### Code ####
+0030                  31     ORG 0030H
+0030                  32     INIT:
+                      33             ;move stack pointer
+0030 758150           34             MOV SP,#50H
+                      35             
+                      36             ;≥ı ºªØRAM
+0033 753000           37             MOV CNT,#COS_ZERO
+0036 753100           38             MOV SECOND,#COS_ZERO
+0039 753200           39             MOV MINUTE,#COS_ZERO
+003C 753300           40             MOV HOUR,#COS_ZERO
+003F 753400           41             MOV TIMES,#COS_ZERO
+                      42             
+0042                  43     MAIN:
+0042 C2A2             44             CLR DS_P
+0044 7940             45             MOV R1,#64
+0046                  46     CLS_DIG:
+0046 D2A1             47             SETB SHCP
+0048 00               48             NOP
+0049 00               49             NOP
+004A C2A1             50             CLR SHCP
+004C D9F8             51             DJNZ R1,CLS_DIG
+004E D2A0             52             SETB STCP
+0050 00               53             NOP
+0051 00               54             NOP
+0052 C2A0             55             CLR STCP
+                      56             
+0054 900145           57             MOV DPTR,#NUM_DIG
+A51 MACRO ASSEMBLER  MAIN                                                                 11/26/2019 09:43:25 PAGE     2
+
+0057 7401             58             MOV A,#01H
+0059 93               59             MOVC A,@A+DPTR
+005A 7908             60             MOV R1,#8
+005C 7410             61             MOV A,#010H
+005E                  62     LOP1:
+005E 13               63             RRC A
+005F 92A2             64             MOV DS_P,C
+                      65     ;       CLR DS_P
+0061 D2A1             66             SETB SHCP
+0063 00               67             NOP
+0064 00               68             NOP
+0065 C2A1             69             CLR SHCP
+0067 D9F5             70             DJNZ R1,LOP1
+                      71             
+0069 D2A0             72             SETB STCP
+006B 00               73             NOP
+006C 00               74             NOP
+006D C2A0             75             CLR STCP
+                      76             
+                      77     ;       MOV TMOD,#COS_TMOD_FUN_WORD
+                      78     ;       MOV TH0,#COS_TH0
+                      79     ;       MOV TL0,#COS_TL0
+                      80     ;       SETB TR0
+                      81     ;       
+                      82     ;       MOV TH1,#COS_ZERO
+                      83     ;       MOV TL1,#COS_ZERO
+                      84     ;       SETB TR1
+                      85             
+                      86     ;       LCALL NUM_SHOW
+                      87             
+006F 02006F           88             LJMP $
+                      89             
+                      90             
+                      91             
+                      92     ;================
+                      93     ;
+                      94     ;  function
+                      95     ;
+                      96     ;================
+                      97     
+                      98     ;T1 INT
+0072                  99     T1_INT:
+0072 E534            100             MOV A,TIMES
+0074 04              101             INC A
+0075 E534            102             MOV A,TIMES
+0077 12008C          103             LCALL NUM_SHOW
+007A 32              104             RETI
+                     105     ; B HI A LO
+007B                 106     SPILT_NUM:
+007B D4              107             DA A
+007C F5F0            108             MOV B,A
+007E 540F            109             ANL A,#0FH
+0080 53F0F0          110             ANL B,#0F0H
+                     111             
+0083 C5F0            112             XCH A,B
+0085 03              113             RR A
+0086 03              114             RR A
+0087 03              115             RR A
+0088 03              116             RR A
+0089 C5F0            117             XCH A,B
+                     118             
+008B 22              119             RET
+                     120     ;^^^^^^^^^^
+                     121     ; ◊÷œ‘ æ
+008C                 122     NUM_SHOW:
+008C C0E0            123             PUSH ACC
+A51 MACRO ASSEMBLER  MAIN                                                                 11/26/2019 09:43:25 PAGE     3
+
+008E C0F0            124             PUSH B
+                     125             
+0090 E534            126             MOV A,TIMES
+0092 12007B          127             LCALL SPILT_NUM
+                     128             
+0095 12011B          129             LCALL SWI_TO_DIG
+0098 12012F          130             LCALL SEND_BYTE_DIG
+                     131             
+009B E531            132             MOV A,SECOND
+009D 12007B          133             LCALL SPILT_NUM
+                     134             
+00A0 12011B          135             LCALL SWI_TO_DIG
+00A3 12012F          136             LCALL SEND_BYTE_DIG
+                     137             
+00A6 E5F0            138             MOV A,B
+00A8 12011B          139             LCALL SWI_TO_DIG
+00AB 12012F          140             LCALL SEND_BYTE_DIG
+                     141             
+00AE E532            142             MOV A,MINUTE
+00B0 12007B          143             LCALL SPILT_NUM
+                     144             
+00B3 12011B          145             LCALL SWI_TO_DIG
+00B6 12012F          146             LCALL SEND_BYTE_DIG
+                     147             
+00B9 E5F0            148             MOV A,B
+00BB 12011B          149             LCALL SWI_TO_DIG
+00BE 12012F          150             LCALL SEND_BYTE_DIG
+                     151             
+00C1 E533            152             MOV A,HOUR
+00C3 12007B          153             LCALL SPILT_NUM
+                     154             
+00C6 12011B          155             LCALL SWI_TO_DIG
+00C9 12012F          156             LCALL SEND_BYTE_DIG
+                     157             
+00CC E5F0            158             MOV A,B
+00CE 12011B          159             LCALL SWI_TO_DIG
+00D1 12012F          160             LCALL SEND_BYTE_DIG
+                     161             
+00D4 120128          162             LCALL PUT_NUM
+                     163             
+00D7 D0F0            164             POP B
+00D9 D0E0            165             POP ACC
+00DB 22              166             RET
+                     167     ;^^^^^^^^^^
+                     168     ; ◊÷inc 1¥¶¿Ì
+00DC                 169     NUM_INC_1:
+00DC C0E0            170             PUSH ACC
+00DE C0D0            171             PUSH PSW
+                     172             
+00E0 C3              173             CLR C
+00E1 0531            174             INC SECOND
+00E3 743C            175             MOV A,#60
+00E5 9531            176             SUBB A,SECOND
+00E7 30D716          177             JNB B_DIR,NUM_INC_1_END
+                     178             
+00EA 0532            179             INC MINUTE
+00EC 850031          180             MOV SECOND,00H
+                     181             
+00EF C3              182             CLR C
+00F0 853CE0          183             MOV ACC,60
+00F3 9532            184             SUBB A,MINUTE
+00F5 30D708          185             JNB B_DIR,NUM_INC_1_END
+                     186             
+00F8 0533            187             INC HOUR
+00FA 850032          188             MOV MINUTE,00H
+                     189             
+A51 MACRO ASSEMBLER  MAIN                                                                 11/26/2019 09:43:25 PAGE     4
+
+00FD 12008C          190             LCALL NUM_SHOW
+0100                 191     NUM_INC_1_END:
+0100 D0D0            192             POP PSW
+0102 D0E0            193             POP ACC
+0104 22              194             RET
+                     195             
+                     196     ;^^^^^^^^^^
+                     197     ;º∆ ∆˜÷–∂œ
+0105                 198     T0_INT:
+0105 C0E0            199             push ACC
+0107 E530            200             mov A,CNT
+0109 B42002          201             cjne A,#COS_SEC,TO_NOK
+010C 4007            202             jc T0_OK
+010E                 203     TO_NOK:
+                     204             ;º∆ ¥¶¿Ì
+010E D28C            205             SETB TR0
+0110 1200DC          206             LCALL NUM_INC_1
+0113 E500            207             MOV A,0H
+0115                 208     T0_OK:
+0115 04              209             INC A
+                     210             
+0116 F530            211             MOV CNT,A
+0118 D0E0            212             POP ACC
+011A 32              213             RETI
+                     214     
+                     215     ;^^^^ ^^^^ ^^^^ ^^^^
+                     216     ; in -- A
+                     217     ; out -- A
+011B                 218     SWI_TO_DIG:
+                     219             ;protest DPTR
+011B C083            220             push DPH
+011D C082            221             push DPL
+                     222             
+011F 900145          223             MOV DPTR,#NUM_DIG
+0122 93              224             MOVC A,@A+DPTR
+                     225             
+0123 D082            226             pop DPL
+0125 D083            227             pop DPH
+0127 22              228             RET
+                     229     
+                     230     ;^^^^ ^^^^ ^^^^ ^^^^
+0128                 231     PUT_NUM:
+0128 C2A0            232             clr STCP
+                     233             ;setb STCP
+012A 00              234             nop
+012B 00              235             nop
+012C D2A0            236             setb STCP
+                     237             ;clr STCP
+012E 22              238             ret
+                     239     
+                     240     ;^^^^ ^^^^ ^^^^ ^^^^
+                     241     ; in -- A
+012F                 242     SEND_BYTE_DIG:
+                     243             ;portest reg
+012F C001            244             push 01H
+0131 C0E0            245             push ACC
+                     246             
+                     247             ; times of loop
+0133 7908            248             mov R1,#8H
+                     249             
+                     250             
+0135                 251     send_lop1:
+0135 33              252             rlc A
+0136 92A2            253             mov DS_P,C
+                     254             
+                     255             ;send one bit
+A51 MACRO ASSEMBLER  MAIN                                                                 11/26/2019 09:43:25 PAGE     5
+
+0138 C2A1            256             clr SHCP
+013A 00              257             nop
+013B 00              258             nop
+013C D2A1            259             setb SHCP
+                     260             
+013E D9F5            261             djnz R1,send_lop1
+                     262             
+0140 D0E0            263             pop ACC
+0142 D001            264             pop 01H
+0144 22              265             ret
+                     266     
+                     267     ;================
+                     268     ;
+                     269     ;  Data
+                     270     ;
+                     271     ;================
+0145                 272     NUM_DIG:
+0145 C0F9A4B0        273             DB 0C0H,0F9H,0A4H,0B0H,99H,92H,82H,0F8H,80H,90H,88H,83H,0C6H,0A1H,86H,8EH
+0149 999282F8                
+014D 80908883                
+0151 C6A1868E                
+                     274     end
+                                     
+A51 MACRO ASSEMBLER  MAIN                                                                 11/26/2019 09:43:25 PAGE     6
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+B_DIR. . . . . . .  B ADDR   00D0H.7 A   
+B_REG. . . . . . .  N NUMB   00F0H   A   
+CLS_DIG. . . . . .  C ADDR   0046H   A   
+CNT. . . . . . . .  D ADDR   0030H   A   
+COS_SEC. . . . . .  N NUMB   0020H   A   
+COS_TH0. . . . . .  N NUMB   0003H   A   
+COS_TL0. . . . . .  N NUMB   0015H   A   
+COS_TMOD_FUN_WORD.  N NUMB   0004H   A   
+COS_ZERO . . . . .  N NUMB   0000H   A   
+DPH. . . . . . . .  D ADDR   0083H   A   
+DPL. . . . . . . .  D ADDR   0082H   A   
+DS_P . . . . . . .  B ADDR   00A0H.2 A   
+HOUR . . . . . . .  D ADDR   0033H   A   
+INIT . . . . . . .  C ADDR   0030H   A   
+LOP1 . . . . . . .  C ADDR   005EH   A   
+MAIN . . . . . . .  C ADDR   0042H   A   
+MINUTE . . . . . .  D ADDR   0032H   A   
+NUM_DIG. . . . . .  C ADDR   0145H   A   
+NUM_INC_1. . . . .  C ADDR   00DCH   A   
+NUM_INC_1_END. . .  C ADDR   0100H   A   
+NUM_SHOW . . . . .  C ADDR   008CH   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+PUT_NUM. . . . . .  C ADDR   0128H   A   
+SECOND . . . . . .  D ADDR   0031H   A   
+SEND_BYTE_DIG. . .  C ADDR   012FH   A   
+SEND_LOP1. . . . .  C ADDR   0135H   A   
+SHCP . . . . . . .  B ADDR   00A0H.1 A   
+SP . . . . . . . .  D ADDR   0081H   A   
+SPILT_NUM. . . . .  C ADDR   007BH   A   
+STCP . . . . . . .  B ADDR   00A0H.0 A   
+SWI_TO_DIG . . . .  C ADDR   011BH   A   
+T0_INT . . . . . .  C ADDR   0105H   A   
+T0_OK. . . . . . .  C ADDR   0115H   A   
+T1_INT . . . . . .  C ADDR   0072H   A   
+TIMES. . . . . . .  D ADDR   0034H   A   
+TO_NOK . . . . . .  C ADDR   010EH   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,91 @@
+XL
+H 2 areas B global symbols
+M bitmap.c
+S push_gset5 Ref0000
+S _lcd_dot Ref0000
+S push_arg4 Ref0000
+S pop_gset5 Ref0000
+S _pgm_read_byte Ref0000
+S _pgm_read_word Ref0000
+A text size 94 flags 0
+dbfile C:\ygksb0108\programme2_can_run\bitmap.c
+dbstruct 4 IMG_DEF
+dbfield 0 width_in_pixels kc
+dbfield 1 height_in_pixels kc
+dbfield 2 char_table pkc
+dbend
+dbfunc e lcd_bitmap 0 fV
+dbsym l heigth 2 c
+dbsym r h 16 c
+dbsym l width 1 c
+dbsym r ptable C pc
+dbsym r pattern 14 c
+dbsym r w E c
+dbsym r mask A c
+dbsym l mode 13 c
+dbsym l img_ptr 11 pkS[IMG_DEF]
+dbsym l top F c
+dbsym l left D c
+dbline FFFFFFFF A
+dbline D A
+dbline 10 A
+dbline 11 14
+dbline 12 22
+dbline 15 30
+dbline 16 34
+dbline 16 34
+dbline 17 38
+dbline 18 40
+dbline 19 46
+dbline 1A 4A
+dbline 1A 4A
+dbline 1B 50
+dbline 1D 64
+dbline 1E 66
+dbline 1F 68
+dbline 1F 68
+dbline 20 6C
+dbline 21 74
+dbline 22 7A
+dbline 23 7A
+dbline 19 7A
+dbline 19 7C
+dbline 24 82
+dbline 15 82
+dbline 15 84
+dbline FFFFFFFE 8A
+dbline 0 92
+S _lcd_bitmap Def0000
+A lit size A flags 0
+dbsym e icon1_char_table 0 A[1:1]kc
+dbsym e icon1_bmp 1 kS[IMG_DEF]
+dbsym e frame_char_table 5 A[1:1]kc
+dbsym e frame_bmp 6 kS[IMG_DEF]
+S _frame_bmp Def0006
+S _icon1_char_table Def0000
+S _frame_char_table Def0005
+S _icon1_bmp Def0001
+T 00 00 0E 94 00 00 0E 94 00 00 23 97 09 89 1A 89
+R 00 00 00 00 12 04 02 00 12 08 00 00
+T 0E 00 0E 94 00 00 09 83 09 89 1A 89 0F 5F 1F 4F
+R 00 00 00 00 12 04 04 00
+T 1C 00 0E 94 00 00 0A 83 09 89 1A 89 0E 5F 1F 4F
+R 00 00 00 00 12 04 04 00
+T 2A 00 0E 94 00 00 68 01 66 27 28 C0 80 E8 A8 2E
+R 00 00 00 00 12 04 05 00
+T 38 00 86 01 0E 94 00 00 40 2F C6 01 01 96 6C 01
+R 00 00 00 00 12 06 04 00
+T 46 00 EE 24 19 C0 24 2E 2A 20 51 F0 0B 88 08 82
+R 00 00 00 00
+T 54 00 26 2F 0F 84 20 0D 0E 2D 0D 84 00 0D 0E 94
+R 00 00 00 00
+T 62 00 00 00 A6 94 49 F4 80 E8 A8 2E 86 01 0E 94
+R 00 00 00 00 12 02 01 00
+T 70 00 00 00 40 2F C6 01 01 96 6C 01 E3 94 09 80
+R 00 00 00 00 12 02 04 00
+T 7E 00 E0 14 20 F3 63 95 0A 80 60 15 A8 F2 23 96
+R 00 00 00 00
+T 8C 00 0E 94 00 00 24 96 08 95
+R 00 00 00 00 12 04 03 00
+T 00 00 00 01 01 00 00 00 01 01 05 00
+R 00 00 01 00 00 05 01 00 00 0A 01 00

@@ -1,0 +1,43 @@
+A51 MACRO ASSEMBLER  TEST                                                                 11/12/2019 08:56:29 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Test.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Test.asm SET(SMALL) DEBUG PRINT(.\Listings\Test.lst) OBJECT(.\Objects\T
+                      est.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1             MAIN:
+0000 C297              2                     CLR     P1.7
+0002 110A              3                     ACALL   DELAY
+0004 D297              4                     SETB    P1.7
+0006 110A              5                     ACALL   DELAY
+0008 0100              6                     AJMP    MAIN
+                       7                     
+000A                   8             DELAY:
+000A 7FE1              9                     MOV     R7,#225
+000C                  10             Y1:
+000C 7EE1             11                     MOV     R6,#225
+000E DEFE             12                     DJNZ    R6,$
+0010 DFFA             13                     DJNZ    R7,Y1
+0012 22               14                     RET
+                      15     END
+A51 MACRO ASSEMBLER  TEST                                                                 11/12/2019 08:56:29 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DELAY. . . . . . .  C ADDR   000AH   A   
+MAIN . . . . . . .  C ADDR   0000H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+Y1 . . . . . . . .  C ADDR   000CH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

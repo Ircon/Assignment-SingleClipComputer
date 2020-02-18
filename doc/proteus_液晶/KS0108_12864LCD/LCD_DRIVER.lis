@@ -1,0 +1,732 @@
+                        .module LCD_DRIVER.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:\ygksb0108\programme2_can_run\LCD_DRIVER.c
+ 0000                   .dbfunc e lcd_out_dat_l _lcd_out_dat_l fV
+ 0000           ;            dat -> R20
+                        .even
+ 0000           _lcd_out_dat_l::
+ 0000 0E940000          xcall push_gset1
+ 0004 402F              mov R20,R16
+ 0006                   .dbline -1
+ 0006                   .dbline 18
+ 0006           ; //**********************************************************
+ 0006           ; //本文件实现了用于驱动KS0108B/HD61202的基本常量和
+ 0006           ; //函数，用于基本的读写操作（没有实现读的函数，
+ 0006           ; //当然你可以自己实现）.
+ 0006           ; //              ---北京交通大学电气学院 杨罡 2008.8
+ 0006           ; //**********************************************************
+ 0006           ; 
+ 0006           ; #include  "LCD_DRIVER.H"
+ 0006           ; 
+ 0006           ; //***********************************************************
+ 0006           ; //if you want it to run on the protues then define this below
+ 0006           ; //***********************************************************
+ 0006           ; #define debug_protues
+ 0006           ; //***********************************************************
+ 0006           ; 
+ 0006           ; void lcd_out_dat_l( unsigned char dat)
+ 0006           ; 
+ 0006           ; {    
+ 0006                   .dbline 19
+ 0006           ;      choose_left_screen();
+ 0006 6ED0              xcall _choose_left_screen
+ 0008                   .dbline 20
+ 0008           ;      LCD_DATA_MODE();   //D_I = CMD_MODE;
+ 0008 C29A              sbi 0x18,2
+ 000A                   .dbline 21
+ 000A           ;        LCD_WRITE_MODE();  //R_W=WRITE_MODE;
+ 000A C398              cbi 0x18,3
+ 000C                   .dbline 22
+ 000C           ;        LCD_E_HIGH();      //E=1;
+ 000C C49A              sbi 0x18,4
+ 000E                   .dbline 23
+ 000E           ;        DATA_PORT=dat;
+ 000E 4BBB              out 0x1b,R20
+ 0010                   .dbline 24
+ 0010           ;        _delay_us(2);
+ 0010 02E0              ldi R16,2
+ 0012 0E940000          xcall __delay_us
+ 0016                   .dbline 25
+ 0016           ;        LCD_E_LOW();       //E=0;
+ 0016 C498              cbi 0x18,4
+ 0018                   .dbline 26
+ 0018           ;         _delay_us(2);
+ 0018 02E0              ldi R16,2
+ 001A 0E940000          xcall __delay_us
+ 001E                   .dbline -2
+ 001E           L1:
+ 001E 0E940000          xcall pop_gset1
+ 0022                   .dbline 0 ; func end
+ 0022 0895              ret
+ 0024                   .dbsym r dat 20 c
+ 0024                   .dbend
+ 0024                   .dbfunc e lcd_out_dat_r _lcd_out_dat_r fV
+ 0024           ;            dat -> R20
+                        .even
+ 0024           _lcd_out_dat_r::
+ 0024 0E940000          xcall push_gset1
+ 0028 402F              mov R20,R16
+ 002A                   .dbline -1
+ 002A                   .dbline 30
+ 002A           ; }
+ 002A           ; 
+ 002A           ; void lcd_out_dat_r(  unsigned char dat)
+ 002A           ; {    
+ 002A                   .dbline 31
+ 002A           ;      choose_right_screen() ;
+ 002A 5FD0              xcall _choose_right_screen
+ 002C                   .dbline 32
+ 002C           ;      LCD_DATA_MODE();   //D_I = CMD_MODE;
+ 002C C29A              sbi 0x18,2
+ 002E                   .dbline 33
+ 002E           ;        LCD_WRITE_MODE();  //R_W=WRITE_MODE;
+ 002E C398              cbi 0x18,3
+ 0030                   .dbline 34
+ 0030           ;        LCD_E_HIGH();      //E=1;
+ 0030 C49A              sbi 0x18,4
+ 0032                   .dbline 35
+ 0032           ;        DATA_PORT=dat;
+ 0032 4BBB              out 0x1b,R20
+ 0034                   .dbline 36
+ 0034           ;         _delay_us(2);
+ 0034 02E0              ldi R16,2
+ 0036 0E940000          xcall __delay_us
+ 003A                   .dbline 37
+ 003A           ;        LCD_E_LOW();       //E=0;
+ 003A C498              cbi 0x18,4
+ 003C                   .dbline 38
+ 003C           ;         _delay_us(2);
+ 003C 02E0              ldi R16,2
+ 003E 0E940000          xcall __delay_us
+ 0042                   .dbline -2
+ 0042           L2:
+ 0042 0E940000          xcall pop_gset1
+ 0046                   .dbline 0 ; func end
+ 0046 0895              ret
+ 0048                   .dbsym r dat 20 c
+ 0048                   .dbend
+ 0048                   .dbfunc e lcd_out_ctl_l _lcd_out_ctl_l fV
+ 0048           ;            cmd -> R20
+                        .even
+ 0048           _lcd_out_ctl_l::
+ 0048 0E940000          xcall push_gset1
+ 004C 402F              mov R20,R16
+ 004E                   .dbline -1
+ 004E                   .dbline 41
+ 004E           ; }
+ 004E           ; void lcd_out_ctl_l( unsigned char cmd)
+ 004E           ; {
+ 004E                   .dbline 42
+ 004E           ;      choose_left_screen();
+ 004E 4AD0              xcall _choose_left_screen
+ 0050                   .dbline 43
+ 0050           ;      LCD_CMD_MODE();    //D_I = CMD_MODE;
+ 0050 C298              cbi 0x18,2
+ 0052                   .dbline 44
+ 0052           ;        LCD_WRITE_MODE();  //R_W=WRITE_MODE;
+ 0052 C398              cbi 0x18,3
+ 0054                   .dbline 45
+ 0054           ;        LCD_E_HIGH();      //E=1;
+ 0054 C49A              sbi 0x18,4
+ 0056                   .dbline 46
+ 0056           ;        DATA_PORT=cmd;
+ 0056 4BBB              out 0x1b,R20
+ 0058                   .dbline 47
+ 0058           ;         _delay_us(2);
+ 0058 02E0              ldi R16,2
+ 005A 0E940000          xcall __delay_us
+ 005E                   .dbline 48
+ 005E           ;        LCD_E_LOW();       //E=0;
+ 005E C498              cbi 0x18,4
+ 0060                   .dbline 49
+ 0060           ;       _delay_us(2);
+ 0060 02E0              ldi R16,2
+ 0062 0E940000          xcall __delay_us
+ 0066                   .dbline -2
+ 0066           L3:
+ 0066 0E940000          xcall pop_gset1
+ 006A                   .dbline 0 ; func end
+ 006A 0895              ret
+ 006C                   .dbsym r cmd 20 c
+ 006C                   .dbend
+ 006C                   .dbfunc e lcd_out_ctl_r _lcd_out_ctl_r fV
+ 006C           ;            cmd -> R20
+                        .even
+ 006C           _lcd_out_ctl_r::
+ 006C 0E940000          xcall push_gset1
+ 0070 402F              mov R20,R16
+ 0072                   .dbline -1
+ 0072                   .dbline 52
+ 0072           ; }
+ 0072           ; void lcd_out_ctl_r( unsigned char cmd)
+ 0072           ; {    
+ 0072                   .dbline 53
+ 0072           ;      choose_right_screen() ;
+ 0072 3BD0              xcall _choose_right_screen
+ 0074                   .dbline 54
+ 0074           ;      LCD_CMD_MODE();    //D_I = CMD_MODE;
+ 0074 C298              cbi 0x18,2
+ 0076                   .dbline 55
+ 0076           ;        LCD_WRITE_MODE();  //R_W=WRITE_MODE;
+ 0076 C398              cbi 0x18,3
+ 0078                   .dbline 56
+ 0078           ;        LCD_E_HIGH();      //E=1;
+ 0078 C49A              sbi 0x18,4
+ 007A                   .dbline 57
+ 007A           ;        DATA_PORT=cmd;
+ 007A 4BBB              out 0x1b,R20
+ 007C                   .dbline 58
+ 007C           ;         _delay_us(2);
+ 007C 02E0              ldi R16,2
+ 007E 0E940000          xcall __delay_us
+ 0082                   .dbline 59
+ 0082           ;        LCD_E_LOW();       //E=0;
+ 0082 C498              cbi 0x18,4
+ 0084                   .dbline 60
+ 0084           ;       _delay_us(2);
+ 0084 02E0              ldi R16,2
+ 0086 0E940000          xcall __delay_us
+ 008A                   .dbline -2
+ 008A           L4:
+ 008A 0E940000          xcall pop_gset1
+ 008E                   .dbline 0 ; func end
+ 008E 0895              ret
+ 0090                   .dbsym r cmd 20 c
+ 0090                   .dbend
+ 0090                   .dbfunc e lcd_out_ctl _lcd_out_ctl fV
+ 0090           ;          nctrl -> R22
+ 0090           ;            cmd -> R20
+                        .even
+ 0090           _lcd_out_ctl::
+ 0090 0E940000          xcall push_gset2
+ 0094 622F              mov R22,R18
+ 0096 402F              mov R20,R16
+ 0098                   .dbline -1
+ 0098                   .dbline 63
+ 0098           ; }
+ 0098           ; void lcd_out_ctl( unsigned char cmd,  unsigned char nctrl)
+ 0098           ; {
+ 0098                   .dbline 64
+ 0098           ;       if(nctrl==1)lcd_out_ctl_l(cmd);
+ 0098 6130              cpi R22,1
+ 009A 11F4              brne L6
+ 009C                   .dbline 64
+ 009C 042F              mov R16,R20
+ 009E D4DF              xcall _lcd_out_ctl_l
+ 00A0           L6:
+ 00A0                   .dbline 65
+ 00A0           ;         if(nctrl==2)lcd_out_ctl_r(cmd);
+ 00A0 6230              cpi R22,2
+ 00A2 11F4              brne L8
+ 00A4                   .dbline 65
+ 00A4 042F              mov R16,R20
+ 00A6 E2DF              xcall _lcd_out_ctl_r
+ 00A8           L8:
+ 00A8                   .dbline 66
+ 00A8 6330              cpi R22,3
+ 00AA 21F4              brne L10
+ 00AC                   .dbline 66
+ 00AC                   .dbline 67
+ 00AC 042F              mov R16,R20
+ 00AE CCDF              xcall _lcd_out_ctl_l
+ 00B0                   .dbline 68
+ 00B0 042F              mov R16,R20
+ 00B2 DCDF              xcall _lcd_out_ctl_r
+ 00B4                   .dbline 69
+ 00B4           L10:
+ 00B4                   .dbline -2
+ 00B4           L5:
+ 00B4 0E940000          xcall pop_gset2
+ 00B8                   .dbline 0 ; func end
+ 00B8 0895              ret
+ 00BA                   .dbsym r nctrl 22 c
+ 00BA                   .dbsym r cmd 20 c
+ 00BA                   .dbend
+ 00BA                   .dbfunc e lcd_out_dat _lcd_out_dat fV
+ 00BA           ;          nctrl -> R22
+ 00BA           ;            dat -> R20
+                        .even
+ 00BA           _lcd_out_dat::
+ 00BA 0E940000          xcall push_gset2
+ 00BE 622F              mov R22,R18
+ 00C0 402F              mov R20,R16
+ 00C2                   .dbline -1
+ 00C2                   .dbline 72
+ 00C2           ;         if(nctrl==3){
+ 00C2           ;                       lcd_out_ctl_l(cmd);
+ 00C2           ;                                       lcd_out_ctl_r(cmd);
+ 00C2           ;                                  }
+ 00C2           ; }
+ 00C2           ; void lcd_out_dat( unsigned char dat,  unsigned char nctrl)
+ 00C2           ; {
+ 00C2                   .dbline 73
+ 00C2           ;      if(nctrl==1)lcd_out_dat_l(dat);
+ 00C2 6130              cpi R22,1
+ 00C4 11F4              brne L13
+ 00C6                   .dbline 73
+ 00C6 042F              mov R16,R20
+ 00C8 9BDF              xcall _lcd_out_dat_l
+ 00CA           L13:
+ 00CA                   .dbline 74
+ 00CA           ;         if(nctrl==2)lcd_out_dat_r(dat);
+ 00CA 6230              cpi R22,2
+ 00CC 11F4              brne L15
+ 00CE                   .dbline 74
+ 00CE 042F              mov R16,R20
+ 00D0 A9DF              xcall _lcd_out_dat_r
+ 00D2           L15:
+ 00D2                   .dbline 75
+ 00D2 6330              cpi R22,3
+ 00D4 21F4              brne L17
+ 00D6                   .dbline 75
+ 00D6                   .dbline 76
+ 00D6 042F              mov R16,R20
+ 00D8 93DF              xcall _lcd_out_dat_l
+ 00DA                   .dbline 77
+ 00DA 042F              mov R16,R20
+ 00DC A3DF              xcall _lcd_out_dat_r
+ 00DE                   .dbline 78
+ 00DE           L17:
+ 00DE                   .dbline -2
+ 00DE           L12:
+ 00DE 0E940000          xcall pop_gset2
+ 00E2                   .dbline 0 ; func end
+ 00E2 0895              ret
+ 00E4                   .dbsym r nctrl 22 c
+ 00E4                   .dbsym r dat 20 c
+ 00E4                   .dbend
+ 00E4                   .dbfunc e choose_left_screen _choose_left_screen fV
+                        .even
+ 00E4           _choose_left_screen::
+ 00E4                   .dbline -1
+ 00E4                   .dbline 81
+ 00E4           ;         if(nctrl==3){
+ 00E4           ;                      lcd_out_dat_l(dat);
+ 00E4           ;                                  lcd_out_dat_r(dat);
+ 00E4           ;                                 }
+ 00E4           ; }
+ 00E4           ; void   choose_left_screen(void)   
+ 00E4           ; { 
+ 00E4                   .dbline 86
+ 00E4           ;    #ifndef debug_protues
+ 00E4           ;   LCD_LEFT_SELECT();
+ 00E4           ;   LCD_RIGHT_STOP();
+ 00E4           ;   #else
+ 00E4           ;   LCD_LEFT_STOP();
+ 00E4 C09A              sbi 0x18,0
+ 00E6                   .dbline 87
+ 00E6           ;   LCD_RIGHT_SELECT();
+ 00E6 C198              cbi 0x18,1
+ 00E8                   .dbline -2
+ 00E8           L19:
+ 00E8                   .dbline 0 ; func end
+ 00E8 0895              ret
+ 00EA                   .dbend
+ 00EA                   .dbfunc e choose_right_screen _choose_right_screen fV
+                        .even
+ 00EA           _choose_right_screen::
+ 00EA                   .dbline -1
+ 00EA                   .dbline 91
+ 00EA           ;   #endif
+ 00EA           ; }
+ 00EA           ; void   choose_right_screen(void)  
+ 00EA           ; {
+ 00EA                   .dbline 96
+ 00EA           ;   #ifndef debug_protues
+ 00EA           ;   LCD_LEFT_STOP();
+ 00EA           ;   LCD_RIGHT_SELECT();
+ 00EA           ;   #else
+ 00EA           ;   LCD_LEFT_SELECT();
+ 00EA C098              cbi 0x18,0
+ 00EC                   .dbline 97
+ 00EC           ;   LCD_RIGHT_STOP();
+ 00EC C19A              sbi 0x18,1
+ 00EE                   .dbline -2
+ 00EE           L20:
+ 00EE                   .dbline 0 ; func end
+ 00EE 0895              ret
+ 00F0                   .dbend
+ 00F0                   .dbfunc e choose_full_screen _choose_full_screen fV
+                        .even
+ 00F0           _choose_full_screen::
+ 00F0                   .dbline -1
+ 00F0                   .dbline 101
+ 00F0           ;   #endif
+ 00F0           ; }
+ 00F0           ; void   choose_full_screen(void)  
+ 00F0           ; {
+ 00F0                   .dbline 102
+ 00F0           ;   LCD_LEFT_SELECT();
+ 00F0 C098              cbi 0x18,0
+ 00F2                   .dbline 103
+ 00F2           ;   LCD_RIGHT_SELECT();
+ 00F2 C198              cbi 0x18,1
+ 00F4                   .dbline -2
+ 00F4           L21:
+ 00F4                   .dbline 0 ; func end
+ 00F4 0895              ret
+ 00F6                   .dbend
+ 00F6                   .dbfunc e choose_no_screen _choose_no_screen fV
+                        .even
+ 00F6           _choose_no_screen::
+ 00F6                   .dbline -1
+ 00F6                   .dbline 106
+ 00F6           ; }
+ 00F6           ; void   choose_no_screen(void)     
+ 00F6           ; {
+ 00F6                   .dbline 107
+ 00F6           ;    LCD_LEFT_STOP();
+ 00F6 C09A              sbi 0x18,0
+ 00F8                   .dbline 108
+ 00F8           ;    LCD_RIGHT_STOP();
+ 00F8 C19A              sbi 0x18,1
+ 00FA                   .dbline -2
+ 00FA           L22:
+ 00FA                   .dbline 0 ; func end
+ 00FA 0895              ret
+ 00FC                   .dbend
+ 00FC                   .dbfunc e lcd_read_byte _lcd_read_byte fc
+ 00FC           ;              y -> R18
+ 00FC           ;              x -> R16
+                        .even
+ 00FC           _lcd_read_byte::
+ 00FC                   .dbline -1
+ 00FC                   .dbline 112
+ 00FC           ; }
+ 00FC           ; 
+ 00FC           ; unsigned char lcd_read_byte( unsigned char x,unsigned char y )
+ 00FC           ; {
+ 00FC                   .dbline 149
+ 00FC           ;     /*if(which & 1== 1)
+ 00FC           ;       {
+ 00FC           ;         choose_left_screen();
+ 00FC           ;         LCD_CMD_MODE();//D_I=0;
+ 00FC           ;         LCD_READ_MODE();//R_W=READ_MODE;
+ 00FC           ;         do
+ 00FC           ;        {DATA_PORT=0xff;//??????????????????????????????
+ 00FC           ;         LCD_E_HIGH():E=1;
+ 00FC           ;         tmp=DATA_PORT;
+ 00FC           ;         LCD_E_LOW();//E=0;
+ 00FC           ;        }while( !(tmp&0x80) );
+ 00FC           ;        LCD_DATA_MODE();//D_I=DATA_MODE;
+ 00FC           ;        DATA_PORT=0x0ff;
+ 00FC           ;        LCD_E_HIGH();//E=1
+ 00FC           ;        tmp=DATA_PORT;
+ 00FC           ;        LCD_E_LOW()://E=0;
+ 00FC           ;        return tmp;
+ 00FC           ;       }
+ 00FC           ;       if(which &2== 2)
+ 00FC           ;       {
+ 00FC           ;         choose_right_screen();
+ 00FC           ;         LCD_CMD_MODE();//D_I=0;
+ 00FC           ;         LCD_READ_MODE();//R_W=READ_MODE;
+ 00FC           ;         do
+ 00FC           ;        {DATA_PORT=0xff;//????????????????????????????????
+ 00FC           ;         LCD_E_HIGH();//E=1;
+ 00FC           ;         tmp=DATA_PORT;
+ 00FC           ;         LCD_E_LOW();//E=0;
+ 00FC           ;        }while( !(tmp&0x80) );
+ 00FC           ;        LCD_DATA_MODE();//D_I=DATA_MODE;
+ 00FC           ;        DATA_PORT=0x0ff;
+ 00FC           ;        LCD_E_HIGH();//E=1
+ 00FC           ;        tmp=DATA_PORT;
+ 00FC           ;      LCD_E_LOW();//E=0;
+ 00FC           ;        return tmp;
+ 00FC           ;       }*/
+ 00FC           ;       return 1;
+ 00FC 01E0              ldi R16,1
+ 00FE                   .dbline -2
+ 00FE           L23:
+ 00FE                   .dbline 0 ; func end
+ 00FE 0895              ret
+ 0100                   .dbsym r y 18 c
+ 0100                   .dbsym r x 16 c
+ 0100                   .dbend
+ 0100                   .dbfunc e lcd_is_busy _lcd_is_busy fc
+ 0100           ;            tmp -> R16
+                        .even
+ 0100           _lcd_is_busy::
+ 0100                   .dbline -1
+ 0100                   .dbline 152
+ 0100           ; }
+ 0100           ; unsigned char lcd_is_busy( void )
+ 0100           ; {  
+ 0100                   .dbline 154
+ 0100           ;    unsigned char tmp;
+ 0100           ;    LCD_CMD_MODE();//D_I=CMD_MODE;
+ 0100 C298              cbi 0x18,2
+ 0102                   .dbline 155
+ 0102           ;    LCD_READ_MODE();//R_W=READ_MODE;
+ 0102 C39A              sbi 0x18,3
+ 0104                   .dbline 156
+ 0104           ;    DATA_PORT=0x0ff;//?????????????????????????
+ 0104 8FEF              ldi R24,255
+ 0106 8BBB              out 0x1b,R24
+ 0108                   .dbline 157
+ 0108           ;    LCD_E_HIGH();//E=1;
+ 0108 C49A              sbi 0x18,4
+ 010A                   .dbline 158
+ 010A           ;    tmp=DATA_PORT;
+ 010A 0BB3              in R16,0x1b
+ 010C                   .dbline 159
+ 010C           ;    LCD_E_LOW();//E=0;
+ 010C C498              cbi 0x18,4
+ 010E                   .dbline 160
+ 010E           ;    return tmp&0x80;
+ 010E 0078              andi R16,128
+ 0110                   .dbline -2
+ 0110           L24:
+ 0110                   .dbline 0 ; func end
+ 0110 0895              ret
+ 0112                   .dbsym r tmp 16 c
+ 0112                   .dbend
+ 0112                   .dbfunc e lcd_init _lcd_init fV
+                        .even
+ 0112           _lcd_init::
+ 0112                   .dbline -1
+ 0112                   .dbline 163
+ 0112           ; }
+ 0112           ; void lcd_init(void)
+ 0112           ; {
+ 0112                   .dbline 164
+ 0112           ;   _delay_us(3000);
+ 0112 08EB              ldi R16,184
+ 0114 0E940000          xcall __delay_us
+ 0118                   .dbline 169
+ 0118           ;   //choose_full_screen();
+ 0118           ;   //write_cmd(DISPLAY_FIRST_ROW);//first row display 0x0c0
+ 0118           ;   //write_cmd(DISPLAY_ON);//open display 0x03f
+ 0118           ;   //choose_no_screen(); 
+ 0118           ;   lcd_out_ctl(DISPLAY_FIRST_ROW,3);
+ 0118 23E0              ldi R18,3
+ 011A 00EC              ldi R16,192
+ 011C B9DF              xcall _lcd_out_ctl
+ 011E                   .dbline 170
+ 011E           ;   lcd_out_ctl(DISPLAY_ON,3);
+ 011E 23E0              ldi R18,3
+ 0120 0FE3              ldi R16,63
+ 0122 B6DF              xcall _lcd_out_ctl
+ 0124                   .dbline -2
+ 0124           L25:
+ 0124                   .dbline 0 ; func end
+ 0124 0895              ret
+ 0126                   .dbend
+ 0126                   .dbfunc e write_rect _write_rect fV
+ 0126           ;            dat -> R2,R3
+ 0126           ;             y0 -> R1
+ 0126           ;          page0 -> R0
+                        .even
+ 0126           _write_rect::
+ 0126                   .dbline -1
+ 0126                   .dbline 176
+ 0126           ;  
+ 0126           ;   
+ 0126           ; }
+ 0126           ; void write_rect(unsigned char page0,unsigned char y0,
+ 0126           ;                 unsigned char *dat)
+ 0126           ; {
+ 0126                   .dbline -2
+ 0126           L26:
+ 0126                   .dbline 0 ; func end
+ 0126 0895              ret
+ 0128                   .dbsym l dat 4 pc
+ 0128                   .dbsym l y0 2 c
+ 0128                   .dbsym l page0 0 c
+ 0128                   .dbend
+ 0128                   .dbfunc e read_rect _read_rect fV
+ 0128           ;             y1 -> R3
+ 0128           ;             x1 -> R2
+ 0128           ;             y0 -> R1
+ 0128           ;             x0 -> R0
+                        .even
+ 0128           _read_rect::
+ 0128                   .dbline -1
+ 0128                   .dbline 181
+ 0128           ; 
+ 0128           ; }
+ 0128           ; void read_rect(unsigned char x0,unsigned char y0,
+ 0128           ;                unsigned char x1,unsigned char y1)
+ 0128           ; {
+ 0128                   .dbline -2
+ 0128           L27:
+ 0128                   .dbline 0 ; func end
+ 0128 0895              ret
+ 012A                   .dbsym l y1 6 c
+ 012A                   .dbsym l x1 4 c
+ 012A                   .dbsym l y0 2 c
+ 012A                   .dbsym l x0 0 c
+ 012A                   .dbend
+ 012A                   .dbfunc e write_to_xy _write_to_xy fV
+ 012A           ;           page -> R22
+ 012A           ;            dat -> y+4
+ 012A           ;              y -> R22
+ 012A           ;              x -> R20
+                        .even
+ 012A           _write_to_xy::
+ 012A 0E940000          xcall push_gset2
+ 012E 622F              mov R22,R18
+ 0130 402F              mov R20,R16
+ 0132                   .dbline -1
+ 0132                   .dbline 186
+ 0132           ; 
+ 0132           ; }                        
+ 0132           ; 
+ 0132           ; void write_to_xy(unsigned char x,unsigned char y,unsigned char dat)
+ 0132           ; {
+ 0132                   .dbline 188
+ 0132           ;   unsigned char page;
+ 0132           ;   page=y>>3;
+ 0132 6695              lsr R22
+ 0134 6695              lsr R22
+ 0136 6695              lsr R22
+ 0138                   .dbline 189
+ 0138           ;   if(x>63)
+ 0138 8FE3              ldi R24,63
+ 013A 8417              cp R24,R20
+ 013C 50F4              brsh L29
+ 013E                   .dbline 190
+ 013E           ;   { x=x-64;
+ 013E                   .dbline 190
+ 013E 4054              subi R20,64
+ 0140                   .dbline 192
+ 0140           ;     //choose_right_screen();
+ 0140           ;     lcd_out_ctl_r(LCD_SET_PAGE+page);
+ 0140 062F              mov R16,R22
+ 0142 0854              subi R16,72    ; addi 184
+ 0144 93DF              xcall _lcd_out_ctl_r
+ 0146                   .dbline 193
+ 0146           ;       lcd_out_ctl_r(LCD_SET_COL+x);
+ 0146 042F              mov R16,R20
+ 0148 005C              subi R16,192    ; addi 64
+ 014A 90DF              xcall _lcd_out_ctl_r
+ 014C                   .dbline 194
+ 014C           ;       lcd_out_ctl_r(dat);
+ 014C 0C81              ldd R16,y+4
+ 014E 8EDF              xcall _lcd_out_ctl_r
+ 0150                   .dbline 195
+ 0150           ;   }
+ 0150 08C0              xjmp L30
+ 0152           L29:
+ 0152                   .dbline 197
+ 0152                   .dbline 198
+ 0152 062F              mov R16,R22
+ 0154 0854              subi R16,72    ; addi 184
+ 0156 78DF              xcall _lcd_out_ctl_l
+ 0158                   .dbline 199
+ 0158 042F              mov R16,R20
+ 015A 005C              subi R16,192    ; addi 64
+ 015C 75DF              xcall _lcd_out_ctl_l
+ 015E                   .dbline 200
+ 015E 0C81              ldd R16,y+4
+ 0160 73DF              xcall _lcd_out_ctl_l
+ 0162                   .dbline 201
+ 0162           L30:
+ 0162                   .dbline -2
+ 0162           L28:
+ 0162 0E940000          xcall pop_gset2
+ 0166                   .dbline 0 ; func end
+ 0166 0895              ret
+ 0168                   .dbsym r page 22 c
+ 0168                   .dbsym l dat 4 c
+ 0168                   .dbsym r y 22 c
+ 0168                   .dbsym r x 20 c
+ 0168                   .dbend
+ 0168                   .dbfunc e set_xy _set_xy fV
+ 0168           ;           page -> R22
+ 0168           ;              y -> R22
+ 0168           ;              x -> R20
+                        .even
+ 0168           _set_xy::
+ 0168 0E940000          xcall push_gset2
+ 016C 622F              mov R22,R18
+ 016E 402F              mov R20,R16
+ 0170                   .dbline -1
+ 0170                   .dbline 205
+ 0170           ;   else    
+ 0170           ;   { //choose_left_screen();
+ 0170           ;     lcd_out_ctl_l(LCD_SET_PAGE+page);
+ 0170           ;       lcd_out_ctl_l(LCD_SET_COL+x);
+ 0170           ;       lcd_out_ctl_l(dat);
+ 0170           ;   }
+ 0170           ; }
+ 0170           ; 
+ 0170           ; void set_xy(unsigned char x,unsigned char y)
+ 0170           ; {
+ 0170                   .dbline 207
+ 0170           ;  unsigned char page;
+ 0170           ;   page=y>>3;
+ 0170 6695              lsr R22
+ 0172 6695              lsr R22
+ 0174 6695              lsr R22
+ 0176                   .dbline 208
+ 0176           ;   if(x>63)
+ 0176 8FE3              ldi R24,63
+ 0178 8417              cp R24,R20
+ 017A 40F4              brsh L32
+ 017C                   .dbline 209
+ 017C           ;   { x=x-64;
+ 017C                   .dbline 209
+ 017C 4054              subi R20,64
+ 017E                   .dbline 211
+ 017E           ;     //choose_right_screen();
+ 017E           ;     lcd_out_ctl_r(LCD_SET_PAGE+page);//write_cmd(PAGE_CO+page);
+ 017E 062F              mov R16,R22
+ 0180 0854              subi R16,72    ; addi 184
+ 0182 74DF              xcall _lcd_out_ctl_r
+ 0184                   .dbline 212
+ 0184           ;       lcd_out_ctl_r(LCD_SET_COL+x);//write_cmd(ROW_CO+x);
+ 0184 042F              mov R16,R20
+ 0186 005C              subi R16,192    ; addi 64
+ 0188 71DF              xcall _lcd_out_ctl_r
+ 018A                   .dbline 213
+ 018A           ;   }
+ 018A 06C0              xjmp L33
+ 018C           L32:
+ 018C                   .dbline 215
+ 018C                   .dbline 216
+ 018C 062F              mov R16,R22
+ 018E 0854              subi R16,72    ; addi 184
+ 0190 5BDF              xcall _lcd_out_ctl_l
+ 0192                   .dbline 217
+ 0192 042F              mov R16,R20
+ 0194 005C              subi R16,192    ; addi 64
+ 0196 58DF              xcall _lcd_out_ctl_l
+ 0198                   .dbline 218
+ 0198           L33:
+ 0198                   .dbline -2
+ 0198           L31:
+ 0198 0E940000          xcall pop_gset2
+ 019C                   .dbline 0 ; func end
+ 019C 0895              ret
+ 019E                   .dbsym r page 22 c
+ 019E                   .dbsym r y 22 c
+ 019E                   .dbsym r x 20 c
+ 019E                   .dbend
+ 019E                   .dbfunc e write_to_lcd _write_to_lcd fV
+ 019E           ;            dat -> R20
+                        .even
+ 019E           _write_to_lcd::
+ 019E 0E940000          xcall push_gset1
+ 01A2 402F              mov R20,R16
+ 01A4                   .dbline -1
+ 01A4                   .dbline 222
+ 01A4           ;   else    
+ 01A4           ;   { //choose_left_screen();
+ 01A4           ;     lcd_out_ctl_l(LCD_SET_PAGE+page);
+ 01A4           ;       lcd_out_ctl_l(LCD_SET_COL+x);
+ 01A4           ;   }
+ 01A4           ; }
+ 01A4           ; 
+ 01A4           ; void write_to_lcd(unsigned char dat)
+ 01A4           ; {
+ 01A4                   .dbline 223
+ 01A4           ;   lcd_out_dat_l(dat);
+ 01A4 042F              mov R16,R20
+ 01A6 2CDF              xcall _lcd_out_dat_l
+ 01A8                   .dbline -2
+ 01A8           L34:
+ 01A8 0E940000          xcall pop_gset1
+ 01AC                   .dbline 0 ; func end
+ 01AC 0895              ret
+ 01AE                   .dbsym r dat 20 c
+ 01AE                   .dbend

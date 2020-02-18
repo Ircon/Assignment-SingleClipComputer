@@ -1,0 +1,5 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj",
+"C:\Keil_v5\C51\LIB\C51S.LIB" 
+TO ".\Objects\drive" 
+PRINT(".\Listings\drive.m51")

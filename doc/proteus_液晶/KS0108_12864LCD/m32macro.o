@@ -1,0 +1,59 @@
+XL
+H 1 areas 6 global symbols
+M m32macro.c
+S push_gset1 Ref0000
+S pop_gset1 Ref0000
+A text size 40 flags 0
+dbfile C:\ygksb0108\programme2_can_run\m32macro.c
+dbfunc e _delay_us 0 fV
+dbsym r i 10 c
+dbline FFFFFFFF 0
+dbline 8 0
+dbline 9 0
+dbline 9 0
+dbline FFFFFFFE A
+dbline 0 A
+dbfunc e _delay_ms C fV
+dbsym r ii 14 i
+dbsym r i 10 i
+dbline FFFFFFFF 10
+dbline C 10
+dbline E 10
+dbline F 12
+dbline F 18
+dbline F 18
+dbline F 1C
+dbline E 22
+dbline E 26
+dbline FFFFFFFE 2C
+dbline 0 30
+dbfunc e pgm_read_byte 32 fc
+dbsym r p 10 pkc
+dbline FFFFFFFF 32
+dbline 13 32
+dbline 14 32
+dbline FFFFFFFE 36
+dbline 0 36
+dbfunc e pgm_read_word 38 fi
+dbsym r p 10 pki
+dbline FFFFFFFF 38
+dbline 17 38
+dbline 18 38
+dbline FFFFFFFE 3E
+dbline 0 3E
+S __delay_ms Def000C
+S __delay_us Def0000
+S _pgm_read_byte Def0032
+S _pgm_read_word Def0038
+T 00 00 80 2F 81 50 08 2F 88 23 D9 F7 08 95
+R 00 00 00 00
+T 0C 00 0E 94 00 00 0A C0 44 EF 51 E0 02 C0 41 50
+R 00 00 00 00 12 04 00 00
+T 1A 00 50 40 40 30 45 07 D9 F7 01 50 10 40 00 30
+R 00 00 00 00
+T 28 00 01 07 99 F7 0E 94 00 00 08 95
+R 00 00 00 00 12 08 01 00
+T 32 00 F8 01 04 91 08 95
+R 00 00 00 00
+T 38 00 F8 01 05 91 14 91 08 95
+R 00 00 00 00

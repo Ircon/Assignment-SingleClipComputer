@@ -1,0 +1,770 @@
+A51 MACRO ASSEMBLER  LED                                                                  11/29/2019 12:31:58 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+NO OBJECT MODULE REQUESTED
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE .\Objects\led.src PR(.\Listings\led.ls1) EP DEBUG
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; .\Objects\led.SRC generated from: led.c
+                       2     ; COMPILER INVOKED BY:
+                       3     ;        C:\Keil_v5\C51\BIN\C51.EXE led.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT
+                             (.\Listings\led.lst) SRC(.\Objects\led.SRC)
+                       4     
+                       5     $nomod51 
+                       6     
+                       7     NAME    LED
+                       8     
+  0080                 9     P0      DATA    080H
+  0090                10     P1      DATA    090H
+  00A0                11     P2      DATA    0A0H
+  00B0                12     P3      DATA    0B0H
+  00B4                13     T0      BIT     0B0H.4
+  00D6                14     AC      BIT     0D0H.6
+  00B5                15     T1      BIT     0B0H.5
+  00AF                16     EA      BIT     0A8H.7
+  0090                17     LED1    BIT     090H.0
+  0091                18     LED2    BIT     090H.1
+  00A8                19     IE      DATA    0A8H
+  0080                20     P0_0    BIT     080H.0
+  0081                21     P0_1    BIT     080H.1
+  0082                22     P0_2    BIT     080H.2
+  0083                23     P0_3    BIT     080H.3
+  00B7                24     RD      BIT     0B0H.7
+  0097                25     P1_7    BIT     090H.7
+  00AC                26     ES      BIT     0A8H.4
+  00B8                27     IP      DATA    0B8H
+  0098                28     RI      BIT     098H.0
+  00B2                29     INT0    BIT     0B0H.2
+  00D7                30     CY      BIT     0D0H.7
+  0099                31     TI      BIT     098H.1
+  00B3                32     INT1    BIT     0B0H.3
+  00BC                33     PS      BIT     0B8H.4
+  0081                34     SP      DATA    081H
+  00D2                35     OV      BIT     0D0H.2
+  00B6                36     WR      BIT     0B0H.6
+  0099                37     SBUF    DATA    099H
+  0087                38     PCON    DATA    087H
+  0098                39     SCON    DATA    098H
+  0089                40     TMOD    DATA    089H
+  0088                41     TCON    DATA    088H
+  0089                42     IE0     BIT     088H.1
+  008B                43     IE1     BIT     088H.3
+  00F0                44     B       DATA    0F0H
+  00E0                45     ACC     DATA    0E0H
+  00A9                46     ET0     BIT     0A8H.1
+  00AB                47     ET1     BIT     0A8H.3
+  008D                48     TF0     BIT     088H.5
+  008F                49     TF1     BIT     088H.7
+  009A                50     RB8     BIT     098H.2
+  008C                51     TH0     DATA    08CH
+  00A8                52     EX0     BIT     0A8H.0
+  0088                53     IT0     BIT     088H.0
+  008D                54     TH1     DATA    08DH
+  009B                55     TB8     BIT     098H.3
+  00AA                56     EX1     BIT     0A8H.2
+  008A                57     IT1     BIT     088H.2
+A51 MACRO ASSEMBLER  LED                                                                  11/29/2019 12:31:58 PAGE     2
+
+  00D0                58     P       BIT     0D0H.0
+  009F                59     SM0     BIT     098H.7
+  008A                60     TL0     DATA    08AH
+  009E                61     SM1     BIT     098H.6
+  008B                62     TL1     DATA    08BH
+  009D                63     SM2     BIT     098H.5
+  00B9                64     PT0     BIT     0B8H.1
+  00BB                65     PT1     BIT     0B8H.3
+  00D3                66     RS0     BIT     0D0H.3
+  008C                67     TR0     BIT     088H.4
+  00D4                68     RS1     BIT     0D0H.4
+  008E                69     TR1     BIT     088H.6
+  00B8                70     PX0     BIT     0B8H.0
+  00BA                71     PX1     BIT     0B8H.2
+  0083                72     DPH     DATA    083H
+  0082                73     DPL     DATA    082H
+  009C                74     REN     BIT     098H.4
+  00B0                75     RXD     BIT     0B0H.0
+  00B1                76     TXD     BIT     0B0H.1
+  00D5                77     F0      BIT     0D0H.5
+  00D0                78     PSW     DATA    0D0H
+                      79     ?PR?main?LED         SEGMENT CODE 
+                      80     ?PR?frist_1?LED      SEGMENT CODE 
+                      81     ?DT?frist_1?LED      SEGMENT DATA OVERLAYABLE 
+                      82     ?PR?dely?LED         SEGMENT CODE 
+                      83     ?PR?dely_1s?LED      SEGMENT CODE 
+                      84     ?PR?INT0_INC_SPEED?LED                   SEGMENT CODE 
+                      85     ?PR?TIMER?LED        SEGMENT CODE 
+                      86     ?PR?INT0_DEC_SPEED?LED                   SEGMENT CODE 
+                      87     ?C_INITSEG           SEGMENT CODE 
+                      88     ?DT?LED              SEGMENT DATA 
+                      89             EXTRN   CODE (?C_STARTUP)
+                      90             PUBLIC  SPEED
+                      91             PUBLIC  CNT
+                      92             PUBLIC  IS_OK
+                      93             PUBLIC  INT0_DEC_SPEED
+                      94             PUBLIC  TIMER
+                      95             PUBLIC  INT0_INC_SPEED
+                      96             PUBLIC  dely_1s
+                      97             PUBLIC  dely
+                      98             PUBLIC  frist_1
+                      99             PUBLIC  main
+                     100     
+----                 101             RSEG  ?DT?frist_1?LED
+0000                 102     ?frist_1?BYTE:
+0000                 103               i?140:   DS   2
+                     104     
+----                 105             RSEG  ?DT?LED
+0000                 106               IS_OK:   DS   1
+0001                 107                 CNT:   DS   1
+0002                 108               SPEED:   DS   1
+                     109     
+----                 110             RSEG  ?C_INITSEG
+0000 01              111             DB      001H
+0001 00       F      112             DB      SPEED
+0002 00              113             DB      000H
+                     114     
+0003 01              115             DB      001H
+0004 00       F      116             DB      IS_OK
+0005 00              117             DB      000H
+                     118     
+0006 01              119             DB      001H
+0007 00       F      120             DB      CNT
+0008 00              121             DB      000H
+                     122     
+                     123     ; #include <reg51.h>
+A51 MACRO ASSEMBLER  LED                                                                  11/29/2019 12:31:58 PAGE     3
+
+                     124     ; sbit LED1 = P1 ^ 0;
+                     125     ; sbit LED2 = P1 ^ 1;
+                     126     ; 
+                     127     ; sbit P0_0 = P0 ^ 0;
+                     128     ; sbit P0_1 = P0 ^ 1;
+                     129     ; sbit P0_2 = P0 ^ 2;
+                     130     ; sbit P0_3 = P0 ^ 3;
+                     131     ; sbit P1_7 = P1 ^ 7;
+                     132     ; unsigned char SPEED = 0;
+                     133     ; unsigned char IS_OK = 0;
+                     134     ; unsigned char CNT = 0;
+                     135     ; // fun
+                     136     ; 
+                     137     ; void dely_1s();
+                     138     ; void frist_1();
+                     139     ; void dely();
+                     140     ; 
+                     141     ; 
+                     142     ; 
+                     143     ; main(){
+                     144     
+----                 145             RSEG  ?PR?main?LED
+0000                 146     main:
+                     147             USING   0
+                     148                             ; SOURCE LINE # 21
+                     149     ;       frist_1();
+                     150                             ; SOURCE LINE # 22
+0000 120000   F      151             LCALL   frist_1
+0003                 152     ?C0001:
+                     153     ;       while(1){
+                     154                             ; SOURCE LINE # 23
+                     155     ;               
+                     156     ;               if(!P0_0){ // 开始
+                     157                             ; SOURCE LINE # 25
+0003 208005          158             JB      P0_0,?C0003
+                     159     ;                       IS_OK = 1;
+                     160                             ; SOURCE LINE # 26
+0006 750001   F      161             MOV     IS_OK,#01H
+                     162     ;               }else if(!P0_1){ // 暂停
+                     163                             ; SOURCE LINE # 27
+0009 800A            164             SJMP    ?C0004
+000B                 165     ?C0003:
+000B 208107          166             JB      P0_1,?C0004
+                     167     ;                       IS_OK = 0;
+                     168                             ; SOURCE LINE # 28
+000E E4              169             CLR     A
+000F F500     F      170             MOV     IS_OK,A
+                     171     ;                       LED1 = 1;
+                     172                             ; SOURCE LINE # 29
+0011 D290            173             SETB    LED1
+                     174     ;                       LED2 = 1;
+                     175                             ; SOURCE LINE # 30
+0013 D291            176             SETB    LED2
+                     177     ;               }
+                     178                             ; SOURCE LINE # 31
+0015                 179     ?C0004:
+                     180     ;               P0_2 = P0_0;
+                     181                             ; SOURCE LINE # 32
+0015 A280            182             MOV     C,P0_0
+0017 9282            183             MOV     P0_2,C
+                     184     ;               P0_3 = P0_1;
+                     185                             ; SOURCE LINE # 33
+0019 A281            186             MOV     C,P0_1
+001B 9283            187             MOV     P0_3,C
+                     188     ;               P1_7 = IS_OK;
+                     189                             ; SOURCE LINE # 34
+A51 MACRO ASSEMBLER  LED                                                                  11/29/2019 12:31:58 PAGE     4
+
+001D E500     F      190             MOV     A,IS_OK
+001F 24FF            191             ADD     A,#0FFH
+0021 9297            192             MOV     P1_7,C
+                     193     ;               
+                     194     ;               P2 = SPEED;
+                     195                             ; SOURCE LINE # 36
+0023 8500A0   F      196             MOV     P2,SPEED
+                     197     ;       }
+                     198                             ; SOURCE LINE # 37
+0026 80DB            199             SJMP    ?C0001
+                     200     ; END OF main
+                     201     
+                     202     ; }
+                     203     ; 
+                     204     ; void frist_1(){
+                     205     
+----                 206             RSEG  ?PR?frist_1?LED
+0000                 207     frist_1:
+                     208             USING   0
+                     209                             ; SOURCE LINE # 40
+                     210     ;       
+                     211     ;       int i;
+                     212     ;               
+                     213     ;       LED1 = 0;
+                     214                             ; SOURCE LINE # 44
+0000 C290            215             CLR     LED1
+                     216     ;       LED2 = 0;
+                     217                             ; SOURCE LINE # 45
+0002 C291            218             CLR     LED2
+                     219     ;       for(i = 0 ; i< 5 ; ++i)
+                     220                             ; SOURCE LINE # 46
+0004 E4              221             CLR     A
+0005 F500     F      222             MOV     i?140,A
+0007 F500     F      223             MOV     i?140+01H,A
+0009                 224     ?C0007:
+                     225     ;               dely_1s();
+                     226                             ; SOURCE LINE # 47
+0009 120000   F      227             LCALL   dely_1s
+000C 0500     F      228             INC     i?140+01H
+000E E500     F      229             MOV     A,i?140+01H
+0010 7002            230             JNZ     ?C0033
+0012 0500     F      231             INC     i?140
+0014                 232     ?C0033:
+0014 C3              233             CLR     C
+0015 9405            234             SUBB    A,#05H
+0017 E500     F      235             MOV     A,i?140
+0019 6480            236             XRL     A,#080H
+001B 9480            237             SUBB    A,#080H
+001D 40EA            238             JC      ?C0007
+001F                 239     ?C0008:
+                     240     ;       
+                     241     ;       LED1 = 1;
+                     242                             ; SOURCE LINE # 49
+001F D290            243             SETB    LED1
+                     244     ;       LED2 = 1;
+                     245                             ; SOURCE LINE # 50
+0021 D291            246             SETB    LED2
+                     247     ;       for(i = 0 ; i < 5 ; ++i)
+                     248                             ; SOURCE LINE # 51
+0023 E4              249             CLR     A
+0024 F500     F      250             MOV     i?140,A
+0026 F500     F      251             MOV     i?140+01H,A
+0028                 252     ?C0010:
+                     253     ;               dely_1s();
+                     254                             ; SOURCE LINE # 52
+0028 120000   F      255             LCALL   dely_1s
+A51 MACRO ASSEMBLER  LED                                                                  11/29/2019 12:31:58 PAGE     5
+
+002B 0500     F      256             INC     i?140+01H
+002D E500     F      257             MOV     A,i?140+01H
+002F 7002            258             JNZ     ?C0034
+0031 0500     F      259             INC     i?140
+0033                 260     ?C0034:
+0033 C3              261             CLR     C
+0034 9405            262             SUBB    A,#05H
+0036 E500     F      263             MOV     A,i?140
+0038 6480            264             XRL     A,#080H
+003A 9480            265             SUBB    A,#080H
+003C 40EA            266             JC      ?C0010
+003E                 267     ?C0011:
+                     268     ; #pragma asm
+                     269     ;       MOV  TMOD,#01H  ;定时器0工作方式1
+003E 758901          270               MOV  TMOD,#01H        ;定时器0工作方式1
+                     271     ;       MOV  TH0, #60H  ;赋初值
+0041 758C60          272               MOV  TH0, #60H        ;赋初值
+                     273     ;       MOV  TL0, #176  
+0044 758AB0          274               MOV  TL0, #176  
+                     275     ;       SETB TR0                ;启动定时器0
+0047 D28C            276               SETB TR0              ;启动定时器0
+                     277     ;       SETB ET0                ;打开定时器0开关
+0049 D2A9            278               SETB ET0              ;打开定时器0开关
+                     279     ;       SETB EX0
+004B D2A8            280               SETB EX0
+                     281     ;       SETB IT0
+004D D288            282               SETB IT0
+                     283     ;       SETB EX1
+004F D2AA            284               SETB EX1
+                     285     ;       SETB IT1
+0051 D28A            286               SETB IT1
+                     287     ;       SETB EA                 ;总开关
+0053 D2AF            288               SETB EA               ;总开关
+                     289     ; #pragma endasm
+                     290     ; }
+                     291                             ; SOURCE LINE # 65
+0055 22              292             RET     
+                     293     ; END OF frist_1
+                     294     
+                     295     ; void dely(){
+                     296     
+----                 297             RSEG  ?PR?dely?LED
+0000                 298     dely:
+                     299             USING   0
+                     300                             ; SOURCE LINE # 66
+                     301     ;       int i ;
+                     302     ;       for(i = 0 ; i < 10000 ; ++i);
+                     303                             ; SOURCE LINE # 68
+                     304     ;---- Variable 'i?241' assigned to Register 'R6/R7' ----
+0000 E4              305             CLR     A
+0001 FF              306             MOV     R7,A
+0002 FE              307             MOV     R6,A
+0003                 308     ?C0014:
+0003 0F              309             INC     R7
+0004 BF0001          310             CJNE    R7,#00H,?C0035
+0007 0E              311             INC     R6
+0008                 312     ?C0035:
+0008 BE27F8          313             CJNE    R6,#027H,?C0014
+000B BF10F5          314             CJNE    R7,#010H,?C0014
+                     315     ; }
+                     316                             ; SOURCE LINE # 69
+000E                 317     ?C0017:
+000E 22              318             RET     
+                     319     ; END OF dely
+                     320     
+                     321     ; void dely_1s(){
+A51 MACRO ASSEMBLER  LED                                                                  11/29/2019 12:31:58 PAGE     6
+
+                     322     
+----                 323             RSEG  ?PR?dely_1s?LED
+0000                 324     dely_1s:
+                     325             USING   0
+                     326                             ; SOURCE LINE # 70
+                     327     ; // djnz 2 个机器周期
+                     328     ; // PUSH 2
+                     329     ; // POP  2
+                     330     ; #pragma asm
+                     331     ;       PUSH ACC
+0000 C0E0            332               PUSH ACC
+                     333     ;       PUSH PSW
+0002 C0D0            334               PUSH PSW
+                     335     ;       
+                     336               
+                     337     ;       MOV ACC,#4
+0004 75E004          338               MOV ACC,#4
+                     339     ;       
+                     340               
+                     341     ; LOP3:
+0007                 342               LOP3:
+                     343     ;       PUSH ACC
+0007 C0E0            344               PUSH ACC
+                     345     ;       MOV ACC,#249
+0009 75E0F9          346               MOV ACC,#249
+                     347     ; LOP2: 
+000C                 348               LOP2: 
+                     349     ; 
+                     350               
+                     351     ;       PUSH ACC
+000C C0E0            352               PUSH ACC
+                     353     ;       MOV ACC,#248
+000E 75E0F8          354               MOV ACC,#248
+                     355     ; LOP1:
+0011                 356               LOP1:
+                     357     ;       DJNZ ACC,LOP1
+0011 D5E0FD          358               DJNZ ACC,LOP1
+                     359     ;       POP ACC
+0014 D0E0            360               POP ACC
+                     361     ;       
+                     362               
+                     363     ;       DJNZ ACC,LOP2
+0016 D5E0F3          364               DJNZ ACC,LOP2
+                     365     ;       POP ACC
+0019 D0E0            366               POP ACC
+                     367     ;       
+                     368               
+                     369     ;       DJNZ ACC,LOP3
+001B D5E0E9          370               DJNZ ACC,LOP3
+                     371     ;       
+                     372               
+                     373     ;       POP PSW
+001E D0D0            374               POP PSW
+                     375     ;       POP ACC
+0020 D0E0            376               POP ACC
+                     377     ;       
+                     378               
+                     379     ; #pragma endasm
+                     380     ; }
+                     381                             ; SOURCE LINE # 100
+0022 22              382             RET     
+                     383     ; END OF dely_1s
+                     384     
+----                 385     CSEG    AT      00003H
+0003 020000   F      386             LJMP    INT0_INC_SPEED
+                     387     
+A51 MACRO ASSEMBLER  LED                                                                  11/29/2019 12:31:58 PAGE     7
+
+                     388     ; 
+                     389     ; // 中断
+                     390     ; void INT0_INC_SPEED(void) interrupt 0 {
+                     391     
+----                 392             RSEG  ?PR?INT0_INC_SPEED?LED
+                     393             USING   0
+0000                 394     INT0_INC_SPEED:
+0000 C0E0            395             PUSH    ACC
+0002 C0F0            396             PUSH    B
+0004 C0D0            397             PUSH    PSW
+                     398                             ; SOURCE LINE # 103
+                     399     ;       ++SPEED;
+                     400                             ; SOURCE LINE # 104
+0006 0500     F      401             INC     SPEED
+                     402     ;       SPEED %= 5;
+                     403                             ; SOURCE LINE # 105
+0008 E500     F      404             MOV     A,SPEED
+000A 75F005          405             MOV     B,#05H
+000D 84              406             DIV     AB
+000E 85F000   F      407             MOV     SPEED,B
+                     408     ; }
+                     409                             ; SOURCE LINE # 106
+0011 D0D0            410             POP     PSW
+0013 D0F0            411             POP     B
+0015 D0E0            412             POP     ACC
+0017 32              413             RETI    
+                     414     ; END OF INT0_INC_SPEED
+                     415     
+----                 416     CSEG    AT      0000BH
+000B 020000   F      417             LJMP    TIMER
+                     418     
+                     419     ; void TIMER(void) interrupt 1 {
+                     420     
+----                 421             RSEG  ?PR?TIMER?LED
+                     422             USING   0
+0000                 423     TIMER:
+0000 C0E0            424             PUSH    ACC
+0002 C0F0            425             PUSH    B
+0004 C083            426             PUSH    DPH
+0006 C082            427             PUSH    DPL
+0008 C0D0            428             PUSH    PSW
+000A 75D000          429             MOV     PSW,#00H
+000D C000            430             PUSH    AR0
+000F C001            431             PUSH    AR1
+0011 C002            432             PUSH    AR2
+0013 C003            433             PUSH    AR3
+0015 C004            434             PUSH    AR4
+0017 C005            435             PUSH    AR5
+0019 C006            436             PUSH    AR6
+001B C007            437             PUSH    AR7
+                     438             USING   0
+                     439                             ; SOURCE LINE # 107
+                     440     ;       if(IS_OK != 0){
+                     441                             ; SOURCE LINE # 108
+001D E500     F      442             MOV     A,IS_OK
+001F 600C            443             JZ      ?C0020
+                     444     ; #pragma asm
+                     445     ;               MOV  TH0, #60H  ;赋初值
+0021 758C60          446               MOV  TH0, #60H        ;赋初值
+                     447     ;               MOV  TL0, #176 
+0024 758AB0          448               MOV  TL0, #176 
+                     449     ; #pragma endasm
+                     450     ;               LED1 = 1;
+                     451                             ; SOURCE LINE # 113
+0027 D290            452             SETB    LED1
+                     453     ;               LED2 = 1;
+A51 MACRO ASSEMBLER  LED                                                                  11/29/2019 12:31:58 PAGE     8
+
+                     454                             ; SOURCE LINE # 114
+0029 D291            455             SETB    LED2
+002B 803E            456             SJMP    ?C0021
+                     457     ;               return;
+                     458     ;       }
+                     459                             ; SOURCE LINE # 116
+002D                 460     ?C0020:
+                     461     ;                       
+                     462     ;       if(CNT > SPEED){
+                     463                             ; SOURCE LINE # 118
+002D E500     F      464             MOV     A,CNT
+002F D3              465             SETB    C
+0030 9500     F      466             SUBB    A,SPEED
+0032 4032            467             JC      ?C0022
+                     468     ;               CNT = 0;
+                     469                             ; SOURCE LINE # 119
+0034 750000   F      470             MOV     CNT,#00H
+                     471     ;               if(SPEED == 0){
+                     472                             ; SOURCE LINE # 120
+0037 AF00     F      473             MOV     R7,SPEED
+0039 7E00            474             MOV     R6,#00H
+003B EF              475             MOV     A,R7
+003C 7002            476             JNZ     ?C0023
+                     477     ;                       LED1 = 0;
+                     478                             ; SOURCE LINE # 121
+                     479     ;                       LED2 = 0;
+                     480                             ; SOURCE LINE # 122
+                     481     ;               }else if(SPEED == 1){
+                     482                             ; SOURCE LINE # 123
+003E 801A            483             SJMP    ?C0036
+0040                 484     ?C0023:
+0040 EF              485             MOV     A,R7
+0041 6401            486             XRL     A,#01H
+0043 4E              487             ORL     A,R6
+0044 7004            488             JNZ     ?C0025
+                     489     ;                       LED1 = !LED1;
+                     490                             ; SOURCE LINE # 124
+0046 B290            491             CPL     LED1
+                     492     ;               }else if(SPEED == 2){
+                     493                             ; SOURCE LINE # 125
+0048 801E            494             SJMP    ?C0031
+004A                 495     ?C0025:
+004A EF              496             MOV     A,R7
+004B 6402            497             XRL     A,#02H
+004D 4E              498             ORL     A,R6
+004E 7004            499             JNZ     ?C0027
+                     500     ;                       LED2 = !LED2;
+                     501                             ; SOURCE LINE # 126
+0050 B291            502             CPL     LED2
+                     503     ;               }else if(SPEED == 5){
+                     504                             ; SOURCE LINE # 127
+0052 8014            505             SJMP    ?C0031
+0054                 506     ?C0027:
+0054 EF              507             MOV     A,R7
+0055 6405            508             XRL     A,#05H
+0057 4E              509             ORL     A,R6
+0058 7006            510             JNZ     ?C0029
+                     511     ;                       LED1 = 0;
+                     512                             ; SOURCE LINE # 128
+005A                 513     ?C0036:
+005A C290            514             CLR     LED1
+                     515     ;                       LED2 = 0;
+                     516                             ; SOURCE LINE # 129
+005C C291            517             CLR     LED2
+                     518     ;               }else{
+                     519                             ; SOURCE LINE # 130
+A51 MACRO ASSEMBLER  LED                                                                  11/29/2019 12:31:58 PAGE     9
+
+005E 8008            520             SJMP    ?C0031
+0060                 521     ?C0029:
+                     522     ;                       LED1 = !LED1;
+                     523                             ; SOURCE LINE # 131
+0060 B290            524             CPL     LED1
+                     525     ;                       LED2 = !LED2;
+                     526                             ; SOURCE LINE # 132
+0062 B291            527             CPL     LED2
+                     528     ;               }
+                     529                             ; SOURCE LINE # 133
+                     530     ;       }else{
+                     531                             ; SOURCE LINE # 134
+0064 8002            532             SJMP    ?C0031
+0066                 533     ?C0022:
+                     534     ;               ++CNT;
+                     535                             ; SOURCE LINE # 135
+0066 0500     F      536             INC     CNT
+                     537     ;       }
+                     538                             ; SOURCE LINE # 136
+0068                 539     ?C0031:
+                     540     ; #pragma asm
+                     541     ;       MOV  TH0, #60hH ;赋初值
+0068                 542               MOV  TH0, #60hH       ;赋初值
+*** ___________________________________^
+*** _________________________________________________^
+*** ERROR #A38 IN 542 (.\Objects\led.src, LINE 542): NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+*** ERROR #A9 IN 542 (.\Objects\led.src, LINE 542): SYNTAX ERROR
+                     543     ;       MOV  TL0, #176 
+0068 758AB0          544               MOV  TL0, #176 
+                     545     ; #pragma endasm
+                     546     ; }
+                     547                             ; SOURCE LINE # 141
+006B                 548     ?C0021:
+006B D007            549             POP     AR7
+006D D006            550             POP     AR6
+006F D005            551             POP     AR5
+0071 D004            552             POP     AR4
+0073 D003            553             POP     AR3
+0075 D002            554             POP     AR2
+0077 D001            555             POP     AR1
+0079 D000            556             POP     AR0
+007B D0D0            557             POP     PSW
+007D D082            558             POP     DPL
+007F D083            559             POP     DPH
+0081 D0F0            560             POP     B
+0083 D0E0            561             POP     ACC
+0085 32              562             RETI    
+                     563     ; END OF TIMER
+                     564     
+----                 565     CSEG    AT      00013H
+0013 020000   F      566             LJMP    INT0_DEC_SPEED
+                     567     
+                     568     ; void INT0_DEC_SPEED(void) interrupt 2 {
+                     569     
+----                 570             RSEG  ?PR?INT0_DEC_SPEED?LED
+                     571             USING   0
+0000                 572     INT0_DEC_SPEED:
+0000 C0E0            573             PUSH    ACC
+0002 C0F0            574             PUSH    B
+0004 C0D0            575             PUSH    PSW
+                     576                             ; SOURCE LINE # 142
+                     577     ;       --SPEED;
+                     578                             ; SOURCE LINE # 143
+0006 1500     F      579             DEC     SPEED
+                     580     ;       SPEED %= 5;
+                     581                             ; SOURCE LINE # 144
+A51 MACRO ASSEMBLER  LED                                                                  11/29/2019 12:31:58 PAGE    10
+
+0008 E500     F      582             MOV     A,SPEED
+000A 75F005          583             MOV     B,#05H
+000D 84              584             DIV     AB
+000E 85F000   F      585             MOV     SPEED,B
+                     586     ; }                     ; SOURCE LINE # 145
+0011 D0D0            587             POP     PSW
+0013 D0F0            588             POP     B
+0015 D0E0            589             POP     ACC
+0017 32              590             RETI    
+                     591     ; END OF INT0_DEC_SPEED
+                     592     
+                     593             END
+A51 MACRO ASSEMBLER  LED                                                                  11/29/2019 12:31:58 PAGE    11
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E                 T Y P E  V A L U E   ATTRIBUTES
+
+?C0001 . . . . . . . .  C ADDR   0003H   R   SEG=?PR?MAIN?LED
+?C0003 . . . . . . . .  C ADDR   000BH   R   SEG=?PR?MAIN?LED
+?C0004 . . . . . . . .  C ADDR   0015H   R   SEG=?PR?MAIN?LED
+?C0007 . . . . . . . .  C ADDR   0009H   R   SEG=?PR?FRIST_1?LED
+?C0008 . . . . . . . .  C ADDR   001FH   R   SEG=?PR?FRIST_1?LED
+?C0010 . . . . . . . .  C ADDR   0028H   R   SEG=?PR?FRIST_1?LED
+?C0011 . . . . . . . .  C ADDR   003EH   R   SEG=?PR?FRIST_1?LED
+?C0014 . . . . . . . .  C ADDR   0003H   R   SEG=?PR?DELY?LED
+?C0017 . . . . . . . .  C ADDR   000EH   R   SEG=?PR?DELY?LED
+?C0020 . . . . . . . .  C ADDR   002DH   R   SEG=?PR?TIMER?LED
+?C0021 . . . . . . . .  C ADDR   006BH   R   SEG=?PR?TIMER?LED
+?C0022 . . . . . . . .  C ADDR   0066H   R   SEG=?PR?TIMER?LED
+?C0023 . . . . . . . .  C ADDR   0040H   R   SEG=?PR?TIMER?LED
+?C0025 . . . . . . . .  C ADDR   004AH   R   SEG=?PR?TIMER?LED
+?C0027 . . . . . . . .  C ADDR   0054H   R   SEG=?PR?TIMER?LED
+?C0029 . . . . . . . .  C ADDR   0060H   R   SEG=?PR?TIMER?LED
+?C0031 . . . . . . . .  C ADDR   0068H   R   SEG=?PR?TIMER?LED
+?C0033 . . . . . . . .  C ADDR   0014H   R   SEG=?PR?FRIST_1?LED
+?C0034 . . . . . . . .  C ADDR   0033H   R   SEG=?PR?FRIST_1?LED
+?C0035 . . . . . . . .  C ADDR   0008H   R   SEG=?PR?DELY?LED
+?C0036 . . . . . . . .  C ADDR   005AH   R   SEG=?PR?TIMER?LED
+?C_INITSEG . . . . . .  C SEG    0009H       REL=UNIT
+?C_STARTUP . . . . . .  C ADDR   -----       EXT
+?DT?FRIST_1?LED. . . .  D SEG    0002H       REL=UNIT
+?DT?LED. . . . . . . .  D SEG    0003H       REL=UNIT
+?FRIST_1?BYTE. . . . .  D ADDR   0000H   R   SEG=?DT?FRIST_1?LED
+?PR?DELY?LED . . . . .  C SEG    000FH       REL=UNIT
+?PR?DELY_1S?LED. . . .  C SEG    0023H       REL=UNIT
+?PR?FRIST_1?LED. . . .  C SEG    0056H       REL=UNIT
+?PR?INT0_DEC_SPEED?LED  C SEG    0018H       REL=UNIT
+?PR?INT0_INC_SPEED?LED  C SEG    0018H       REL=UNIT
+?PR?MAIN?LED . . . . .  C SEG    0028H       REL=UNIT
+?PR?TIMER?LED. . . . .  C SEG    0086H       REL=UNIT
+AC . . . . . . . . . .  B ADDR   00D0H.6 A   
+ACC. . . . . . . . . .  D ADDR   00E0H   A   
+AR0. . . . . . . . . .  D ADDR   0000H   A   
+AR1. . . . . . . . . .  D ADDR   0001H   A   
+AR2. . . . . . . . . .  D ADDR   0002H   A   
+AR3. . . . . . . . . .  D ADDR   0003H   A   
+AR4. . . . . . . . . .  D ADDR   0004H   A   
+AR5. . . . . . . . . .  D ADDR   0005H   A   
+AR6. . . . . . . . . .  D ADDR   0006H   A   
+AR7. . . . . . . . . .  D ADDR   0007H   A   
+B. . . . . . . . . . .  D ADDR   00F0H   A   
+CNT. . . . . . . . . .  D ADDR   0001H   R   SEG=?DT?LED
+CY . . . . . . . . . .  B ADDR   00D0H.7 A   
+DELY . . . . . . . . .  C ADDR   0000H   R   SEG=?PR?DELY?LED
+DELY_1S. . . . . . . .  C ADDR   0000H   R   SEG=?PR?DELY_1S?LED
+DPH. . . . . . . . . .  D ADDR   0083H   A   
+DPL. . . . . . . . . .  D ADDR   0082H   A   
+EA . . . . . . . . . .  B ADDR   00A8H.7 A   
+ES . . . . . . . . . .  B ADDR   00A8H.4 A   
+ET0. . . . . . . . . .  B ADDR   00A8H.1 A   
+ET1. . . . . . . . . .  B ADDR   00A8H.3 A   
+EX0. . . . . . . . . .  B ADDR   00A8H.0 A   
+EX1. . . . . . . . . .  B ADDR   00A8H.2 A   
+F0 . . . . . . . . . .  B ADDR   00D0H.5 A   
+FRIST_1. . . . . . . .  C ADDR   0000H   R   SEG=?PR?FRIST_1?LED
+H. . . . . . . . . . .    ----   -----       
+I?140. . . . . . . . .  D ADDR   0000H   R   SEG=?DT?FRIST_1?LED
+A51 MACRO ASSEMBLER  LED                                                                  11/29/2019 12:31:58 PAGE    12
+
+IE . . . . . . . . . .  D ADDR   00A8H   A   
+IE0. . . . . . . . . .  B ADDR   0088H.1 A   
+IE1. . . . . . . . . .  B ADDR   0088H.3 A   
+INT0 . . . . . . . . .  B ADDR   00B0H.2 A   
+INT0_DEC_SPEED . . . .  C ADDR   0000H   R   SEG=?PR?INT0_DEC_SPEED?LED
+INT0_INC_SPEED . . . .  C ADDR   0000H   R   SEG=?PR?INT0_INC_SPEED?LED
+INT1 . . . . . . . . .  B ADDR   00B0H.3 A   
+IP . . . . . . . . . .  D ADDR   00B8H   A   
+IS_OK. . . . . . . . .  D ADDR   0000H   R   SEG=?DT?LED
+IT0. . . . . . . . . .  B ADDR   0088H.0 A   
+IT1. . . . . . . . . .  B ADDR   0088H.2 A   
+LED. . . . . . . . . .  N NUMB   -----       
+LED1 . . . . . . . . .  B ADDR   0090H.0 A   
+LED2 . . . . . . . . .  B ADDR   0090H.1 A   
+LOP1 . . . . . . . . .  C ADDR   0011H   R   SEG=?PR?DELY_1S?LED
+LOP2 . . . . . . . . .  C ADDR   000CH   R   SEG=?PR?DELY_1S?LED
+LOP3 . . . . . . . . .  C ADDR   0007H   R   SEG=?PR?DELY_1S?LED
+MAIN . . . . . . . . .  C ADDR   0000H   R   SEG=?PR?MAIN?LED
+OV . . . . . . . . . .  B ADDR   00D0H.2 A   
+P. . . . . . . . . . .  B ADDR   00D0H.0 A   
+P0 . . . . . . . . . .  D ADDR   0080H   A   
+P0_0 . . . . . . . . .  B ADDR   0080H.0 A   
+P0_1 . . . . . . . . .  B ADDR   0080H.1 A   
+P0_2 . . . . . . . . .  B ADDR   0080H.2 A   
+P0_3 . . . . . . . . .  B ADDR   0080H.3 A   
+P1 . . . . . . . . . .  D ADDR   0090H   A   
+P1_7 . . . . . . . . .  B ADDR   0090H.7 A   
+P2 . . . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . . . .  D ADDR   00B0H   A   
+PCON . . . . . . . . .  D ADDR   0087H   A   
+PS . . . . . . . . . .  B ADDR   00B8H.4 A   
+PSW. . . . . . . . . .  D ADDR   00D0H   A   
+PT0. . . . . . . . . .  B ADDR   00B8H.1 A   
+PT1. . . . . . . . . .  B ADDR   00B8H.3 A   
+PX0. . . . . . . . . .  B ADDR   00B8H.0 A   
+PX1. . . . . . . . . .  B ADDR   00B8H.2 A   
+RB8. . . . . . . . . .  B ADDR   0098H.2 A   
+RD . . . . . . . . . .  B ADDR   00B0H.7 A   
+REN. . . . . . . . . .  B ADDR   0098H.4 A   
+RI . . . . . . . . . .  B ADDR   0098H.0 A   
+RS0. . . . . . . . . .  B ADDR   00D0H.3 A   
+RS1. . . . . . . . . .  B ADDR   00D0H.4 A   
+RXD. . . . . . . . . .  B ADDR   00B0H.0 A   
+SBUF . . . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . . . .  D ADDR   0098H   A   
+SM0. . . . . . . . . .  B ADDR   0098H.7 A   
+SM1. . . . . . . . . .  B ADDR   0098H.6 A   
+SM2. . . . . . . . . .  B ADDR   0098H.5 A   
+SP . . . . . . . . . .  D ADDR   0081H   A   
+SPEED. . . . . . . . .  D ADDR   0002H   R   SEG=?DT?LED
+T0 . . . . . . . . . .  B ADDR   00B0H.4 A   
+T1 . . . . . . . . . .  B ADDR   00B0H.5 A   
+TB8. . . . . . . . . .  B ADDR   0098H.3 A   
+TCON . . . . . . . . .  D ADDR   0088H   A   
+TF0. . . . . . . . . .  B ADDR   0088H.5 A   
+TF1. . . . . . . . . .  B ADDR   0088H.7 A   
+TH0. . . . . . . . . .  D ADDR   008CH   A   
+TH1. . . . . . . . . .  D ADDR   008DH   A   
+TI . . . . . . . . . .  B ADDR   0098H.1 A   
+TIMER. . . . . . . . .  C ADDR   0000H   R   SEG=?PR?TIMER?LED
+TL0. . . . . . . . . .  D ADDR   008AH   A   
+TL1. . . . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . . . .  B ADDR   0088H.4 A   
+TR1. . . . . . . . . .  B ADDR   0088H.6 A   
+TXD. . . . . . . . . .  B ADDR   00B0H.1 A   
+A51 MACRO ASSEMBLER  LED                                                                  11/29/2019 12:31:58 PAGE    13
+
+WR . . . . . . . . . .  B ADDR   00B0H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 2 ERROR(S)

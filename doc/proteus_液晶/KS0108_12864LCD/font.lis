@@ -1,0 +1,2430 @@
+                        .module font.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:\ygksb0108\programme2_can_run\font.c
+ 0000                   .dbfunc e lcd_glyph _lcd_glyph fV
+ 0000           ;   glyph_offset -> R6
+ 0000           ;        bit_pos -> R8
+ 0000           ;              x -> R10
+ 0000           ;      char_mask -> y+2
+ 0000           ;     glyph_scan -> y+0
+ 0000           ;         y_bits -> R20
+ 0000           ;           mask -> R14
+ 0000           ; remaining_bits -> R22
+ 0000           ;    byte_offset -> R12
+ 0000           ;    store_width -> y+23
+ 0000           ;      glyph_ptr -> y+21
+ 0000           ;         height -> y+19
+ 0000           ;          width -> y+17
+ 0000           ;            top -> y+15
+ 0000           ;           left -> y+13
+                        .even
+ 0000           _lcd_glyph::
+ 0000 0E940000          xcall push_arg4
+ 0004 0E940000          xcall push_gset5
+ 0008 2397              sbiw R28,3
+ 000A                   .dbline -1
+ 000A                   .dbline 10
+ 000A           ; //*****************************************************************
+ 000A           ; //本头文件实现了用于字符显示的宏以及显示函数和显示的数据
+ 000A           ; //                   ---北京交通大学电气学院 杨罡 2008.8
+ 000A           ; //*****************************************************************
+ 000A           ; 
+ 000A           ; #include "font.h"
+ 000A           ; 
+ 000A           ; void lcd_glyph(uint8_t left, uint8_t top, uint8_t width, uint8_t height,
+ 000A           ;                uint8_t *glyph_ptr, uint8_t store_width)
+ 000A           ;  { uint8_t bit_pos;
+ 000A                   .dbline 20
+ 000A           ;    uint8_t byte_offset;
+ 000A           ;    uint8_t y_bits;
+ 000A           ;    uint8_t remaining_bits;
+ 000A           ;    uint8_t mask;
+ 000A           ;    uint8_t char_mask;
+ 000A           ;    uint8_t x;
+ 000A           ;    uint8_t *glyph_scan;
+ 000A           ;    uint8_t glyph_offset;
+ 000A           ; 
+ 000A           ;    bit_pos = top & 0x07;              /* get the bit offset into a byte */
+ 000A 8F85              ldd R24,y+15
+ 000C 8770              andi R24,7
+ 000E 882E              mov R8,R24
+ 0010                   .dbline 21
+ 0010           ;    glyph_offset = 0;                  /* start at left side of the glyph rasters */
+ 0010 6624              clr R6
+ 0012                   .dbline 22
+ 0012           ;    char_mask = 0x80;                  /* initial character glyph mask */
+ 0012 80E8              ldi R24,128
+ 0014 8A83              std y+2,R24
+ 0016                   .dbline 24
+ 0016           ; 
+ 0016           ;    for (x = left; x < (left + width); x++)
+ 0016 AD84              ldd R10,y+13
+ 0018 6AC0              xjmp L6
+ 001A           L3:
+ 001A                   .dbline 25
+ 001A           ;     { 
+ 001A                   .dbline 27
+ 001A           ;          
+ 001A           ;         byte_offset = top >> 3;               /* get the byte offset into y direction */
+ 001A CF84              ldd R12,y+15
+ 001C C694              lsr R12
+ 001E C694              lsr R12
+ 0020 C694              lsr R12
+ 0022                   .dbline 28
+ 0022           ;       y_bits = height;                /* get length in y direction to write */
+ 0022 4B89              ldd R20,y+19
+ 0024                   .dbline 29
+ 0024           ;       remaining_bits = 8 - bit_pos;   /* number of bits left in byte */
+ 0024 68E0              ldi R22,8
+ 0026 6819              sub R22,R8
+ 0028                   .dbline 30
+ 0028           ;       mask = l_mask_array[bit_pos];   /* get mask for this bit */
+ 0028 80E0              ldi R24,<_l_mask_array
+ 002A 90E0              ldi R25,>_l_mask_array
+ 002C E82D              mov R30,R8
+ 002E FF27              clr R31
+ 0030 E80F              add R30,R24
+ 0032 F91F              adc R31,R25
+ 0034 E080              ldd R14,z+0
+ 0036                   .dbline 31
+ 0036           ;       glyph_scan = glyph_ptr + glyph_offset;   /* point to base of the glyph */
+ 0036 262C              mov R2,R6
+ 0038 3324              clr R3
+ 003A 0D88              ldd R0,y+21
+ 003C 1E88              ldd R1,y+22
+ 003E 200C              add R2,R0
+ 0040 311C              adc R3,R1
+ 0042 3982              std y+1,R3
+ 0044 2882              std y+0,R2
+ 0046 43C0              xjmp L8
+ 0048           L7:
+ 0048                   .dbline 35
+ 0048           ;       /* boundary checking here to account for the possibility of  */
+ 0048           ;       /* write past the bottom of the screen.                        */
+ 0048           ;         while((y_bits) && (byte_offset < LCD_Y_BYTES)) /* while there are bits still to write */
+ 0048           ;        { /* check if the character pixel is set or not */
+ 0048                   .dbline 37
+ 0048           ;          //if(*glyph_scan & char_mask)
+ 0048           ;          if(pgm_read_byte(glyph_scan) & char_mask)
+ 0048 0881              ldd R16,y+0
+ 004A 1981              ldd R17,y+1
+ 004C 8F92              push R8
+ 004E 6F92              push R6
+ 0050 0E940000          xcall _pgm_read_byte
+ 0054 6F90              pop R6
+ 0056 8F90              pop R8
+ 0058 202E              mov R2,R16
+ 005A 0A80              ldd R0,y+2
+ 005C 2020              and R2,R0
+ 005E 81F0              breq L10
+ 0060                   .dbline 38
+ 0060           ;             l_display_array[byte_offset][x] |= mask;  /* set image pixel */
+ 0060 80E8              ldi R24,128
+ 0062 8C9D              mul R24,R12
+ 0064 1001              movw R2,R0
+ 0066 80E0              ldi R24,<_l_display_array
+ 0068 90E0              ldi R25,>_l_display_array
+ 006A 280E              add R2,R24
+ 006C 391E              adc R3,R25
+ 006E 4A2C              mov R4,R10
+ 0070 5524              clr R5
+ 0072 420C              add R4,R2
+ 0074 531C              adc R5,R3
+ 0076 F201              movw R30,R4
+ 0078 2080              ldd R2,z+0
+ 007A 2E28              or R2,R14
+ 007C 2082              std z+0,R2
+ 007E 11C0              xjmp L11
+ 0080           L10:
+ 0080                   .dbline 40
+ 0080           ;          else
+ 0080           ;             l_display_array[byte_offset][x] &= ~mask; /* clear the image pixel */    
+ 0080 80E8              ldi R24,128
+ 0082 8C9D              mul R24,R12
+ 0084 1001              movw R2,R0
+ 0086 80E0              ldi R24,<_l_display_array
+ 0088 90E0              ldi R25,>_l_display_array
+ 008A 280E              add R2,R24
+ 008C 391E              adc R3,R25
+ 008E 4A2C              mov R4,R10
+ 0090 5524              clr R5
+ 0092 420C              add R4,R2
+ 0094 531C              adc R5,R3
+ 0096 2E2C              mov R2,R14
+ 0098 2094              com R2
+ 009A F201              movw R30,R4
+ 009C 3080              ldd R3,z+0
+ 009E 3220              and R3,R2
+ 00A0 3082              std z+0,R3
+ 00A2           L11:
+ 00A2                   .dbline 41
+ 00A2           ;          if(l_mask_array[0] & 0x80)
+ 00A2 20900000          lds R2,_l_mask_array
+ 00A6 27FE              sbrs R2,7
+ 00A8 02C0              rjmp L12
+ 00AA                   .dbline 42
+ 00AA           ;             mask >>= 1;
+ 00AA E694              lsr R14
+ 00AC 01C0              xjmp L13
+ 00AE           L12:
+ 00AE                   .dbline 44
+ 00AE           ;          else
+ 00AE           ;             mask <<= 1;
+ 00AE EE0C              lsl R14
+ 00B0           L13:
+ 00B0                   .dbline 46
+ 00B0           ;                       
+ 00B0           ;          y_bits--;
+ 00B0 4A95              dec R20
+ 00B2                   .dbline 47
+ 00B2           ;          remaining_bits--;
+ 00B2 6A95              dec R22
+ 00B4                   .dbline 48
+ 00B4           ;          if(remaining_bits == 0)
+ 00B4 21F4              brne L14
+ 00B6                   .dbline 49
+ 00B6           ;           { /* just crossed over a byte boundry, reset byte counts */
+ 00B6                   .dbline 50
+ 00B6           ;             remaining_bits = 8;
+ 00B6 68E0              ldi R22,8
+ 00B8                   .dbline 51
+ 00B8           ;             byte_offset++;
+ 00B8 C394              inc R12
+ 00BA                   .dbline 52
+ 00BA           ;             mask = l_mask_array[0];
+ 00BA E0900000          lds R14,_l_mask_array
+ 00BE                   .dbline 53
+ 00BE           ;           }
+ 00BE           L14:
+ 00BE                   .dbline 56
+ 00BE 2880              ldd R2,y+0
+ 00C0 3980              ldd R3,y+1
+ 00C2 4F88              ldd R4,y+23
+ 00C4 5524              clr R5
+ 00C6 420C              add R4,R2
+ 00C8 531C              adc R5,R3
+ 00CA 5982              std y+1,R5
+ 00CC 4882              std y+0,R4
+ 00CE                   .dbline 58
+ 00CE           L8:
+ 00CE                   .dbline 34
+ 00CE 4423              tst R20
+ 00D0 21F0              breq L16
+ 00D2 8C2D              mov R24,R12
+ 00D4 8830              cpi R24,8
+ 00D6 08F4              brsh X0
+ 00D8 B7CF              xjmp L7
+ 00DA           X0:
+ 00DA           L16:
+ 00DA                   .dbline 61
+ 00DA           ;                
+ 00DA           ;           /* bump the glyph scan to next raster */
+ 00DA           ;           glyph_scan += store_width;
+ 00DA           ;                 
+ 00DA           ;        }
+ 00DA           ;      
+ 00DA           ;       /* shift over to next glyph bit */
+ 00DA           ;       char_mask >>= 1;
+ 00DA 2A80              ldd R2,y+2
+ 00DC 2694              lsr R2
+ 00DE 2A82              std y+2,R2
+ 00E0                   .dbline 62
+ 00E0           ;       if(char_mask == 0)                              /* reset for next byte in raster */
+ 00E0 022C              mov R0,R2
+ 00E2 2220              tst R2
+ 00E4 19F4              brne L17
+ 00E6                   .dbline 63
+ 00E6           ;        { char_mask = 0x80;
+ 00E6                   .dbline 63
+ 00E6 80E8              ldi R24,128
+ 00E8 8A83              std y+2,R24
+ 00EA                   .dbline 64
+ 00EA           ;          glyph_offset++;
+ 00EA 6394              inc R6
+ 00EC                   .dbline 65
+ 00EC           ;        }
+ 00EC           L17:
+ 00EC                   .dbline 67
+ 00EC           L4:
+ 00EC                   .dbline 24
+ 00EC A394              inc R10
+ 00EE           L6:
+ 00EE                   .dbline 24
+ 00EE 2D84              ldd R2,y+13
+ 00F0 0988              ldd R0,y+17
+ 00F2 200C              add R2,R0
+ 00F4 A214              cp R10,R2
+ 00F6 08F4              brsh X1
+ 00F8 90CF              xjmp L3
+ 00FA           X1:
+ 00FA                   .dbline -2
+ 00FA           L2:
+ 00FA 2396              adiw R28,3
+ 00FC 0E940000          xcall pop_gset5
+ 0100 2496              adiw R28,4
+ 0102                   .dbline 0 ; func end
+ 0102 0895              ret
+ 0104                   .dbsym r glyph_offset 6 c
+ 0104                   .dbsym r bit_pos 8 c
+ 0104                   .dbsym r x 10 c
+ 0104                   .dbsym l char_mask 2 c
+ 0104                   .dbsym l glyph_scan 0 pc
+ 0104                   .dbsym r y_bits 20 c
+ 0104                   .dbsym r mask 14 c
+ 0104                   .dbsym r remaining_bits 22 c
+ 0104                   .dbsym r byte_offset 12 c
+ 0104                   .dbsym l store_width 23 c
+ 0104                   .dbsym l glyph_ptr 21 pc
+ 0104                   .dbsym l height 19 c
+ 0104                   .dbsym l width 17 c
+ 0104                   .dbsym l top 15 c
+ 0104                   .dbsym l left 13 c
+ 0104                   .dbend
+ 0104                   .dbfunc e lcd_text _lcd_text fV
+ 0104           ; width_table_ptr -> y+11
+ 0104           ;      glyph_end -> R20
+ 0104           ; glyph_table_ptr -> y+9
+ 0104           ;  defaultheight -> y+17
+ 0104           ;      inprogmem -> y+16
+ 0104           ;     fixedwidth -> R12
+ 0104           ;      glyph_ptr -> y+7
+ 0104           ;      glyph_beg -> y+15
+ 0104           ;    store_width -> y+14
+ 0104           ;         height -> R22
+ 0104           ;          width -> R10
+ 0104           ;              x -> y+13
+ 0104           ;          glyph -> R14
+ 0104           ;            str -> y+32
+ 0104           ;           font -> y+30
+ 0104           ;            top -> y+28
+ 0104           ;           left -> R20
+                        .even
+ 0104           _lcd_text::
+ 0104 3A93              st -y,r19
+ 0106 2A93              st -y,r18
+ 0108 0E940000          xcall push_gset5
+ 010C 402F              mov R20,R16
+ 010E 6297              sbiw R28,18
+ 0110                   .dbline -1
+ 0110                   .dbline 82
+ 0110           ;        
+ 0110           ;    }
+ 0110           ;  }
+ 0110           ; 
+ 0110           ; 
+ 0110           ; /*
+ 0110           ;  Prints the given string at location x,y in the specified font.
+ 0110           ;  Prints each character given via calls to lcd_glyph. The entry string
+ 0110           ;  is null terminated. (adapted function from the MJK-code)
+ 0110           ;  Arguments are:
+ 0110           ;       left       coordinate of left start of string.
+ 0110           ;       top        coordinate of top of string.
+ 0110           ;       font       font number to use for display (see fonts.h)
+ 0110           ;       str        text string to display (null-terminated)
+ 0110           ; */ 
+ 0110           ;  void lcd_text(uint8_t left, uint8_t top, uint8_t font,   char *str)
+ 0110           ;  { uint8_t x = left;
+ 0110                   .dbline 82
+ 0110 4D87              std y+13,R20
+ 0112                   .dbline 92
+ 0112           ;    uint8_t glyph;
+ 0112           ;    uint8_t width;
+ 0112           ;    uint8_t height, defaultheight;
+ 0112           ;    uint8_t store_width;
+ 0112           ;    uint8_t *glyph_ptr;
+ 0112           ;    uint8_t *width_table_ptr;
+ 0112           ;    uint8_t *glyph_table_ptr;
+ 0112           ;    uint8_t glyph_beg, glyph_end;
+ 0112           ;    uint8_t fixedwidth;
+ 0112           ;    uint8_t inprogmem=0;//mine
+ 0112 0024              clr R0
+ 0114 088A              std y+16,R0
+ 0116                   .dbline 94
+ 0116           ;   
+ 0116           ;    defaultheight = (fonts[font].glyph_height);//pgm_read_byte ( &(fonts[font].glyph_height) );
+ 0116 8AE0              ldi R24,10
+ 0118 0E8C              ldd R0,y+30
+ 011A 809D              mul R24,R0
+ 011C F001              movw R30,R0
+ 011E 80E0              ldi R24,<_fonts+1
+ 0120 90E0              ldi R25,>_fonts+1
+ 0122 E80F              add R30,R24
+ 0124 F91F              adc R31,R25
+ 0126 E491              lpm R30,Z
+ 0128 E98B              std y+17,R30
+ 012A                   .dbline 95
+ 012A           ;    store_width =   (fonts[font].store_width);//pgm_read_byte ( &(fonts[font].store_width) );
+ 012A 8AE0              ldi R24,10
+ 012C 0E8C              ldd R0,y+30
+ 012E 809D              mul R24,R0
+ 0130 F001              movw R30,R0
+ 0132 80E0              ldi R24,<_fonts
+ 0134 90E0              ldi R25,>_fonts
+ 0136 E80F              add R30,R24
+ 0138 F91F              adc R31,R25
+ 013A E491              lpm R30,Z
+ 013C EE87              std y+14,R30
+ 013E                   .dbline 96
+ 013E           ;    width_table_ptr = (uint8_t*)(fonts[font].width_table);//(uint8_t*) pgm_read_word( &(fonts[font].width_table) );
+ 013E 8AE0              ldi R24,10
+ 0140 0E8C              ldd R0,y+30
+ 0142 809D              mul R24,R0
+ 0144 F001              movw R30,R0
+ 0146 80E0              ldi R24,<_fonts+5
+ 0148 90E0              ldi R25,>_fonts+5
+ 014A E80F              add R30,R24
+ 014C F91F              adc R31,R25
+ 014E 0590              lpm R0,Z+
+ 0150 1490              lpm R1,Z
+ 0152 F001              movw R30,R0
+ 0154 FC87              std y+12,R31
+ 0156 EB87              std y+11,R30
+ 0158                   .dbline 97
+ 0158           ;    glyph_table_ptr = (uint8_t*)(fonts[font].glyph_table);//(uint8_t*)pgm_read_word( &(fonts[font].glyph_table) );
+ 0158 8AE0              ldi R24,10
+ 015A 0E8C              ldd R0,y+30
+ 015C 809D              mul R24,R0
+ 015E F001              movw R30,R0
+ 0160 80E0              ldi R24,<_fonts+2
+ 0162 90E0              ldi R25,>_fonts+2
+ 0164 E80F              add R30,R24
+ 0166 F91F              adc R31,R25
+ 0168 0590              lpm R0,Z+
+ 016A 1490              lpm R1,Z
+ 016C F001              movw R30,R0
+ 016E FA87              std y+10,R31
+ 0170 E987              std y+9,R30
+ 0172                   .dbline 98
+ 0172           ;    glyph_beg  = (fonts[font].glyph_beg);//pgm_read_byte( &(fonts[font].glyph_beg) );
+ 0172 8AE0              ldi R24,10
+ 0174 0E8C              ldd R0,y+30
+ 0176 809D              mul R24,R0
+ 0178 F001              movw R30,R0
+ 017A 80E0              ldi R24,<_fonts+7
+ 017C 90E0              ldi R25,>_fonts+7
+ 017E E80F              add R30,R24
+ 0180 F91F              adc R31,R25
+ 0182 E491              lpm R30,Z
+ 0184 EF87              std y+15,R30
+ 0186                   .dbline 99
+ 0186           ;    glyph_end  = (fonts[font].glyph_end);//pgm_read_byte( &(fonts[font].glyph_end) );
+ 0186 8AE0              ldi R24,10
+ 0188 0E8C              ldd R0,y+30
+ 018A 809D              mul R24,R0
+ 018C F001              movw R30,R0
+ 018E 80E0              ldi R24,<_fonts+8
+ 0190 90E0              ldi R25,>_fonts+8
+ 0192 E80F              add R30,R24
+ 0194 F91F              adc R31,R25
+ 0196 4491              lpm R20,Z
+ 0198                   .dbline 100
+ 0198           ;    fixedwidth = (fonts[font].fixed_width);//pgm_read_byte( &(fonts[font].fixed_width) );
+ 0198 8AE0              ldi R24,10
+ 019A 0E8C              ldd R0,y+30
+ 019C 809D              mul R24,R0
+ 019E F001              movw R30,R0
+ 01A0 80E0              ldi R24,<_fonts+4
+ 01A2 90E0              ldi R25,>_fonts+4
+ 01A4 E80F              add R30,R24
+ 01A6 F91F              adc R31,R25
+ 01A8 C490              lpm R12,Z
+ 01AA                   .dbline 102
+ 01AA           ; 
+ 01AA           ;    if (inprogmem) 
+ 01AA 0888              ldd R0,y+16
+ 01AC 0020              tst R0
+ 01AE 31F0              breq L26
+ 01B0                   .dbline 103
+ 01B0           ;       glyph = pgm_read_byte(str);
+ 01B0 08A1              ldd R16,y+32
+ 01B2 19A1              ldd R17,y+33
+ 01B4 0E940000          xcall _pgm_read_byte
+ 01B8 E02E              mov R14,R16
+ 01BA 67C0              xjmp L29
+ 01BC           L26:
+ 01BC                   .dbline 106
+ 01BC           ;     
+ 01BC           ;    else 
+ 01BC           ;       glyph = (uint8_t)*str;
+ 01BC E8A1              ldd R30,y+32
+ 01BE F9A1              ldd R31,y+33
+ 01C0 E080              ldd R14,z+0
+ 01C2 63C0              xjmp L29
+ 01C4           L28:
+ 01C4                   .dbline 109
+ 01C4           ;       
+ 01C4           ;    while(glyph != 0x00) // while(*str != 0x00)
+ 01C4           ;     { /* check to make sure the symbol is a legal one */
+ 01C4                   .dbline 111
+ 01C4           ;       /* if not then just replace it with the default character */
+ 01C4           ;       if((glyph < glyph_beg) || (glyph > glyph_end))
+ 01C4 0F84              ldd R0,y+15
+ 01C6 E014              cp R14,R0
+ 01C8 10F0              brlo L33
+ 01CA 4E15              cp R20,R14
+ 01CC 48F4              brsh L31
+ 01CE           L33:
+ 01CE                   .dbline 112
+ 01CE           ;          glyph = (fonts[font].glyph_def);//pgm_read_byte( &(fonts[font].glyph_def) ) ;
+ 01CE 8AE0              ldi R24,10
+ 01D0 0E8C              ldd R0,y+30
+ 01D2 809D              mul R24,R0
+ 01D4 F001              movw R30,R0
+ 01D6 80E0              ldi R24,<_fonts+9
+ 01D8 90E0              ldi R25,>_fonts+9
+ 01DA E80F              add R30,R24
+ 01DC F91F              adc R31,R25
+ 01DE E490              lpm R14,Z
+ 01E0           L31:
+ 01E0                   .dbline 115
+ 01E0           ; 
+ 01E0           ;       /* make zero based index into the font data arrays */
+ 01E0           ;       glyph -= glyph_beg;
+ 01E0 0F84              ldd R0,y+15
+ 01E2 E018              sub R14,R0
+ 01E4                   .dbline 116
+ 01E4           ;       if(fixedwidth == 0)
+ 01E4 CC20              tst R12
+ 01E6 51F4              brne L35
+ 01E8                   .dbline 118
+ 01E8           ;          // width=fonts[font].width_table[glyph];     /* get the variable width instead */
+ 01E8           ;          width=pgm_read_byte(width_table_ptr+glyph);
+ 01E8 2B84              ldd R2,y+11
+ 01EA 3C84              ldd R3,y+12
+ 01EC 0E2D              mov R16,R14
+ 01EE 1127              clr R17
+ 01F0 020D              add R16,R2
+ 01F2 131D              adc R17,R3
+ 01F4 0E940000          xcall _pgm_read_byte
+ 01F8 A02E              mov R10,R16
+ 01FA 01C0              xjmp L36
+ 01FC           L35:
+ 01FC                   .dbline 120
+ 01FC           ;       else 
+ 01FC           ;          width = fixedwidth;
+ 01FC AC2C              mov R10,R12
+ 01FE           L36:
+ 01FE                   .dbline 122
+ 01FE           ;               
+ 01FE           ;       height = defaultheight;
+ 01FE 6989              ldd R22,y+17
+ 0200                   .dbline 124
+ 0200           ;       //glyph_ptr = fonts[font].glyph_table + ((unsigned int)glyph * (unsigned int)store_width * (unsigned int)height);
+ 0200           ;       glyph_ptr = glyph_table_ptr + ((unsigned int)glyph * (unsigned int)store_width * (unsigned int)height) ;
+ 0200 0E84              ldd R0,y+14
+ 0202 E09C              mul R14,R0
+ 0204 069E              mul R0,R22
+ 0206 1001              movw R2,R0
+ 0208 4984              ldd R4,y+9
+ 020A 5A84              ldd R5,y+10
+ 020C 240C              add R2,R4
+ 020E 351C              adc R3,R5
+ 0210 3886              std y+8,R3
+ 0212 2F82              std y+7,R2
+ 0214                   .dbline 127
+ 0214           ; 
+ 0214           ;       /* range check / limit things here */
+ 0214           ;       if(x > SCRN_RIGHT)
+ 0214 8FE7              ldi R24,127
+ 0216 0D84              ldd R0,y+13
+ 0218 8015              cp R24,R0
+ 021A 08F4              brsh L37
+ 021C                   .dbline 128
+ 021C           ;          x = SCRN_RIGHT;
+ 021C 8D87              std y+13,R24
+ 021E           L37:
+ 021E                   .dbline 130
+ 021E           ;        
+ 021E           ;       if((x + width) > SCRN_RIGHT+1)
+ 021E 2D84              ldd R2,y+13
+ 0220 2A0C              add R2,R10
+ 0222 80E8              ldi R24,128
+ 0224 8215              cp R24,R2
+ 0226 28F4              brsh L39
+ 0228                   .dbline 131
+ 0228           ;          width = SCRN_RIGHT - x + 1;
+ 0228 8FE7              ldi R24,127
+ 022A 0D84              ldd R0,y+13
+ 022C 8019              sub R24,R0
+ 022E 8F5F              subi R24,255    ; addi 1
+ 0230 A82E              mov R10,R24
+ 0232           L39:
+ 0232                   .dbline 133
+ 0232           ;        
+ 0232           ;       if(top > SCRN_BOTTOM)
+ 0232 8FE3              ldi R24,63
+ 0234 0C8C              ldd R0,y+28
+ 0236 8015              cp R24,R0
+ 0238 08F4              brsh L41
+ 023A                   .dbline 134
+ 023A           ;          top = SCRN_BOTTOM;
+ 023A 8C8F              std y+28,R24
+ 023C           L41:
+ 023C                   .dbline 136
+ 023C           ;        
+ 023C           ;       if((top + height) > SCRN_BOTTOM+1)
+ 023C 2C8C              ldd R2,y+28
+ 023E 260E              add R2,R22
+ 0240 80E4              ldi R24,64
+ 0242 8215              cp R24,R2
+ 0244 20F4              brsh L43
+ 0246                   .dbline 137
+ 0246           ;          height = SCRN_BOTTOM - top + 1;
+ 0246 6FE3              ldi R22,63
+ 0248 0C8C              ldd R0,y+28
+ 024A 6019              sub R22,R0
+ 024C 6F5F              subi R22,255    ; addi 1
+ 024E           L43:
+ 024E                   .dbline 139
+ 024E           ;        
+ 024E           ;       lcd_glyph(x,top,width,height,glyph_ptr,store_width);  /* plug symbol into buffer */
+ 024E 0E84              ldd R0,y+14
+ 0250 0E82              std y+6,R0
+ 0252 2F80              ldd R2,y+7
+ 0254 3884              ldd R3,y+8
+ 0256 3D82              std y+5,R3
+ 0258 2C82              std y+4,R2
+ 025A 6A83              std y+2,R22
+ 025C A882              std y+0,R10
+ 025E 2C8D              ldd R18,y+28
+ 0260 0D85              ldd R16,y+13
+ 0262 CEDE              xcall _lcd_glyph
+ 0264                   .dbline 141
+ 0264           ; 
+ 0264           ;       x += width;             /* move right for next character */
+ 0264 0D84              ldd R0,y+13
+ 0266 0A0C              add R0,R10
+ 0268 0D86              std y+13,R0
+ 026A                   .dbline 142
+ 026A           ;       str++;                  /* point to next character in string */
+ 026A 88A1              ldd R24,y+32
+ 026C 99A1              ldd R25,y+33
+ 026E 0196              adiw R24,1
+ 0270 99A3              std y+33,R25
+ 0272 88A3              std y+32,R24
+ 0274                   .dbline 143
+ 0274           ;       if (inprogmem) 
+ 0274 0888              ldd R0,y+16
+ 0276 0020              tst R0
+ 0278 29F0              breq L45
+ 027A                   .dbline 144
+ 027A           ;          glyph = pgm_read_byte(str);
+ 027A 8C01              movw R16,R24
+ 027C 0E940000          xcall _pgm_read_byte
+ 0280 E02E              mov R14,R16
+ 0282 03C0              xjmp L46
+ 0284           L45:
+ 0284                   .dbline 146
+ 0284           ;       else 
+ 0284           ;          glyph = (uint8_t)*str;
+ 0284 E8A1              ldd R30,y+32
+ 0286 F9A1              ldd R31,y+33
+ 0288 E080              ldd R14,z+0
+ 028A           L46:
+ 028A                   .dbline 148
+ 028A           L29:
+ 028A                   .dbline 108
+ 028A EE20              tst R14
+ 028C 09F0              breq X2
+ 028E 9ACF              xjmp L28
+ 0290           X2:
+ 0290                   .dbline -2
+ 0290           L19:
+ 0290 6296              adiw R28,18
+ 0292 0E940000          xcall pop_gset5
+ 0296 2296              adiw R28,2
+ 0298                   .dbline 0 ; func end
+ 0298 0895              ret
+ 029A                   .dbsym l width_table_ptr 11 pc
+ 029A                   .dbsym r glyph_end 20 c
+ 029A                   .dbsym l glyph_table_ptr 9 pc
+ 029A                   .dbsym l defaultheight 17 c
+ 029A                   .dbsym l inprogmem 16 c
+ 029A                   .dbsym r fixedwidth 12 c
+ 029A                   .dbsym l glyph_ptr 7 pc
+ 029A                   .dbsym l glyph_beg 15 c
+ 029A                   .dbsym l store_width 14 c
+ 029A                   .dbsym r height 22 c
+ 029A                   .dbsym r width 10 c
+ 029A                   .dbsym l x 13 c
+ 029A                   .dbsym r glyph 14 c
+ 029A                   .dbsym l str 32 pc
+ 029A                   .dbsym l font 30 c
+ 029A                   .dbsym l top 28 c
+ 029A                   .dbsym r left 20 c
+ 029A                   .dbend
+ 029A                   .dbfunc e lcd_text_p _lcd_text_p fV
+ 029A           ; width_table_ptr -> y+11
+ 029A           ;      glyph_end -> R20
+ 029A           ; glyph_table_ptr -> y+9
+ 029A           ;  defaultheight -> y+17
+ 029A           ;      inprogmem -> y+16
+ 029A           ;     fixedwidth -> R12
+ 029A           ;      glyph_ptr -> y+7
+ 029A           ;      glyph_beg -> y+15
+ 029A           ;    store_width -> y+14
+ 029A           ;         height -> R22
+ 029A           ;          width -> R10
+ 029A           ;              x -> y+13
+ 029A           ;          glyph -> R14
+ 029A           ;            str -> y+32
+ 029A           ;           font -> y+30
+ 029A           ;            top -> y+28
+ 029A           ;           left -> R20
+                        .even
+ 029A           _lcd_text_p::
+ 029A 3A93              st -y,r19
+ 029C 2A93              st -y,r18
+ 029E 0E940000          xcall push_gset5
+ 02A2 402F              mov R20,R16
+ 02A4 6297              sbiw R28,18
+ 02A6                   .dbline -1
+ 02A6                   .dbline 151
+ 02A6           ;        
+ 02A6           ;     }
+ 02A6           ;  }
+ 02A6           ; void lcd_text_p(uint8_t left, uint8_t top, uint8_t font,  const char *str)
+ 02A6           ;  { uint8_t x = left;
+ 02A6                   .dbline 151
+ 02A6 4D87              std y+13,R20
+ 02A8                   .dbline 161
+ 02A8           ;    uint8_t glyph;
+ 02A8           ;    uint8_t width;
+ 02A8           ;    uint8_t height, defaultheight;
+ 02A8           ;    uint8_t store_width;
+ 02A8           ;    uint8_t *glyph_ptr;
+ 02A8           ;    uint8_t *width_table_ptr;
+ 02A8           ;    uint8_t *glyph_table_ptr;
+ 02A8           ;    uint8_t glyph_beg, glyph_end;
+ 02A8           ;    uint8_t fixedwidth;
+ 02A8           ;    uint8_t inprogmem=1;//mine
+ 02A8 0024              clr R0
+ 02AA 0394              inc R0
+ 02AC 088A              std y+16,R0
+ 02AE                   .dbline 163
+ 02AE           ;    
+ 02AE           ;    defaultheight = (fonts[font].glyph_height);//pgm_read_byte ( &(fonts[font].glyph_height) );
+ 02AE 8AE0              ldi R24,10
+ 02B0 0E8C              ldd R0,y+30
+ 02B2 809D              mul R24,R0
+ 02B4 F001              movw R30,R0
+ 02B6 80E0              ldi R24,<_fonts+1
+ 02B8 90E0              ldi R25,>_fonts+1
+ 02BA E80F              add R30,R24
+ 02BC F91F              adc R31,R25
+ 02BE E491              lpm R30,Z
+ 02C0 E98B              std y+17,R30
+ 02C2                   .dbline 164
+ 02C2           ;    store_width =   (fonts[font].store_width);//pgm_read_byte ( &(fonts[font].store_width) );
+ 02C2 8AE0              ldi R24,10
+ 02C4 0E8C              ldd R0,y+30
+ 02C6 809D              mul R24,R0
+ 02C8 F001              movw R30,R0
+ 02CA 80E0              ldi R24,<_fonts
+ 02CC 90E0              ldi R25,>_fonts
+ 02CE E80F              add R30,R24
+ 02D0 F91F              adc R31,R25
+ 02D2 E491              lpm R30,Z
+ 02D4 EE87              std y+14,R30
+ 02D6                   .dbline 165
+ 02D6           ;    width_table_ptr = (uint8_t*)(fonts[font].width_table);//(uint8_t*) pgm_read_word( &(fonts[font].width_table) );
+ 02D6 8AE0              ldi R24,10
+ 02D8 0E8C              ldd R0,y+30
+ 02DA 809D              mul R24,R0
+ 02DC F001              movw R30,R0
+ 02DE 80E0              ldi R24,<_fonts+5
+ 02E0 90E0              ldi R25,>_fonts+5
+ 02E2 E80F              add R30,R24
+ 02E4 F91F              adc R31,R25
+ 02E6 0590              lpm R0,Z+
+ 02E8 1490              lpm R1,Z
+ 02EA F001              movw R30,R0
+ 02EC FC87              std y+12,R31
+ 02EE EB87              std y+11,R30
+ 02F0                   .dbline 166
+ 02F0           ;    glyph_table_ptr = (uint8_t*)(fonts[font].glyph_table);//(uint8_t*)pgm_read_word( &(fonts[font].glyph_table) );
+ 02F0 8AE0              ldi R24,10
+ 02F2 0E8C              ldd R0,y+30
+ 02F4 809D              mul R24,R0
+ 02F6 F001              movw R30,R0
+ 02F8 80E0              ldi R24,<_fonts+2
+ 02FA 90E0              ldi R25,>_fonts+2
+ 02FC E80F              add R30,R24
+ 02FE F91F              adc R31,R25
+ 0300 0590              lpm R0,Z+
+ 0302 1490              lpm R1,Z
+ 0304 F001              movw R30,R0
+ 0306 FA87              std y+10,R31
+ 0308 E987              std y+9,R30
+ 030A                   .dbline 167
+ 030A           ;    glyph_beg  = (fonts[font].glyph_beg);//pgm_read_byte( &(fonts[font].glyph_beg) );
+ 030A 8AE0              ldi R24,10
+ 030C 0E8C              ldd R0,y+30
+ 030E 809D              mul R24,R0
+ 0310 F001              movw R30,R0
+ 0312 80E0              ldi R24,<_fonts+7
+ 0314 90E0              ldi R25,>_fonts+7
+ 0316 E80F              add R30,R24
+ 0318 F91F              adc R31,R25
+ 031A E491              lpm R30,Z
+ 031C EF87              std y+15,R30
+ 031E                   .dbline 168
+ 031E           ;    glyph_end  = (fonts[font].glyph_end);//pgm_read_byte( &(fonts[font].glyph_end) );
+ 031E 8AE0              ldi R24,10
+ 0320 0E8C              ldd R0,y+30
+ 0322 809D              mul R24,R0
+ 0324 F001              movw R30,R0
+ 0326 80E0              ldi R24,<_fonts+8
+ 0328 90E0              ldi R25,>_fonts+8
+ 032A E80F              add R30,R24
+ 032C F91F              adc R31,R25
+ 032E 4491              lpm R20,Z
+ 0330                   .dbline 169
+ 0330           ;    fixedwidth = (fonts[font].fixed_width);//pgm_read_byte( &(fonts[font].fixed_width) );
+ 0330 8AE0              ldi R24,10
+ 0332 0E8C              ldd R0,y+30
+ 0334 809D              mul R24,R0
+ 0336 F001              movw R30,R0
+ 0338 80E0              ldi R24,<_fonts+4
+ 033A 90E0              ldi R25,>_fonts+4
+ 033C E80F              add R30,R24
+ 033E F91F              adc R31,R25
+ 0340 C490              lpm R12,Z
+ 0342                   .dbline 171
+ 0342           ; 
+ 0342           ;    if (inprogmem) 
+ 0342 0888              ldd R0,y+16
+ 0344 0020              tst R0
+ 0346 31F0              breq L54
+ 0348                   .dbline 172
+ 0348           ;       glyph = pgm_read_byte(str);
+ 0348 08A1              ldd R16,y+32
+ 034A 19A1              ldd R17,y+33
+ 034C 0E940000          xcall _pgm_read_byte
+ 0350 E02E              mov R14,R16
+ 0352 67C0              xjmp L57
+ 0354           L54:
+ 0354                   .dbline 175
+ 0354           ;     
+ 0354           ;    else 
+ 0354           ;       glyph = (uint8_t)*str;
+ 0354 E8A1              ldd R30,y+32
+ 0356 F9A1              ldd R31,y+33
+ 0358 E490              lpm R14,Z
+ 035A 63C0              xjmp L57
+ 035C           L56:
+ 035C                   .dbline 178
+ 035C           ;       
+ 035C           ;    while(glyph != 0x00) // while(*str != 0x00)
+ 035C           ;     { /* check to make sure the symbol is a legal one */
+ 035C                   .dbline 180
+ 035C           ;       /* if not then just replace it with the default character */
+ 035C           ;       if((glyph < glyph_beg) || (glyph > glyph_end))
+ 035C 0F84              ldd R0,y+15
+ 035E E014              cp R14,R0
+ 0360 10F0              brlo L61
+ 0362 4E15              cp R20,R14
+ 0364 48F4              brsh L59
+ 0366           L61:
+ 0366                   .dbline 181
+ 0366           ;          glyph = (fonts[font].glyph_def);//pgm_read_byte( &(fonts[font].glyph_def) ) ;
+ 0366 8AE0              ldi R24,10
+ 0368 0E8C              ldd R0,y+30
+ 036A 809D              mul R24,R0
+ 036C F001              movw R30,R0
+ 036E 80E0              ldi R24,<_fonts+9
+ 0370 90E0              ldi R25,>_fonts+9
+ 0372 E80F              add R30,R24
+ 0374 F91F              adc R31,R25
+ 0376 E490              lpm R14,Z
+ 0378           L59:
+ 0378                   .dbline 184
+ 0378           ; 
+ 0378           ;       /* make zero based index into the font data arrays */
+ 0378           ;       glyph -= glyph_beg;
+ 0378 0F84              ldd R0,y+15
+ 037A E018              sub R14,R0
+ 037C                   .dbline 185
+ 037C           ;       if(fixedwidth == 0)
+ 037C CC20              tst R12
+ 037E 51F4              brne L63
+ 0380                   .dbline 187
+ 0380           ;          // width=fonts[font].width_table[glyph];     /* get the variable width instead */
+ 0380           ;          width=pgm_read_byte(width_table_ptr+glyph);
+ 0380 2B84              ldd R2,y+11
+ 0382 3C84              ldd R3,y+12
+ 0384 0E2D              mov R16,R14
+ 0386 1127              clr R17
+ 0388 020D              add R16,R2
+ 038A 131D              adc R17,R3
+ 038C 0E940000          xcall _pgm_read_byte
+ 0390 A02E              mov R10,R16
+ 0392 01C0              xjmp L64
+ 0394           L63:
+ 0394                   .dbline 189
+ 0394           ;       else 
+ 0394           ;          width = fixedwidth;
+ 0394 AC2C              mov R10,R12
+ 0396           L64:
+ 0396                   .dbline 191
+ 0396           ;               
+ 0396           ;       height = defaultheight;
+ 0396 6989              ldd R22,y+17
+ 0398                   .dbline 193
+ 0398           ;       //glyph_ptr = fonts[font].glyph_table + ((unsigned int)glyph * (unsigned int)store_width * (unsigned int)height);
+ 0398           ;       glyph_ptr = glyph_table_ptr + ((unsigned int)glyph * (unsigned int)store_width * (unsigned int)height) ;
+ 0398 0E84              ldd R0,y+14
+ 039A E09C              mul R14,R0
+ 039C 069E              mul R0,R22
+ 039E 1001              movw R2,R0
+ 03A0 4984              ldd R4,y+9
+ 03A2 5A84              ldd R5,y+10
+ 03A4 240C              add R2,R4
+ 03A6 351C              adc R3,R5
+ 03A8 3886              std y+8,R3
+ 03AA 2F82              std y+7,R2
+ 03AC                   .dbline 196
+ 03AC           ; 
+ 03AC           ;       /* range check / limit things here */
+ 03AC           ;       if(x > SCRN_RIGHT)
+ 03AC 8FE7              ldi R24,127
+ 03AE 0D84              ldd R0,y+13
+ 03B0 8015              cp R24,R0
+ 03B2 08F4              brsh L65
+ 03B4                   .dbline 197
+ 03B4           ;          x = SCRN_RIGHT;
+ 03B4 8D87              std y+13,R24
+ 03B6           L65:
+ 03B6                   .dbline 199
+ 03B6           ;        
+ 03B6           ;       if((x + width) > SCRN_RIGHT+1)
+ 03B6 2D84              ldd R2,y+13
+ 03B8 2A0C              add R2,R10
+ 03BA 80E8              ldi R24,128
+ 03BC 8215              cp R24,R2
+ 03BE 28F4              brsh L67
+ 03C0                   .dbline 200
+ 03C0           ;          width = SCRN_RIGHT - x + 1;
+ 03C0 8FE7              ldi R24,127
+ 03C2 0D84              ldd R0,y+13
+ 03C4 8019              sub R24,R0
+ 03C6 8F5F              subi R24,255    ; addi 1
+ 03C8 A82E              mov R10,R24
+ 03CA           L67:
+ 03CA                   .dbline 202
+ 03CA           ;        
+ 03CA           ;       if(top > SCRN_BOTTOM)
+ 03CA 8FE3              ldi R24,63
+ 03CC 0C8C              ldd R0,y+28
+ 03CE 8015              cp R24,R0
+ 03D0 08F4              brsh L69
+ 03D2                   .dbline 203
+ 03D2           ;          top = SCRN_BOTTOM;
+ 03D2 8C8F              std y+28,R24
+ 03D4           L69:
+ 03D4                   .dbline 205
+ 03D4           ;        
+ 03D4           ;       if((top + height) > SCRN_BOTTOM+1)
+ 03D4 2C8C              ldd R2,y+28
+ 03D6 260E              add R2,R22
+ 03D8 80E4              ldi R24,64
+ 03DA 8215              cp R24,R2
+ 03DC 20F4              brsh L71
+ 03DE                   .dbline 206
+ 03DE           ;          height = SCRN_BOTTOM - top + 1;
+ 03DE 6FE3              ldi R22,63
+ 03E0 0C8C              ldd R0,y+28
+ 03E2 6019              sub R22,R0
+ 03E4 6F5F              subi R22,255    ; addi 1
+ 03E6           L71:
+ 03E6                   .dbline 208
+ 03E6           ;        
+ 03E6           ;       lcd_glyph(x,top,width,height,glyph_ptr,store_width);  /* plug symbol into buffer */
+ 03E6 0E84              ldd R0,y+14
+ 03E8 0E82              std y+6,R0
+ 03EA 2F80              ldd R2,y+7
+ 03EC 3884              ldd R3,y+8
+ 03EE 3D82              std y+5,R3
+ 03F0 2C82              std y+4,R2
+ 03F2 6A83              std y+2,R22
+ 03F4 A882              std y+0,R10
+ 03F6 2C8D              ldd R18,y+28
+ 03F8 0D85              ldd R16,y+13
+ 03FA 02DE              xcall _lcd_glyph
+ 03FC                   .dbline 210
+ 03FC           ; 
+ 03FC           ;       x += width;             /* move right for next character */
+ 03FC 0D84              ldd R0,y+13
+ 03FE 0A0C              add R0,R10
+ 0400 0D86              std y+13,R0
+ 0402                   .dbline 211
+ 0402           ;       str++;                  /* point to next character in string */
+ 0402 88A1              ldd R24,y+32
+ 0404 99A1              ldd R25,y+33
+ 0406 0196              adiw R24,1
+ 0408 99A3              std y+33,R25
+ 040A 88A3              std y+32,R24
+ 040C                   .dbline 212
+ 040C           ;       if (inprogmem) 
+ 040C 0888              ldd R0,y+16
+ 040E 0020              tst R0
+ 0410 29F0              breq L73
+ 0412                   .dbline 213
+ 0412           ;          glyph = pgm_read_byte(str);
+ 0412 8C01              movw R16,R24
+ 0414 0E940000          xcall _pgm_read_byte
+ 0418 E02E              mov R14,R16
+ 041A 03C0              xjmp L74
+ 041C           L73:
+ 041C                   .dbline 215
+ 041C           ;       else 
+ 041C           ;          glyph = (uint8_t)*str;
+ 041C E8A1              ldd R30,y+32
+ 041E F9A1              ldd R31,y+33
+ 0420 E490              lpm R14,Z
+ 0422           L74:
+ 0422                   .dbline 217
+ 0422           L57:
+ 0422                   .dbline 177
+ 0422 EE20              tst R14
+ 0424 09F0              breq X3
+ 0426 9ACF              xjmp L56
+ 0428           X3:
+ 0428                   .dbline -2
+ 0428           L47:
+ 0428 6296              adiw R28,18
+ 042A 0E940000          xcall pop_gset5
+ 042E 2296              adiw R28,2
+ 0430                   .dbline 0 ; func end
+ 0430 0895              ret
+ 0432                   .dbsym l width_table_ptr 11 pc
+ 0432                   .dbsym r glyph_end 20 c
+ 0432                   .dbsym l glyph_table_ptr 9 pc
+ 0432                   .dbsym l defaultheight 17 c
+ 0432                   .dbsym l inprogmem 16 c
+ 0432                   .dbsym r fixedwidth 12 c
+ 0432                   .dbsym l glyph_ptr 7 pc
+ 0432                   .dbsym l glyph_beg 15 c
+ 0432                   .dbsym l store_width 14 c
+ 0432                   .dbsym r height 22 c
+ 0432                   .dbsym r width 10 c
+ 0432                   .dbsym l x 13 c
+ 0432                   .dbsym r glyph 14 c
+ 0432                   .dbsym l str 32 pkc
+ 0432                   .dbsym l font 30 c
+ 0432                   .dbsym l top 28 c
+ 0432                   .dbsym r left 20 c
+ 0432                   .dbend
+                        .area lit(rom, con, rel)
+ 0000           _fonts::
+ 0000 02                .byte 2
+ 0001 08                .byte 8
+ 0002 1400              .word _six_dot_glyph_table
+ 0004 00                .byte 0
+ 0005 0406              .word _six_dot_width_table
+ 0007 20                .byte 32
+ 0008 7E                .byte 126
+ 0009 2E                .byte 46
+ 000A 01                .byte 1
+ 000B 0C                .byte 12
+ 000C 6306              .word _nine_dot_glyph_table
+ 000E 08                .byte 8
+ 000F 0000              .word 0
+ 0011 20                .byte 32
+ 0012 7E                .byte 126
+ 0013 2E                .byte 46
+ 0014                   .dbstruct 0 10 FONT_DEF
+ 0014                   .dbfield 0 store_width kc
+ 0014                   .dbfield 1 glyph_height kc
+ 0014                   .dbfield 2 glyph_table pkc
+ 0014                   .dbfield 4 fixed_width kc
+ 0014                   .dbfield 5 width_table pkc
+ 0014                   .dbfield 7 glyph_beg kc
+ 0014                   .dbfield 8 glyph_end kc
+ 0014                   .dbfield 9 glyph_def kc
+ 0014                   .dbend
+ 0014                   .dbsym e fonts _fonts A[20:2]kS[FONT_DEF]
+ 0014           _six_dot_glyph_table::
+ 0014 0000              .byte 0,0
+ 0016 0000              .byte 0,0
+ 0018 0000              .byte 0,0
+ 001A 0000              .byte 0,0
+ 001C 0000              .byte 0,0
+ 001E 0000              .byte 0,0
+ 0020 0000              .byte 0,0
+ 0022 0000              .byte 0,0
+ 0024 8000              .byte 128,0
+ 0026 8000              .byte 128,0
+ 0028 8000              .byte 128,0
+ 002A 8000              .byte 128,0
+ 002C 0000              .byte 0,0
+ 002E 8000              .byte 128,0
+ 0030 0000              .byte 0,0
+ 0032 0000              .byte 0,0
+ 0034 A000              .byte 160,0
+ 0036 A000              .byte 160,0
+ 0038 0000              .byte 0,0
+ 003A 0000              .byte 0,0
+ 003C 0000              .byte 0,0
+ 003E 0000              .byte 0,0
+ 0040 0000              .byte 0,0
+ 0042 0000              .byte 0,0
+ 0044 0000              .byte 0,0
+ 0046 1400              .byte 20,0
+ 0048 7E00              .byte 126,0
+ 004A 2800              .byte 40,0
+ 004C FC00              .byte 252,0
+ 004E 5000              .byte 'P,0
+ 0050 0000              .byte 0,0
+ 0052 0000              .byte 0,0
+ 0054 2000              .byte 32,0
+ 0056 7000              .byte 'p,0
+ 0058 8000              .byte 128,0
+ 005A 6000              .byte 96,0
+ 005C 1000              .byte 16,0
+ 005E E000              .byte 224,0
+ 0060 2000              .byte 32,0
+ 0062 0000              .byte 0,0
+ 0064 6400              .byte 'd,0
+ 0066 A800              .byte 168,0
+ 0068 D000              .byte 208,0
+ 006A 2C00              .byte 44,0
+ 006C 5400              .byte 'T,0
+ 006E 9800              .byte 152,0
+ 0070 0000              .byte 0,0
+ 0072 0000              .byte 0,0
+ 0074 6000              .byte 96,0
+ 0076 9000              .byte 144,0
+ 0078 4000              .byte 64,0
+ 007A 9800              .byte 152,0
+ 007C 9000              .byte 144,0
+ 007E 6000              .byte 96,0
+ 0080 0000              .byte 0,0
+ 0082 0000              .byte 0,0
+ 0084 8000              .byte 128,0
+ 0086 8000              .byte 128,0
+ 0088 0000              .byte 0,0
+ 008A 0000              .byte 0,0
+ 008C 0000              .byte 0,0
+ 008E 0000              .byte 0,0
+ 0090 0000              .byte 0,0
+ 0092 0000              .byte 0,0
+ 0094 2000              .byte 32,0
+ 0096 4000              .byte 64,0
+ 0098 8000              .byte 128,0
+ 009A 8000              .byte 128,0
+ 009C 8000              .byte 128,0
+ 009E 8000              .byte 128,0
+ 00A0 4000              .byte 64,0
+ 00A2 2000              .byte 32,0
+ 00A4 8000              .byte 128,0
+ 00A6 4000              .byte 64,0
+ 00A8 2000              .byte 32,0
+ 00AA 2000              .byte 32,0
+ 00AC 2000              .byte 32,0
+ 00AE 2000              .byte 32,0
+ 00B0 4000              .byte 64,0
+ 00B2 8000              .byte 128,0
+ 00B4 5000              .byte 'P,0
+ 00B6 2000              .byte 32,0
+ 00B8 F800              .byte 248,0
+ 00BA 2000              .byte 32,0
+ 00BC 5000              .byte 'P,0
+ 00BE 0000              .byte 0,0
+ 00C0 0000              .byte 0,0
+ 00C2 0000              .byte 0,0
+ 00C4 0000              .byte 0,0
+ 00C6 2000              .byte 32,0
+ 00C8 2000              .byte 32,0
+ 00CA F800              .byte 248,0
+ 00CC 2000              .byte 32,0
+ 00CE 2000              .byte 32,0
+ 00D0 0000              .byte 0,0
+ 00D2 0000              .byte 0,0
+ 00D4 0000              .byte 0,0
+ 00D6 0000              .byte 0,0
+ 00D8 0000              .byte 0,0
+ 00DA 0000              .byte 0,0
+ 00DC 0000              .byte 0,0
+ 00DE 4000              .byte 64,0
+ 00E0 4000              .byte 64,0
+ 00E2 8000              .byte 128,0
+ 00E4 0000              .byte 0,0
+ 00E6 0000              .byte 0,0
+ 00E8 0000              .byte 0,0
+ 00EA F800              .byte 248,0
+ 00EC 0000              .byte 0,0
+ 00EE 0000              .byte 0,0
+ 00F0 0000              .byte 0,0
+ 00F2 0000              .byte 0,0
+ 00F4 0000              .byte 0,0
+ 00F6 0000              .byte 0,0
+ 00F8 0000              .byte 0,0
+ 00FA 0000              .byte 0,0
+ 00FC 0000              .byte 0,0
+ 00FE 8000              .byte 128,0
+ 0100 0000              .byte 0,0
+ 0102 0000              .byte 0,0
+ 0104 2000              .byte 32,0
+ 0106 2000              .byte 32,0
+ 0108 4000              .byte 64,0
+ 010A 4000              .byte 64,0
+ 010C 8000              .byte 128,0
+ 010E 8000              .byte 128,0
+ 0110 0000              .byte 0,0
+ 0112 0000              .byte 0,0
+ 0114 6000              .byte 96,0
+ 0116 9000              .byte 144,0
+ 0118 9000              .byte 144,0
+ 011A 9000              .byte 144,0
+ 011C 9000              .byte 144,0
+ 011E 6000              .byte 96,0
+ 0120 0000              .byte 0,0
+ 0122 0000              .byte 0,0
+ 0124 4000              .byte 64,0
+ 0126 C000              .byte 192,0
+ 0128 4000              .byte 64,0
+ 012A 4000              .byte 64,0
+ 012C 4000              .byte 64,0
+ 012E 4000              .byte 64,0
+ 0130 0000              .byte 0,0
+ 0132 0000              .byte 0,0
+ 0134 6000              .byte 96,0
+ 0136 9000              .byte 144,0
+ 0138 1000              .byte 16,0
+ 013A 2000              .byte 32,0
+ 013C 4000              .byte 64,0
+ 013E F000              .byte 240,0
+ 0140 0000              .byte 0,0
+ 0142 0000              .byte 0,0
+ 0144 6000              .byte 96,0
+ 0146 9000              .byte 144,0
+ 0148 2000              .byte 32,0
+ 014A 1000              .byte 16,0
+ 014C 9000              .byte 144,0
+ 014E 6000              .byte 96,0
+ 0150 0000              .byte 0,0
+ 0152 0000              .byte 0,0
+ 0154 2000              .byte 32,0
+ 0156 6000              .byte 96,0
+ 0158 A000              .byte 160,0
+ 015A F000              .byte 240,0
+ 015C 2000              .byte 32,0
+ 015E 2000              .byte 32,0
+ 0160 0000              .byte 0,0
+ 0162 0000              .byte 0,0
+ 0164 F000              .byte 240,0
+ 0166 8000              .byte 128,0
+ 0168 E000              .byte 224,0
+ 016A 1000              .byte 16,0
+ 016C 9000              .byte 144,0
+ 016E 6000              .byte 96,0
+ 0170 0000              .byte 0,0
+ 0172 0000              .byte 0,0
+ 0174 2000              .byte 32,0
+ 0176 4000              .byte 64,0
+ 0178 E000              .byte 224,0
+ 017A 9000              .byte 144,0
+ 017C 9000              .byte 144,0
+ 017E 6000              .byte 96,0
+ 0180 0000              .byte 0,0
+ 0182 0000              .byte 0,0
+ 0184 F000              .byte 240,0
+ 0186 1000              .byte 16,0
+ 0188 2000              .byte 32,0
+ 018A 4000              .byte 64,0
+ 018C 4000              .byte 64,0
+ 018E 4000              .byte 64,0
+ 0190 0000              .byte 0,0
+ 0192 0000              .byte 0,0
+ 0194 6000              .byte 96,0
+ 0196 9000              .byte 144,0
+ 0198 6000              .byte 96,0
+ 019A 9000              .byte 144,0
+ 019C 9000              .byte 144,0
+ 019E 6000              .byte 96,0
+ 01A0 0000              .byte 0,0
+ 01A2 0000              .byte 0,0
+ 01A4 6000              .byte 96,0
+ 01A6 9000              .byte 144,0
+ 01A8 9000              .byte 144,0
+ 01AA 7000              .byte 'p,0
+ 01AC 2000              .byte 32,0
+ 01AE 4000              .byte 64,0
+ 01B0 0000              .byte 0,0
+ 01B2 0000              .byte 0,0
+ 01B4 0000              .byte 0,0
+ 01B6 0000              .byte 0,0
+ 01B8 8000              .byte 128,0
+ 01BA 0000              .byte 0,0
+ 01BC 0000              .byte 0,0
+ 01BE 8000              .byte 128,0
+ 01C0 0000              .byte 0,0
+ 01C2 0000              .byte 0,0
+ 01C4 0000              .byte 0,0
+ 01C6 0000              .byte 0,0
+ 01C8 4000              .byte 64,0
+ 01CA 0000              .byte 0,0
+ 01CC 0000              .byte 0,0
+ 01CE 4000              .byte 64,0
+ 01D0 4000              .byte 64,0
+ 01D2 8000              .byte 128,0
+ 01D4 0000              .byte 0,0
+ 01D6 2000              .byte 32,0
+ 01D8 4000              .byte 64,0
+ 01DA 8000              .byte 128,0
+ 01DC 4000              .byte 64,0
+ 01DE 2000              .byte 32,0
+ 01E0 0000              .byte 0,0
+ 01E2 0000              .byte 0,0
+ 01E4 0000              .byte 0,0
+ 01E6 0000              .byte 0,0
+ 01E8 F000              .byte 240,0
+ 01EA 0000              .byte 0,0
+ 01EC 0000              .byte 0,0
+ 01EE F000              .byte 240,0
+ 01F0 0000              .byte 0,0
+ 01F2 0000              .byte 0,0
+ 01F4 0000              .byte 0,0
+ 01F6 8000              .byte 128,0
+ 01F8 4000              .byte 64,0
+ 01FA 2000              .byte 32,0
+ 01FC 4000              .byte 64,0
+ 01FE 8000              .byte 128,0
+ 0200 0000              .byte 0,0
+ 0202 0000              .byte 0,0
+ 0204 C000              .byte 192,0
+ 0206 2000              .byte 32,0
+ 0208 4000              .byte 64,0
+ 020A 4000              .byte 64,0
+ 020C 0000              .byte 0,0
+ 020E 4000              .byte 64,0
+ 0210 0000              .byte 0,0
+ 0212 0000              .byte 0,0
+ 0214 3C00              .byte 60,0
+ 0216 4200              .byte 'B,0
+ 0218 9A00              .byte 154,0
+ 021A AA00              .byte 170,0
+ 021C B400              .byte 180,0
+ 021E 4000              .byte 64,0
+ 0220 3800              .byte 56,0
+ 0222 0000              .byte 0,0
+ 0224 2000              .byte 32,0
+ 0226 2000              .byte 32,0
+ 0228 5000              .byte 'P,0
+ 022A 7000              .byte 'p,0
+ 022C 8800              .byte 136,0
+ 022E 8800              .byte 136,0
+ 0230 0000              .byte 0,0
+ 0232 0000              .byte 0,0
+ 0234 E000              .byte 224,0
+ 0236 9000              .byte 144,0
+ 0238 E000              .byte 224,0
+ 023A 9000              .byte 144,0
+ 023C 9000              .byte 144,0
+ 023E E000              .byte 224,0
+ 0240 0000              .byte 0,0
+ 0242 0000              .byte 0,0
+ 0244 6000              .byte 96,0
+ 0246 9000              .byte 144,0
+ 0248 8000              .byte 128,0
+ 024A 8000              .byte 128,0
+ 024C 9000              .byte 144,0
+ 024E 6000              .byte 96,0
+ 0250 0000              .byte 0,0
+ 0252 0000              .byte 0,0
+ 0254 E000              .byte 224,0
+ 0256 9000              .byte 144,0
+ 0258 9000              .byte 144,0
+ 025A 9000              .byte 144,0
+ 025C 9000              .byte 144,0
+ 025E E000              .byte 224,0
+ 0260 0000              .byte 0,0
+ 0262 0000              .byte 0,0
+ 0264 E000              .byte 224,0
+ 0266 8000              .byte 128,0
+ 0268 E000              .byte 224,0
+ 026A 8000              .byte 128,0
+ 026C 8000              .byte 128,0
+ 026E E000              .byte 224,0
+ 0270 0000              .byte 0,0
+ 0272 0000              .byte 0,0
+ 0274 E000              .byte 224,0
+ 0276 8000              .byte 128,0
+ 0278 E000              .byte 224,0
+ 027A 8000              .byte 128,0
+ 027C 8000              .byte 128,0
+ 027E 8000              .byte 128,0
+ 0280 0000              .byte 0,0
+ 0282 0000              .byte 0,0
+ 0284 6000              .byte 96,0
+ 0286 9000              .byte 144,0
+ 0288 8000              .byte 128,0
+ 028A B000              .byte 176,0
+ 028C 9000              .byte 144,0
+ 028E 6000              .byte 96,0
+ 0290 0000              .byte 0,0
+ 0292 0000              .byte 0,0
+ 0294 9000              .byte 144,0
+ 0296 9000              .byte 144,0
+ 0298 F000              .byte 240,0
+ 029A 9000              .byte 144,0
+ 029C 9000              .byte 144,0
+ 029E 9000              .byte 144,0
+ 02A0 0000              .byte 0,0
+ 02A2 0000              .byte 0,0
+ 02A4 8000              .byte 128,0
+ 02A6 8000              .byte 128,0
+ 02A8 8000              .byte 128,0
+ 02AA 8000              .byte 128,0
+ 02AC 8000              .byte 128,0
+ 02AE 8000              .byte 128,0
+ 02B0 0000              .byte 0,0
+ 02B2 0000              .byte 0,0
+ 02B4 1000              .byte 16,0
+ 02B6 1000              .byte 16,0
+ 02B8 1000              .byte 16,0
+ 02BA 1000              .byte 16,0
+ 02BC 9000              .byte 144,0
+ 02BE 6000              .byte 96,0
+ 02C0 0000              .byte 0,0
+ 02C2 0000              .byte 0,0
+ 02C4 9000              .byte 144,0
+ 02C6 A000              .byte 160,0
+ 02C8 C000              .byte 192,0
+ 02CA C000              .byte 192,0
+ 02CC A000              .byte 160,0
+ 02CE 9000              .byte 144,0
+ 02D0 0000              .byte 0,0
+ 02D2 0000              .byte 0,0
+ 02D4 8000              .byte 128,0
+ 02D6 8000              .byte 128,0
+ 02D8 8000              .byte 128,0
+ 02DA 8000              .byte 128,0
+ 02DC 8000              .byte 128,0
+ 02DE E000              .byte 224,0
+ 02E0 0000              .byte 0,0
+ 02E2 0000              .byte 0,0
+ 02E4 8800              .byte 136,0
+ 02E6 D800              .byte 216,0
+ 02E8 A800              .byte 168,0
+ 02EA 8800              .byte 136,0
+ 02EC 8800              .byte 136,0
+ 02EE 8800              .byte 136,0
+ 02F0 0000              .byte 0,0
+ 02F2 0000              .byte 0,0
+ 02F4 9000              .byte 144,0
+ 02F6 D000              .byte 208,0
+ 02F8 D000              .byte 208,0
+ 02FA B000              .byte 176,0
+ 02FC B000              .byte 176,0
+ 02FE 9000              .byte 144,0
+ 0300 0000              .byte 0,0
+ 0302 0000              .byte 0,0
+ 0304 6000              .byte 96,0
+ 0306 9000              .byte 144,0
+ 0308 9000              .byte 144,0
+ 030A 9000              .byte 144,0
+ 030C 9000              .byte 144,0
+ 030E 6000              .byte 96,0
+ 0310 0000              .byte 0,0
+ 0312 0000              .byte 0,0
+ 0314 E000              .byte 224,0
+ 0316 9000              .byte 144,0
+ 0318 9000              .byte 144,0
+ 031A E000              .byte 224,0
+ 031C 8000              .byte 128,0
+ 031E 8000              .byte 128,0
+ 0320 0000              .byte 0,0
+ 0322 0000              .byte 0,0
+ 0324 6000              .byte 96,0
+ 0326 9000              .byte 144,0
+ 0328 9000              .byte 144,0
+ 032A 9000              .byte 144,0
+ 032C 9000              .byte 144,0
+ 032E 6000              .byte 96,0
+ 0330 1000              .byte 16,0
+ 0332 0000              .byte 0,0
+ 0334 E000              .byte 224,0
+ 0336 9000              .byte 144,0
+ 0338 9000              .byte 144,0
+ 033A E000              .byte 224,0
+ 033C A000              .byte 160,0
+ 033E 9000              .byte 144,0
+ 0340 0000              .byte 0,0
+ 0342 0000              .byte 0,0
+ 0344 6000              .byte 96,0
+ 0346 9000              .byte 144,0
+ 0348 4000              .byte 64,0
+ 034A 2000              .byte 32,0
+ 034C 9000              .byte 144,0
+ 034E 6000              .byte 96,0
+ 0350 0000              .byte 0,0
+ 0352 0000              .byte 0,0
+ 0354 F800              .byte 248,0
+ 0356 2000              .byte 32,0
+ 0358 2000              .byte 32,0
+ 035A 2000              .byte 32,0
+ 035C 2000              .byte 32,0
+ 035E 2000              .byte 32,0
+ 0360 0000              .byte 0,0
+ 0362 0000              .byte 0,0
+ 0364 9000              .byte 144,0
+ 0366 9000              .byte 144,0
+ 0368 9000              .byte 144,0
+ 036A 9000              .byte 144,0
+ 036C 9000              .byte 144,0
+ 036E 6000              .byte 96,0
+ 0370 0000              .byte 0,0
+ 0372 0000              .byte 0,0
+ 0374 8800              .byte 136,0
+ 0376 8800              .byte 136,0
+ 0378 5000              .byte 'P,0
+ 037A 5000              .byte 'P,0
+ 037C 2000              .byte 32,0
+ 037E 2000              .byte 32,0
+ 0380 0000              .byte 0,0
+ 0382 0000              .byte 0,0
+ 0384 8880              .byte 136,128
+ 0386 8880              .byte 136,128
+ 0388 5500              .byte 'U,0
+ 038A 5500              .byte 'U,0
+ 038C 2200              .byte 34,0
+ 038E 2200              .byte 34,0
+ 0390 0000              .byte 0,0
+ 0392 0000              .byte 0,0
+ 0394 8800              .byte 136,0
+ 0396 5000              .byte 'P,0
+ 0398 2000              .byte 32,0
+ 039A 2000              .byte 32,0
+ 039C 5000              .byte 'P,0
+ 039E 8800              .byte 136,0
+ 03A0 0000              .byte 0,0
+ 03A2 0000              .byte 0,0
+ 03A4 8800              .byte 136,0
+ 03A6 5000              .byte 'P,0
+ 03A8 2000              .byte 32,0
+ 03AA 2000              .byte 32,0
+ 03AC 2000              .byte 32,0
+ 03AE 2000              .byte 32,0
+ 03B0 0000              .byte 0,0
+ 03B2 0000              .byte 0,0
+ 03B4 F000              .byte 240,0
+ 03B6 1000              .byte 16,0
+ 03B8 2000              .byte 32,0
+ 03BA 4000              .byte 64,0
+ 03BC 8000              .byte 128,0
+ 03BE F000              .byte 240,0
+ 03C0 0000              .byte 0,0
+ 03C2 0000              .byte 0,0
+ 03C4 C000              .byte 192,0
+ 03C6 8000              .byte 128,0
+ 03C8 8000              .byte 128,0
+ 03CA 8000              .byte 128,0
+ 03CC 8000              .byte 128,0
+ 03CE 8000              .byte 128,0
+ 03D0 C000              .byte 192,0
+ 03D2 0000              .byte 0,0
+ 03D4 8000              .byte 128,0
+ 03D6 8000              .byte 128,0
+ 03D8 4000              .byte 64,0
+ 03DA 4000              .byte 64,0
+ 03DC 2000              .byte 32,0
+ 03DE 2000              .byte 32,0
+ 03E0 1000              .byte 16,0
+ 03E2 1000              .byte 16,0
+ 03E4 C000              .byte 192,0
+ 03E6 4000              .byte 64,0
+ 03E8 4000              .byte 64,0
+ 03EA 4000              .byte 64,0
+ 03EC 4000              .byte 64,0
+ 03EE 4000              .byte 64,0
+ 03F0 C000              .byte 192,0
+ 03F2 0000              .byte 0,0
+ 03F4 4000              .byte 64,0
+ 03F6 A000              .byte 160,0
+ 03F8 0000              .byte 0,0
+ 03FA 0000              .byte 0,0
+ 03FC 0000              .byte 0,0
+ 03FE 0000              .byte 0,0
+ 0400 0000              .byte 0,0
+ 0402 0000              .byte 0,0
+ 0404 0000              .byte 0,0
+ 0406 0000              .byte 0,0
+ 0408 0000              .byte 0,0
+ 040A 0000              .byte 0,0
+ 040C 0000              .byte 0,0
+ 040E 0000              .byte 0,0
+ 0410 FC00              .byte 252,0
+ 0412 0000              .byte 0,0
+ 0414 8000              .byte 128,0
+ 0416 4000              .byte 64,0
+ 0418 0000              .byte 0,0
+ 041A 0000              .byte 0,0
+ 041C 0000              .byte 0,0
+ 041E 0000              .byte 0,0
+ 0420 0000              .byte 0,0
+ 0422 0000              .byte 0,0
+ 0424 0000              .byte 0,0
+ 0426 0000              .byte 0,0
+ 0428 7000              .byte 'p,0
+ 042A 9000              .byte 144,0
+ 042C 9000              .byte 144,0
+ 042E 7000              .byte 'p,0
+ 0430 0000              .byte 0,0
+ 0432 0000              .byte 0,0
+ 0434 8000              .byte 128,0
+ 0436 8000              .byte 128,0
+ 0438 E000              .byte 224,0
+ 043A 9000              .byte 144,0
+ 043C 9000              .byte 144,0
+ 043E E000              .byte 224,0
+ 0440 0000              .byte 0,0
+ 0442 0000              .byte 0,0
+ 0444 0000              .byte 0,0
+ 0446 0000              .byte 0,0
+ 0448 6000              .byte 96,0
+ 044A 8000              .byte 128,0
+ 044C 8000              .byte 128,0
+ 044E 6000              .byte 96,0
+ 0450 0000              .byte 0,0
+ 0452 0000              .byte 0,0
+ 0454 1000              .byte 16,0
+ 0456 1000              .byte 16,0
+ 0458 7000              .byte 'p,0
+ 045A 9000              .byte 144,0
+ 045C 9000              .byte 144,0
+ 045E 7000              .byte 'p,0
+ 0460 0000              .byte 0,0
+ 0462 0000              .byte 0,0
+ 0464 0000              .byte 0,0
+ 0466 0000              .byte 0,0
+ 0468 6000              .byte 96,0
+ 046A B000              .byte 176,0
+ 046C 8000              .byte 128,0
+ 046E 6000              .byte 96,0
+ 0470 0000              .byte 0,0
+ 0472 0000              .byte 0,0
+ 0474 6000              .byte 96,0
+ 0476 8000              .byte 128,0
+ 0478 C000              .byte 192,0
+ 047A 8000              .byte 128,0
+ 047C 8000              .byte 128,0
+ 047E 8000              .byte 128,0
+ 0480 0000              .byte 0,0
+ 0482 0000              .byte 0,0
+ 0484 0000              .byte 0,0
+ 0486 0000              .byte 0,0
+ 0488 7000              .byte 'p,0
+ 048A 9000              .byte 144,0
+ 048C 9000              .byte 144,0
+ 048E 7000              .byte 'p,0
+ 0490 1000              .byte 16,0
+ 0492 6000              .byte 96,0
+ 0494 8000              .byte 128,0
+ 0496 8000              .byte 128,0
+ 0498 E000              .byte 224,0
+ 049A 9000              .byte 144,0
+ 049C 9000              .byte 144,0
+ 049E 9000              .byte 144,0
+ 04A0 0000              .byte 0,0
+ 04A2 0000              .byte 0,0
+ 04A4 8000              .byte 128,0
+ 04A6 0000              .byte 0,0
+ 04A8 8000              .byte 128,0
+ 04AA 8000              .byte 128,0
+ 04AC 8000              .byte 128,0
+ 04AE 8000              .byte 128,0
+ 04B0 0000              .byte 0,0
+ 04B2 0000              .byte 0,0
+ 04B4 4000              .byte 64,0
+ 04B6 0000              .byte 0,0
+ 04B8 4000              .byte 64,0
+ 04BA 4000              .byte 64,0
+ 04BC 4000              .byte 64,0
+ 04BE 4000              .byte 64,0
+ 04C0 4000              .byte 64,0
+ 04C2 8000              .byte 128,0
+ 04C4 8000              .byte 128,0
+ 04C6 8000              .byte 128,0
+ 04C8 9000              .byte 144,0
+ 04CA E000              .byte 224,0
+ 04CC A000              .byte 160,0
+ 04CE 9000              .byte 144,0
+ 04D0 0000              .byte 0,0
+ 04D2 0000              .byte 0,0
+ 04D4 8000              .byte 128,0
+ 04D6 8000              .byte 128,0
+ 04D8 8000              .byte 128,0
+ 04DA 8000              .byte 128,0
+ 04DC 8000              .byte 128,0
+ 04DE 8000              .byte 128,0
+ 04E0 0000              .byte 0,0
+ 04E2 0000              .byte 0,0
+ 04E4 0000              .byte 0,0
+ 04E6 0000              .byte 0,0
+ 04E8 F000              .byte 240,0
+ 04EA A800              .byte 168,0
+ 04EC A800              .byte 168,0
+ 04EE A800              .byte 168,0
+ 04F0 0000              .byte 0,0
+ 04F2 0000              .byte 0,0
+ 04F4 0000              .byte 0,0
+ 04F6 0000              .byte 0,0
+ 04F8 E000              .byte 224,0
+ 04FA 9000              .byte 144,0
+ 04FC 9000              .byte 144,0
+ 04FE 9000              .byte 144,0
+ 0500 0000              .byte 0,0
+ 0502 0000              .byte 0,0
+ 0504 0000              .byte 0,0
+ 0506 0000              .byte 0,0
+ 0508 6000              .byte 96,0
+ 050A 9000              .byte 144,0
+ 050C 9000              .byte 144,0
+ 050E 6000              .byte 96,0
+ 0510 0000              .byte 0,0
+ 0512 0000              .byte 0,0
+ 0514 0000              .byte 0,0
+ 0516 0000              .byte 0,0
+ 0518 E000              .byte 224,0
+ 051A 9000              .byte 144,0
+ 051C 9000              .byte 144,0
+ 051E E000              .byte 224,0
+ 0520 8000              .byte 128,0
+ 0522 8000              .byte 128,0
+ 0524 0000              .byte 0,0
+ 0526 0000              .byte 0,0
+ 0528 7000              .byte 'p,0
+ 052A 9000              .byte 144,0
+ 052C 9000              .byte 144,0
+ 052E 7000              .byte 'p,0
+ 0530 1000              .byte 16,0
+ 0532 1000              .byte 16,0
+ 0534 0000              .byte 0,0
+ 0536 0000              .byte 0,0
+ 0538 A000              .byte 160,0
+ 053A C000              .byte 192,0
+ 053C 8000              .byte 128,0
+ 053E 8000              .byte 128,0
+ 0540 0000              .byte 0,0
+ 0542 0000              .byte 0,0
+ 0544 0000              .byte 0,0
+ 0546 0000              .byte 0,0
+ 0548 6000              .byte 96,0
+ 054A C000              .byte 192,0
+ 054C 2000              .byte 32,0
+ 054E C000              .byte 192,0
+ 0550 0000              .byte 0,0
+ 0552 0000              .byte 0,0
+ 0554 0000              .byte 0,0
+ 0556 8000              .byte 128,0
+ 0558 C000              .byte 192,0
+ 055A 8000              .byte 128,0
+ 055C 8000              .byte 128,0
+ 055E 4000              .byte 64,0
+ 0560 0000              .byte 0,0
+ 0562 0000              .byte 0,0
+ 0564 0000              .byte 0,0
+ 0566 0000              .byte 0,0
+ 0568 9000              .byte 144,0
+ 056A 9000              .byte 144,0
+ 056C 9000              .byte 144,0
+ 056E 7000              .byte 'p,0
+ 0570 0000              .byte 0,0
+ 0572 0000              .byte 0,0
+ 0574 0000              .byte 0,0
+ 0576 0000              .byte 0,0
+ 0578 A000              .byte 160,0
+ 057A A000              .byte 160,0
+ 057C 4000              .byte 64,0
+ 057E 4000              .byte 64,0
+ 0580 0000              .byte 0,0
+ 0582 0000              .byte 0,0
+ 0584 0000              .byte 0,0
+ 0586 0000              .byte 0,0
+ 0588 A800              .byte 168,0
+ 058A A800              .byte 168,0
+ 058C 5000              .byte 'P,0
+ 058E 5000              .byte 'P,0
+ 0590 0000              .byte 0,0
+ 0592 0000              .byte 0,0
+ 0594 0000              .byte 0,0
+ 0596 0000              .byte 0,0
+ 0598 A000              .byte 160,0
+ 059A 4000              .byte 64,0
+ 059C 4000              .byte 64,0
+ 059E A000              .byte 160,0
+ 05A0 0000              .byte 0,0
+ 05A2 0000              .byte 0,0
+ 05A4 0000              .byte 0,0
+ 05A6 0000              .byte 0,0
+ 05A8 A000              .byte 160,0
+ 05AA A000              .byte 160,0
+ 05AC 4000              .byte 64,0
+ 05AE 4000              .byte 64,0
+ 05B0 8000              .byte 128,0
+ 05B2 8000              .byte 128,0
+ 05B4 0000              .byte 0,0
+ 05B6 0000              .byte 0,0
+ 05B8 F000              .byte 240,0
+ 05BA 2000              .byte 32,0
+ 05BC 4000              .byte 64,0
+ 05BE F000              .byte 240,0
+ 05C0 0000              .byte 0,0
+ 05C2 0000              .byte 0,0
+ 05C4 2000              .byte 32,0
+ 05C6 4000              .byte 64,0
+ 05C8 4000              .byte 64,0
+ 05CA 8000              .byte 128,0
+ 05CC 8000              .byte 128,0
+ 05CE 4000              .byte 64,0
+ 05D0 4000              .byte 64,0
+ 05D2 2000              .byte 32,0
+ 05D4 8000              .byte 128,0
+ 05D6 8000              .byte 128,0
+ 05D8 8000              .byte 128,0
+ 05DA 8000              .byte 128,0
+ 05DC 8000              .byte 128,0
+ 05DE 8000              .byte 128,0
+ 05E0 8000              .byte 128,0
+ 05E2 8000              .byte 128,0
+ 05E4 8000              .byte 128,0
+ 05E6 4000              .byte 64,0
+ 05E8 4000              .byte 64,0
+ 05EA 2000              .byte 32,0
+ 05EC 2000              .byte 32,0
+ 05EE 4000              .byte 64,0
+ 05F0 4000              .byte 64,0
+ 05F2 8000              .byte 128,0
+ 05F4 6400              .byte 'd,0
+ 05F6 9800              .byte 152,0
+ 05F8 0000              .byte 0,0
+ 05FA 0000              .byte 0,0
+ 05FC 0000              .byte 0,0
+ 05FE 0000              .byte 0,0
+ 0600 0000              .byte 0,0
+ 0602 0000              .byte 0,0
+ 0604                   .dbsym e six_dot_glyph_table _six_dot_glyph_table A[1520:1520]kc
+ 0604           _six_dot_width_table::
+ 0604 0202              .byte 2,2
+ 0606 0408              .byte 4,8
+ 0608 0507              .byte 5,7
+ 060A 0602              .byte 6,2
+ 060C 0404              .byte 4,4
+ 060E 0606              .byte 6,6
+ 0610 0306              .byte 3,6
+ 0612 0204              .byte 2,4
+ 0614 0503              .byte 5,3
+ 0616 0505              .byte 5,5
+ 0618 0505              .byte 5,5
+ 061A 0505              .byte 5,5
+ 061C 0505              .byte 5,5
+ 061E 0203              .byte 2,3
+ 0620 0405              .byte 4,5
+ 0622 0404              .byte 4,4
+ 0624 0806              .byte 8,6
+ 0626 0505              .byte 5,5
+ 0628 0504              .byte 5,4
+ 062A 0405              .byte 4,5
+ 062C 0502              .byte 5,2
+ 062E 0505              .byte 5,5
+ 0630 0406              .byte 4,6
+ 0632 0505              .byte 5,5
+ 0634 0505              .byte 5,5
+ 0636 0505              .byte 5,5
+ 0638 0605              .byte 6,5
+ 063A 060A              .byte 6,10
+ 063C 0606              .byte 6,6
+ 063E 0503              .byte 5,3
+ 0640 0503              .byte 5,3
+ 0642 0407              .byte 4,7
+ 0644 0305              .byte 3,5
+ 0646 0504              .byte 5,4
+ 0648 0505              .byte 5,5
+ 064A 0405              .byte 4,5
+ 064C 0502              .byte 5,2
+ 064E 0305              .byte 3,5
+ 0650 0206              .byte 2,6
+ 0652 0505              .byte 5,5
+ 0654 0505              .byte 5,5
+ 0656 0404              .byte 4,4
+ 0658 0305              .byte 3,5
+ 065A 0406              .byte 4,6
+ 065C 0404              .byte 4,4
+ 065E 0504              .byte 5,4
+ 0660 0204              .byte 2,4
+ 0662 07                .byte 7
+ 0663                   .dbsym e six_dot_width_table _six_dot_width_table A[95:95]kc
+ 0663           _nine_dot_glyph_table::
+ 0663 0000              .byte 0,0
+ 0665 0000              .byte 0,0
+ 0667 0000              .byte 0,0
+ 0669 0000              .byte 0,0
+ 066B 0000              .byte 0,0
+ 066D 0000              .byte 0,0
+ 066F 0018              .byte 0,24
+ 0671 3C3C              .byte 60,60
+ 0673 3C18              .byte 60,24
+ 0675 1800              .byte 24,0
+ 0677 1818              .byte 24,24
+ 0679 0000              .byte 0,0
+ 067B 0066              .byte 0,'f
+ 067D 6666              .byte 'f,'f
+ 067F 0000              .byte 0,0
+ 0681 0000              .byte 0,0
+ 0683 0000              .byte 0,0
+ 0685 0000              .byte 0,0
+ 0687 0036              .byte 0,54
+ 0689 367F              .byte 54,127
+ 068B 3636              .byte 54,54
+ 068D 367F              .byte 54,127
+ 068F 3636              .byte 54,54
+ 0691 0000              .byte 0,0
+ 0693 083E              .byte 8,62
+ 0695 6B68              .byte 'k,'h
+ 0697 683E              .byte 'h,62
+ 0699 0B0B              .byte 11,11
+ 069B 6B3E              .byte 'k,62
+ 069D 0808              .byte 8,8
+ 069F 70D8              .byte 'p,216
+ 06A1 DA76              .byte 218,'v
+ 06A3 0C18              .byte 12,24
+ 06A5 306E              .byte 48,'n
+ 06A7 5B1B              .byte 91,27
+ 06A9 0E00              .byte 14,0
+ 06AB 0038              .byte 0,56
+ 06AD 6C6C              .byte 'l,'l
+ 06AF 386C              .byte 56,'l
+ 06B1 C7C6              .byte 199,198
+ 06B3 6E3B              .byte 'n,59
+ 06B5 0000              .byte 0,0
+ 06B7 0018              .byte 0,24
+ 06B9 1818              .byte 24,24
+ 06BB 0000              .byte 0,0
+ 06BD 0000              .byte 0,0
+ 06BF 0000              .byte 0,0
+ 06C1 0000              .byte 0,0
+ 06C3 000C              .byte 0,12
+ 06C5 1818              .byte 24,24
+ 06C7 3030              .byte 48,48
+ 06C9 3030              .byte 48,48
+ 06CB 3018              .byte 48,24
+ 06CD 180C              .byte 24,12
+ 06CF 0030              .byte 0,48
+ 06D1 1818              .byte 24,24
+ 06D3 0C0C              .byte 12,12
+ 06D5 0C0C              .byte 12,12
+ 06D7 0C18              .byte 12,24
+ 06D9 1830              .byte 24,48
+ 06DB 0000              .byte 0,0
+ 06DD 0036              .byte 0,54
+ 06DF 1C7F              .byte 28,127
+ 06E1 1C36              .byte 28,54
+ 06E3 0000              .byte 0,0
+ 06E5 0000              .byte 0,0
+ 06E7 0000              .byte 0,0
+ 06E9 0018              .byte 0,24
+ 06EB 187E              .byte 24,126
+ 06ED 1818              .byte 24,24
+ 06EF 0000              .byte 0,0
+ 06F1 0000              .byte 0,0
+ 06F3 0000              .byte 0,0
+ 06F5 0000              .byte 0,0
+ 06F7 0000              .byte 0,0
+ 06F9 0000              .byte 0,0
+ 06FB 1818              .byte 24,24
+ 06FD 3000              .byte 48,0
+ 06FF 0000              .byte 0,0
+ 0701 0000              .byte 0,0
+ 0703 007E              .byte 0,126
+ 0705 0000              .byte 0,0
+ 0707 0000              .byte 0,0
+ 0709 0000              .byte 0,0
+ 070B 0000              .byte 0,0
+ 070D 0000              .byte 0,0
+ 070F 0000              .byte 0,0
+ 0711 0000              .byte 0,0
+ 0713 1818              .byte 24,24
+ 0715 0000              .byte 0,0
+ 0717 0006              .byte 0,6
+ 0719 060C              .byte 6,12
+ 071B 0C18              .byte 12,24
+ 071D 1830              .byte 24,48
+ 071F 3060              .byte 48,96
+ 0721 6000              .byte 96,0
+ 0723 001C              .byte 0,28
+ 0725 3663              .byte 54,'c
+ 0727 6B6B              .byte 'k,'k
+ 0729 6B63              .byte 'k,'c
+ 072B 361C              .byte 54,28
+ 072D 0000              .byte 0,0
+ 072F 000C              .byte 0,12
+ 0731 1C3C              .byte 28,60
+ 0733 0C0C              .byte 12,12
+ 0735 0C0C              .byte 12,12
+ 0737 0C3F              .byte 12,63
+ 0739 0000              .byte 0,0
+ 073B 003C              .byte 0,60
+ 073D 6606              .byte 'f,6
+ 073F 060C              .byte 6,12
+ 0741 1830              .byte 24,48
+ 0743 607E              .byte 96,126
+ 0745 0000              .byte 0,0
+ 0747 003C              .byte 0,60
+ 0749 6666              .byte 'f,'f
+ 074B 061C              .byte 6,28
+ 074D 0666              .byte 6,'f
+ 074F 663C              .byte 'f,60
+ 0751 0000              .byte 0,0
+ 0753 0006              .byte 0,6
+ 0755 0E1E              .byte 14,30
+ 0757 3666              .byte 54,'f
+ 0759 667F              .byte 'f,127
+ 075B 0606              .byte 6,6
+ 075D 0000              .byte 0,0
+ 075F 007E              .byte 0,126
+ 0761 6060              .byte 96,96
+ 0763 607C              .byte 96,124
+ 0765 0606              .byte 6,6
+ 0767 663C              .byte 'f,60
+ 0769 0000              .byte 0,0
+ 076B 001C              .byte 0,28
+ 076D 3060              .byte 48,96
+ 076F 607C              .byte 96,124
+ 0771 6666              .byte 'f,'f
+ 0773 663C              .byte 'f,60
+ 0775 0000              .byte 0,0
+ 0777 007E              .byte 0,126
+ 0779 060C              .byte 6,12
+ 077B 0C18              .byte 12,24
+ 077D 1818              .byte 24,24
+ 077F 1818              .byte 24,24
+ 0781 0000              .byte 0,0
+ 0783 003C              .byte 0,60
+ 0785 6666              .byte 'f,'f
+ 0787 663C              .byte 'f,60
+ 0789 6666              .byte 'f,'f
+ 078B 663C              .byte 'f,60
+ 078D 0000              .byte 0,0
+ 078F 003C              .byte 0,60
+ 0791 6666              .byte 'f,'f
+ 0793 663E              .byte 'f,62
+ 0795 0606              .byte 6,6
+ 0797 0C38              .byte 12,56
+ 0799 0000              .byte 0,0
+ 079B 0000              .byte 0,0
+ 079D 0018              .byte 0,24
+ 079F 1800              .byte 24,0
+ 07A1 0000              .byte 0,0
+ 07A3 1818              .byte 24,24
+ 07A5 0000              .byte 0,0
+ 07A7 0000              .byte 0,0
+ 07A9 0018              .byte 0,24
+ 07AB 1800              .byte 24,0
+ 07AD 0000              .byte 0,0
+ 07AF 1818              .byte 24,24
+ 07B1 3000              .byte 48,0
+ 07B3 0006              .byte 0,6
+ 07B5 0C18              .byte 12,24
+ 07B7 3060              .byte 48,96
+ 07B9 3018              .byte 48,24
+ 07BB 0C06              .byte 12,6
+ 07BD 0000              .byte 0,0
+ 07BF 0000              .byte 0,0
+ 07C1 0000              .byte 0,0
+ 07C3 7E00              .byte 126,0
+ 07C5 7E00              .byte 126,0
+ 07C7 0000              .byte 0,0
+ 07C9 0000              .byte 0,0
+ 07CB 0060              .byte 0,96
+ 07CD 3018              .byte 48,24
+ 07CF 0C06              .byte 12,6
+ 07D1 0C18              .byte 12,24
+ 07D3 3060              .byte 48,96
+ 07D5 0000              .byte 0,0
+ 07D7 003C              .byte 0,60
+ 07D9 6666              .byte 'f,'f
+ 07DB 0C18              .byte 12,24
+ 07DD 1800              .byte 24,0
+ 07DF 1818              .byte 24,24
+ 07E1 0000              .byte 0,0
+ 07E3 007E              .byte 0,126
+ 07E5 C3C3              .byte 195,195
+ 07E7 CFDB              .byte 207,219
+ 07E9 DBCF              .byte 219,207
+ 07EB C07F              .byte 192,127
+ 07ED 0000              .byte 0,0
+ 07EF 0018              .byte 0,24
+ 07F1 3C66              .byte 60,'f
+ 07F3 6666              .byte 'f,'f
+ 07F5 7E66              .byte 126,'f
+ 07F7 6666              .byte 'f,'f
+ 07F9 0000              .byte 0,0
+ 07FB 007C              .byte 0,124
+ 07FD 6666              .byte 'f,'f
+ 07FF 667C              .byte 'f,124
+ 0801 6666              .byte 'f,'f
+ 0803 667C              .byte 'f,124
+ 0805 0000              .byte 0,0
+ 0807 003C              .byte 0,60
+ 0809 6660              .byte 'f,96
+ 080B 6060              .byte 96,96
+ 080D 6060              .byte 96,96
+ 080F 663C              .byte 'f,60
+ 0811 0000              .byte 0,0
+ 0813 0078              .byte 0,'x
+ 0815 6C66              .byte 'l,'f
+ 0817 6666              .byte 'f,'f
+ 0819 6666              .byte 'f,'f
+ 081B 6C78              .byte 'l,'x
+ 081D 0000              .byte 0,0
+ 081F 007E              .byte 0,126
+ 0821 6060              .byte 96,96
+ 0823 607C              .byte 96,124
+ 0825 6060              .byte 96,96
+ 0827 607E              .byte 96,126
+ 0829 0000              .byte 0,0
+ 082B 007E              .byte 0,126
+ 082D 6060              .byte 96,96
+ 082F 607C              .byte 96,124
+ 0831 6060              .byte 96,96
+ 0833 6060              .byte 96,96
+ 0835 0000              .byte 0,0
+ 0837 003C              .byte 0,60
+ 0839 6660              .byte 'f,96
+ 083B 6060              .byte 96,96
+ 083D 6E66              .byte 'n,'f
+ 083F 663E              .byte 'f,62
+ 0841 0000              .byte 0,0
+ 0843 0066              .byte 0,'f
+ 0845 6666              .byte 'f,'f
+ 0847 667E              .byte 'f,126
+ 0849 6666              .byte 'f,'f
+ 084B 6666              .byte 'f,'f
+ 084D 0000              .byte 0,0
+ 084F 003C              .byte 0,60
+ 0851 1818              .byte 24,24
+ 0853 1818              .byte 24,24
+ 0855 1818              .byte 24,24
+ 0857 183C              .byte 24,60
+ 0859 0000              .byte 0,0
+ 085B 0006              .byte 0,6
+ 085D 0606              .byte 6,6
+ 085F 0606              .byte 6,6
+ 0861 0666              .byte 6,'f
+ 0863 663C              .byte 'f,60
+ 0865 0000              .byte 0,0
+ 0867 0066              .byte 0,'f
+ 0869 666C              .byte 'f,'l
+ 086B 6C78              .byte 'l,'x
+ 086D 6C6C              .byte 'l,'l
+ 086F 6666              .byte 'f,'f
+ 0871 0000              .byte 0,0
+ 0873 0060              .byte 0,96
+ 0875 6060              .byte 96,96
+ 0877 6060              .byte 96,96
+ 0879 6060              .byte 96,96
+ 087B 607E              .byte 96,126
+ 087D 0000              .byte 0,0
+ 087F 0063              .byte 0,'c
+ 0881 777F              .byte 'w,127
+ 0883 6B6B              .byte 'k,'k
+ 0885 6363              .byte 'c,'c
+ 0887 6363              .byte 'c,'c
+ 0889 0000              .byte 0,0
+ 088B 0063              .byte 0,'c
+ 088D 6373              .byte 'c,'s
+ 088F 7B6F              .byte 123,'o
+ 0891 6763              .byte 'g,'c
+ 0893 6363              .byte 'c,'c
+ 0895 0000              .byte 0,0
+ 0897 003C              .byte 0,60
+ 0899 6666              .byte 'f,'f
+ 089B 6666              .byte 'f,'f
+ 089D 6666              .byte 'f,'f
+ 089F 663C              .byte 'f,60
+ 08A1 0000              .byte 0,0
+ 08A3 007C              .byte 0,124
+ 08A5 6666              .byte 'f,'f
+ 08A7 667C              .byte 'f,124
+ 08A9 6060              .byte 96,96
+ 08AB 6060              .byte 96,96
+ 08AD 0000              .byte 0,0
+ 08AF 003C              .byte 0,60
+ 08B1 6666              .byte 'f,'f
+ 08B3 6666              .byte 'f,'f
+ 08B5 6666              .byte 'f,'f
+ 08B7 663C              .byte 'f,60
+ 08B9 0C06              .byte 12,6
+ 08BB 007C              .byte 0,124
+ 08BD 6666              .byte 'f,'f
+ 08BF 667C              .byte 'f,124
+ 08C1 6C66              .byte 'l,'f
+ 08C3 6666              .byte 'f,'f
+ 08C5 0000              .byte 0,0
+ 08C7 003C              .byte 0,60
+ 08C9 6660              .byte 'f,96
+ 08CB 3018              .byte 48,24
+ 08CD 0C06              .byte 12,6
+ 08CF 663C              .byte 'f,60
+ 08D1 0000              .byte 0,0
+ 08D3 007E              .byte 0,126
+ 08D5 1818              .byte 24,24
+ 08D7 1818              .byte 24,24
+ 08D9 1818              .byte 24,24
+ 08DB 1818              .byte 24,24
+ 08DD 0000              .byte 0,0
+ 08DF 0066              .byte 0,'f
+ 08E1 6666              .byte 'f,'f
+ 08E3 6666              .byte 'f,'f
+ 08E5 6666              .byte 'f,'f
+ 08E7 663C              .byte 'f,60
+ 08E9 0000              .byte 0,0
+ 08EB 0066              .byte 0,'f
+ 08ED 6666              .byte 'f,'f
+ 08EF 6666              .byte 'f,'f
+ 08F1 6666              .byte 'f,'f
+ 08F3 3C18              .byte 60,24
+ 08F5 0000              .byte 0,0
+ 08F7 0063              .byte 0,'c
+ 08F9 6363              .byte 'c,'c
+ 08FB 636B              .byte 'c,'k
+ 08FD 6B6B              .byte 'k,'k
+ 08FF 3E36              .byte 62,54
+ 0901 0000              .byte 0,0
+ 0903 0066              .byte 0,'f
+ 0905 6666              .byte 'f,'f
+ 0907 3C18              .byte 60,24
+ 0909 3C66              .byte 60,'f
+ 090B 6666              .byte 'f,'f
+ 090D 0000              .byte 0,0
+ 090F 0066              .byte 0,'f
+ 0911 6666              .byte 'f,'f
+ 0913 663C              .byte 'f,60
+ 0915 1818              .byte 24,24
+ 0917 1818              .byte 24,24
+ 0919 0000              .byte 0,0
+ 091B 007E              .byte 0,126
+ 091D 0606              .byte 6,6
+ 091F 0C18              .byte 12,24
+ 0921 3060              .byte 48,96
+ 0923 607E              .byte 96,126
+ 0925 0000              .byte 0,0
+ 0927 3C30              .byte 60,48
+ 0929 3030              .byte 48,48
+ 092B 3030              .byte 48,48
+ 092D 3030              .byte 48,48
+ 092F 3030              .byte 48,48
+ 0931 303C              .byte 48,60
+ 0933 0060              .byte 0,96
+ 0935 6030              .byte 96,48
+ 0937 3018              .byte 48,24
+ 0939 180C              .byte 24,12
+ 093B 0C06              .byte 12,6
+ 093D 0600              .byte 6,0
+ 093F 3C0C              .byte 60,12
+ 0941 0C0C              .byte 12,12
+ 0943 0C0C              .byte 12,12
+ 0945 0C0C              .byte 12,12
+ 0947 0C0C              .byte 12,12
+ 0949 0C3C              .byte 12,60
+ 094B 183C              .byte 24,60
+ 094D 6600              .byte 'f,0
+ 094F 0000              .byte 0,0
+ 0951 0000              .byte 0,0
+ 0953 0000              .byte 0,0
+ 0955 0000              .byte 0,0
+ 0957 0000              .byte 0,0
+ 0959 0000              .byte 0,0
+ 095B 0000              .byte 0,0
+ 095D 0000              .byte 0,0
+ 095F 0000              .byte 0,0
+ 0961 00FF              .byte 0,255
+ 0963 3030              .byte 48,48
+ 0965 1800              .byte 24,0
+ 0967 0000              .byte 0,0
+ 0969 0000              .byte 0,0
+ 096B 0000              .byte 0,0
+ 096D 0000              .byte 0,0
+ 096F 0000              .byte 0,0
+ 0971 003C              .byte 0,60
+ 0973 0606              .byte 6,6
+ 0975 3E66              .byte 62,'f
+ 0977 663E              .byte 'f,62
+ 0979 0000              .byte 0,0
+ 097B 0060              .byte 0,96
+ 097D 607C              .byte 96,124
+ 097F 6666              .byte 'f,'f
+ 0981 6666              .byte 'f,'f
+ 0983 667C              .byte 'f,124
+ 0985 0000              .byte 0,0
+ 0987 0000              .byte 0,0
+ 0989 003C              .byte 0,60
+ 098B 6660              .byte 'f,96
+ 098D 6060              .byte 96,96
+ 098F 663C              .byte 'f,60
+ 0991 0000              .byte 0,0
+ 0993 0006              .byte 0,6
+ 0995 063E              .byte 6,62
+ 0997 6666              .byte 'f,'f
+ 0999 6666              .byte 'f,'f
+ 099B 663E              .byte 'f,62
+ 099D 0000              .byte 0,0
+ 099F 0000              .byte 0,0
+ 09A1 003C              .byte 0,60
+ 09A3 6666              .byte 'f,'f
+ 09A5 7E60              .byte 126,96
+ 09A7 603C              .byte 96,60
+ 09A9 0000              .byte 0,0
+ 09AB 001C              .byte 0,28
+ 09AD 3030              .byte 48,48
+ 09AF 3078              .byte 48,'x
+ 09B1 3030              .byte 48,48
+ 09B3 3030              .byte 48,48
+ 09B5 0000              .byte 0,0
+ 09B7 0000              .byte 0,0
+ 09B9 003E              .byte 0,62
+ 09BB 6666              .byte 'f,'f
+ 09BD 6666              .byte 'f,'f
+ 09BF 663E              .byte 'f,62
+ 09C1 067C              .byte 6,124
+ 09C3 0060              .byte 0,96
+ 09C5 607C              .byte 96,124
+ 09C7 6666              .byte 'f,'f
+ 09C9 6666              .byte 'f,'f
+ 09CB 6666              .byte 'f,'f
+ 09CD 0000              .byte 0,0
+ 09CF 1818              .byte 24,24
+ 09D1 0078              .byte 0,'x
+ 09D3 1818              .byte 24,24
+ 09D5 1818              .byte 24,24
+ 09D7 187E              .byte 24,126
+ 09D9 0000              .byte 0,0
+ 09DB 0C0C              .byte 12,12
+ 09DD 003C              .byte 0,60
+ 09DF 0C0C              .byte 12,12
+ 09E1 0C0C              .byte 12,12
+ 09E3 0C0C              .byte 12,12
+ 09E5 0C78              .byte 12,'x
+ 09E7 0060              .byte 0,96
+ 09E9 6066              .byte 96,'f
+ 09EB 666C              .byte 'f,'l
+ 09ED 786C              .byte 'x,'l
+ 09EF 6666              .byte 'f,'f
+ 09F1 0000              .byte 0,0
+ 09F3 0078              .byte 0,'x
+ 09F5 1818              .byte 24,24
+ 09F7 1818              .byte 24,24
+ 09F9 1818              .byte 24,24
+ 09FB 187E              .byte 24,126
+ 09FD 0000              .byte 0,0
+ 09FF 0000              .byte 0,0
+ 0A01 007E              .byte 0,126
+ 0A03 6B6B              .byte 'k,'k
+ 0A05 6B6B              .byte 'k,'k
+ 0A07 6B63              .byte 'k,'c
+ 0A09 0000              .byte 0,0
+ 0A0B 0000              .byte 0,0
+ 0A0D 007C              .byte 0,124
+ 0A0F 6666              .byte 'f,'f
+ 0A11 6666              .byte 'f,'f
+ 0A13 6666              .byte 'f,'f
+ 0A15 0000              .byte 0,0
+ 0A17 0000              .byte 0,0
+ 0A19 003C              .byte 0,60
+ 0A1B 6666              .byte 'f,'f
+ 0A1D 6666              .byte 'f,'f
+ 0A1F 663C              .byte 'f,60
+ 0A21 0000              .byte 0,0
+ 0A23 0000              .byte 0,0
+ 0A25 007C              .byte 0,124
+ 0A27 6666              .byte 'f,'f
+ 0A29 6666              .byte 'f,'f
+ 0A2B 667C              .byte 'f,124
+ 0A2D 6060              .byte 96,96
+ 0A2F 0000              .byte 0,0
+ 0A31 003E              .byte 0,62
+ 0A33 6666              .byte 'f,'f
+ 0A35 6666              .byte 'f,'f
+ 0A37 663E              .byte 'f,62
+ 0A39 0606              .byte 6,6
+ 0A3B 0000              .byte 0,0
+ 0A3D 007C              .byte 0,124
+ 0A3F 6660              .byte 'f,96
+ 0A41 6060              .byte 96,96
+ 0A43 6060              .byte 96,96
+ 0A45 0000              .byte 0,0
+ 0A47 0000              .byte 0,0
+ 0A49 003E              .byte 0,62
+ 0A4B 6060              .byte 96,96
+ 0A4D 3C06              .byte 60,6
+ 0A4F 067C              .byte 6,124
+ 0A51 0000              .byte 0,0
+ 0A53 0030              .byte 0,48
+ 0A55 3078              .byte 48,'x
+ 0A57 3030              .byte 48,48
+ 0A59 3030              .byte 48,48
+ 0A5B 301C              .byte 48,28
+ 0A5D 0000              .byte 0,0
+ 0A5F 0000              .byte 0,0
+ 0A61 0066              .byte 0,'f
+ 0A63 6666              .byte 'f,'f
+ 0A65 6666              .byte 'f,'f
+ 0A67 663E              .byte 'f,62
+ 0A69 0000              .byte 0,0
+ 0A6B 0000              .byte 0,0
+ 0A6D 0066              .byte 0,'f
+ 0A6F 6666              .byte 'f,'f
+ 0A71 6666              .byte 'f,'f
+ 0A73 3C18              .byte 60,24
+ 0A75 0000              .byte 0,0
+ 0A77 0000              .byte 0,0
+ 0A79 0063              .byte 0,'c
+ 0A7B 6363              .byte 'c,'c
+ 0A7D 6B6B              .byte 'k,'k
+ 0A7F 3E36              .byte 62,54
+ 0A81 0000              .byte 0,0
+ 0A83 0000              .byte 0,0
+ 0A85 0066              .byte 0,'f
+ 0A87 663C              .byte 'f,60
+ 0A89 183C              .byte 24,60
+ 0A8B 6666              .byte 'f,'f
+ 0A8D 0000              .byte 0,0
+ 0A8F 0000              .byte 0,0
+ 0A91 0066              .byte 0,'f
+ 0A93 6666              .byte 'f,'f
+ 0A95 6666              .byte 'f,'f
+ 0A97 663E              .byte 'f,62
+ 0A99 067C              .byte 6,124
+ 0A9B 0000              .byte 0,0
+ 0A9D 007E              .byte 0,126
+ 0A9F 060C              .byte 6,12
+ 0AA1 1830              .byte 24,48
+ 0AA3 607E              .byte 96,126
+ 0AA5 0000              .byte 0,0
+ 0AA7 0C18              .byte 12,24
+ 0AA9 1818              .byte 24,24
+ 0AAB 1830              .byte 24,48
+ 0AAD 1818              .byte 24,24
+ 0AAF 1818              .byte 24,24
+ 0AB1 0C00              .byte 12,0
+ 0AB3 1818              .byte 24,24
+ 0AB5 1818              .byte 24,24
+ 0AB7 1800              .byte 24,0
+ 0AB9 1818              .byte 24,24
+ 0ABB 1818              .byte 24,24
+ 0ABD 1800              .byte 24,0
+ 0ABF 3018              .byte 48,24
+ 0AC1 1818              .byte 24,24
+ 0AC3 180C              .byte 24,12
+ 0AC5 1818              .byte 24,24
+ 0AC7 1818              .byte 24,24
+ 0AC9 3000              .byte 48,0
+ 0ACB 0076              .byte 0,'v
+ 0ACD DC00              .byte 220,0
+ 0ACF 0000              .byte 0,0
+ 0AD1 0000              .byte 0,0
+ 0AD3 0000              .byte 0,0
+ 0AD5 0000              .byte 0,0
+ 0AD7                   .dbsym e nine_dot_glyph_table _nine_dot_glyph_table A[1140:1140]kc

@@ -1,0 +1,124 @@
+                        .module m32macro.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:\ygksb0108\programme2_can_run\m32macro.c
+ 0000                   .dbfunc e _delay_us __delay_us fV
+ 0000           ;              i -> R16
+                        .even
+ 0000           __delay_us::
+ 0000                   .dbline -1
+ 0000                   .dbline 8
+ 0000           ; //******************************************************
+ 0000           ; //本程序实现了m32macro.h头文件中函数
+ 0000           ; //                          ---北京交通大学电气学院 杨罡 
+ 0000           ; //******************************************************
+ 0000           ; #include "m32macro.h"
+ 0000           ; 
+ 0000           ; void _delay_us(unsigned char i)
+ 0000           ; {
+ 0000           L2:
+ 0000                   .dbline 9
+ 0000           L3:
+ 0000                   .dbline 9
+ 0000           ;   while(--i);
+ 0000 802F              mov R24,R16
+ 0002 8150              subi R24,1
+ 0004 082F              mov R16,R24
+ 0006 8823              tst R24
+ 0008 D9F7              brne L2
+ 000A                   .dbline -2
+ 000A           L1:
+ 000A                   .dbline 0 ; func end
+ 000A 0895              ret
+ 000C                   .dbsym r i 16 c
+ 000C                   .dbend
+ 000C                   .dbfunc e _delay_ms __delay_ms fV
+ 000C           ;             ii -> R20,R21
+ 000C           ;              i -> R16,R17
+                        .even
+ 000C           __delay_ms::
+ 000C 0E940000          xcall push_gset1
+ 0010                   .dbline -1
+ 0010                   .dbline 12
+ 0010           ; }
+ 0010           ; void _delay_ms(unsigned int i)
+ 0010           ; {
+ 0010                   .dbline 14
+ 0010           ;   unsigned int ii;
+ 0010           ;   for(;i>0;--i)
+ 0010 0AC0              xjmp L9
+ 0012           L6:
+ 0012                   .dbline 15
+ 0012 44EF              ldi R20,500
+ 0014 51E0              ldi R21,1
+ 0016 02C0              xjmp L13
+ 0018           L10:
+ 0018                   .dbline 15
+ 0018           L11:
+ 0018                   .dbline 15
+ 0018 4150              subi R20,1
+ 001A 5040              sbci R21,0
+ 001C           L13:
+ 001C                   .dbline 15
+ 001C 4030              cpi R20,0
+ 001E 4507              cpc R20,R21
+ 0020 D9F7              brne L10
+ 0022           X0:
+ 0022           L7:
+ 0022                   .dbline 14
+ 0022 0150              subi R16,1
+ 0024 1040              sbci R17,0
+ 0026           L9:
+ 0026                   .dbline 14
+ 0026 0030              cpi R16,0
+ 0028 0107              cpc R16,R17
+ 002A 99F7              brne L6
+ 002C           X1:
+ 002C                   .dbline -2
+ 002C           L5:
+ 002C 0E940000          xcall pop_gset1
+ 0030                   .dbline 0 ; func end
+ 0030 0895              ret
+ 0032                   .dbsym r ii 20 i
+ 0032                   .dbsym r i 16 i
+ 0032                   .dbend
+ 0032                   .dbfunc e pgm_read_byte _pgm_read_byte fc
+ 0032           ;              p -> R16,R17
+                        .even
+ 0032           _pgm_read_byte::
+ 0032                   .dbline -1
+ 0032                   .dbline 19
+ 0032           ;     for(ii=500;ii>0;--ii);  
+ 0032           ; }
+ 0032           ; 
+ 0032           ; unsigned char pgm_read_byte(const unsigned char *p)
+ 0032           ; {
+ 0032                   .dbline 20
+ 0032           ;  return *p;
+ 0032 F801              movw R30,R16
+ 0034 0491              lpm R16,Z
+ 0036                   .dbline -2
+ 0036           L14:
+ 0036                   .dbline 0 ; func end
+ 0036 0895              ret
+ 0038                   .dbsym r p 16 pkc
+ 0038                   .dbend
+ 0038                   .dbfunc e pgm_read_word _pgm_read_word fi
+ 0038           ;              p -> R16,R17
+                        .even
+ 0038           _pgm_read_word::
+ 0038                   .dbline -1
+ 0038                   .dbline 23
+ 0038           ; }
+ 0038           ; unsigned int pgm_read_word( const unsigned int *p)
+ 0038           ; {
+ 0038                   .dbline 24
+ 0038           ;  return *p;
+ 0038 F801              movw R30,R16
+ 003A 0591              lpm R16,Z+
+ 003C 1491              lpm R17,Z
+ 003E                   .dbline -2
+ 003E           L15:
+ 003E                   .dbline 0 ; func end
+ 003E 0895              ret
+ 0040                   .dbsym r p 16 pki
+ 0040                   .dbend

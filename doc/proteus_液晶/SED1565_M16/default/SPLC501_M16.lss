@@ -1,0 +1,2191 @@
+
+SPLC501_M16.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000007c2  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000040  00800060  000007c2  00000856  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000068  008000a0  008000a0  00000896  2**0
+                  ALLOC
+  3 .stab         000006b4  00000000  00000000  00000898  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  4 .stabstr      0000005f  00000000  00000000  00000f4c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_aranges 00000020  00000000  00000000  00000fab  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_pubnames 000000be  00000000  00000000  00000fcb  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_info   00000b40  00000000  00000000  00001089  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_abbrev 000001d4  00000000  00000000  00001bc9  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_line   00000b6d  00000000  00000000  00001d9d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_frame  00000090  00000000  00000000  0000290c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_str    00000155  00000000  00000000  0000299c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_loc    00000a17  00000000  00000000  00002af1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 13 .debug_ranges 00000030  00000000  00000000  00003508  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+   8:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+   c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  10:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  14:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  18:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  1c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  20:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  24:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  28:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  2c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  30:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  34:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  38:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  3c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  40:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  44:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  48:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  4c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  50:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d4 e0       	ldi	r29, 0x04	; 4
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_copy_data>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	e2 ec       	ldi	r30, 0xC2	; 194
+  68:	f7 e0       	ldi	r31, 0x07	; 7
+  6a:	02 c0       	rjmp	.+4      	; 0x70 <.do_copy_data_start>
+
+0000006c <.do_copy_data_loop>:
+  6c:	05 90       	lpm	r0, Z+
+  6e:	0d 92       	st	X+, r0
+
+00000070 <.do_copy_data_start>:
+  70:	a0 3a       	cpi	r26, 0xA0	; 160
+  72:	b1 07       	cpc	r27, r17
+  74:	d9 f7       	brne	.-10     	; 0x6c <.do_copy_data_loop>
+
+00000076 <__do_clear_bss>:
+  76:	11 e0       	ldi	r17, 0x01	; 1
+  78:	a0 ea       	ldi	r26, 0xA0	; 160
+  7a:	b0 e0       	ldi	r27, 0x00	; 0
+  7c:	01 c0       	rjmp	.+2      	; 0x80 <.do_clear_bss_start>
+
+0000007e <.do_clear_bss_loop>:
+  7e:	1d 92       	st	X+, r1
+
+00000080 <.do_clear_bss_start>:
+  80:	a8 30       	cpi	r26, 0x08	; 8
+  82:	b1 07       	cpc	r27, r17
+  84:	e1 f7       	brne	.-8      	; 0x7e <.do_clear_bss_loop>
+  86:	0e 94 c3 03 	call	0x786	; 0x786 <main>
+  8a:	0c 94 df 03 	jmp	0x7be	; 0x7be <_exit>
+
+0000008e <__bad_interrupt>:
+  8e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000092 <SPLC501_SPIwrite>:
+#define SPLC501_CS   (*((volatile bit_field*)(PORTD_addr))).bit4
+#define SPLC501_RES  (*((volatile bit_field*)(PORTD_addr))).bit5
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  92:	38 2f       	mov	r19, r24
+  unsigned char nc;
+  SPLC501_A0=dc;
+  94:	67 95       	ror	r22
+  96:	66 27       	eor	r22, r22
+  98:	67 95       	ror	r22
+  9a:	82 b3       	in	r24, 0x12	; 18
+  9c:	8f 77       	andi	r24, 0x7F	; 127
+  9e:	86 2b       	or	r24, r22
+  a0:	82 bb       	out	0x12, r24	; 18
+  SPLC501_CS=0;  
+  a2:	94 98       	cbi	0x12, 4	; 18
+  a4:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+  a6:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+  a8:	93 2f       	mov	r25, r19
+  aa:	99 1f       	adc	r25, r25
+  ac:	99 27       	eor	r25, r25
+  ae:	99 1f       	adc	r25, r25
+  b0:	99 0f       	add	r25, r25
+  b2:	85 b3       	in	r24, 0x15	; 21
+  b4:	8d 7f       	andi	r24, 0xFD	; 253
+  b6:	89 2b       	or	r24, r25
+  b8:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+  ba:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+  bc:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+  be:	2f 5f       	subi	r18, 0xFF	; 255
+  c0:	28 30       	cpi	r18, 0x08	; 8
+  c2:	89 f7       	brne	.-30     	; 0xa6 <SPLC501_SPIwrite+0x14>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+  c4:	94 9a       	sbi	0x12, 4	; 18
+}
+  c6:	08 95       	ret
+
+000000c8 <LCD_Init>:
+//------------------------------------------------------------------------------
+void LCD_Init(void) //LCD初始化函数
+{unsigned char nc;
+ 
+ SPLC501_RES=0;  //LCD(低电平)复位
+  c8:	95 98       	cbi	0x12, 5	; 18
+ for(nc=100;nc>0;nc--);
+ SPLC501_RES=1;     // RES置高
+  ca:	95 9a       	sbi	0x12, 5	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  cc:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+  ce:	94 98       	cbi	0x12, 4	; 18
+  d0:	32 ea       	ldi	r19, 0xA2	; 162
+  d2:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+  d4:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+  d6:	93 2f       	mov	r25, r19
+  d8:	99 1f       	adc	r25, r25
+  da:	99 27       	eor	r25, r25
+  dc:	99 1f       	adc	r25, r25
+  de:	99 0f       	add	r25, r25
+  e0:	85 b3       	in	r24, 0x15	; 21
+  e2:	8d 7f       	andi	r24, 0xFD	; 253
+  e4:	89 2b       	or	r24, r25
+  e6:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+  e8:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+  ea:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+  ec:	2f 5f       	subi	r18, 0xFF	; 255
+  ee:	28 30       	cpi	r18, 0x08	; 8
+  f0:	89 f7       	brne	.-30     	; 0xd4 <LCD_Init+0xc>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+  f2:	94 9a       	sbi	0x12, 4	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  f4:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+  f6:	94 98       	cbi	0x12, 4	; 18
+  f8:	31 ea       	ldi	r19, 0xA1	; 161
+  fa:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+  fc:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+  fe:	93 2f       	mov	r25, r19
+ 100:	99 1f       	adc	r25, r25
+ 102:	99 27       	eor	r25, r25
+ 104:	99 1f       	adc	r25, r25
+ 106:	99 0f       	add	r25, r25
+ 108:	85 b3       	in	r24, 0x15	; 21
+ 10a:	8d 7f       	andi	r24, 0xFD	; 253
+ 10c:	89 2b       	or	r24, r25
+ 10e:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 110:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 112:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 114:	2f 5f       	subi	r18, 0xFF	; 255
+ 116:	28 30       	cpi	r18, 0x08	; 8
+ 118:	89 f7       	brne	.-30     	; 0xfc <LCD_Init+0x34>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 11a:	94 9a       	sbi	0x12, 4	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 11c:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 11e:	94 98       	cbi	0x12, 4	; 18
+ 120:	30 ec       	ldi	r19, 0xC0	; 192
+ 122:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 124:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 126:	93 2f       	mov	r25, r19
+ 128:	99 1f       	adc	r25, r25
+ 12a:	99 27       	eor	r25, r25
+ 12c:	99 1f       	adc	r25, r25
+ 12e:	99 0f       	add	r25, r25
+ 130:	85 b3       	in	r24, 0x15	; 21
+ 132:	8d 7f       	andi	r24, 0xFD	; 253
+ 134:	89 2b       	or	r24, r25
+ 136:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 138:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 13a:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 13c:	2f 5f       	subi	r18, 0xFF	; 255
+ 13e:	28 30       	cpi	r18, 0x08	; 8
+ 140:	89 f7       	brne	.-30     	; 0x124 <LCD_Init+0x5c>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 142:	94 9a       	sbi	0x12, 4	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 144:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 146:	94 98       	cbi	0x12, 4	; 18
+ 148:	36 e2       	ldi	r19, 0x26	; 38
+ 14a:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 14c:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 14e:	93 2f       	mov	r25, r19
+ 150:	99 1f       	adc	r25, r25
+ 152:	99 27       	eor	r25, r25
+ 154:	99 1f       	adc	r25, r25
+ 156:	99 0f       	add	r25, r25
+ 158:	85 b3       	in	r24, 0x15	; 21
+ 15a:	8d 7f       	andi	r24, 0xFD	; 253
+ 15c:	89 2b       	or	r24, r25
+ 15e:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 160:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 162:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 164:	2f 5f       	subi	r18, 0xFF	; 255
+ 166:	28 30       	cpi	r18, 0x08	; 8
+ 168:	89 f7       	brne	.-30     	; 0x14c <LCD_Init+0x84>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 16a:	94 9a       	sbi	0x12, 4	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 16c:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 16e:	94 98       	cbi	0x12, 4	; 18
+ 170:	31 e8       	ldi	r19, 0x81	; 129
+ 172:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 174:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 176:	93 2f       	mov	r25, r19
+ 178:	99 1f       	adc	r25, r25
+ 17a:	99 27       	eor	r25, r25
+ 17c:	99 1f       	adc	r25, r25
+ 17e:	99 0f       	add	r25, r25
+ 180:	85 b3       	in	r24, 0x15	; 21
+ 182:	8d 7f       	andi	r24, 0xFD	; 253
+ 184:	89 2b       	or	r24, r25
+ 186:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 188:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 18a:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 18c:	2f 5f       	subi	r18, 0xFF	; 255
+ 18e:	28 30       	cpi	r18, 0x08	; 8
+ 190:	89 f7       	brne	.-30     	; 0x174 <LCD_Init+0xac>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 192:	94 9a       	sbi	0x12, 4	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 194:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 196:	94 98       	cbi	0x12, 4	; 18
+ 198:	30 e1       	ldi	r19, 0x10	; 16
+ 19a:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 19c:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 19e:	93 2f       	mov	r25, r19
+ 1a0:	99 1f       	adc	r25, r25
+ 1a2:	99 27       	eor	r25, r25
+ 1a4:	99 1f       	adc	r25, r25
+ 1a6:	99 0f       	add	r25, r25
+ 1a8:	85 b3       	in	r24, 0x15	; 21
+ 1aa:	8d 7f       	andi	r24, 0xFD	; 253
+ 1ac:	89 2b       	or	r24, r25
+ 1ae:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 1b0:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 1b2:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 1b4:	2f 5f       	subi	r18, 0xFF	; 255
+ 1b6:	28 30       	cpi	r18, 0x08	; 8
+ 1b8:	89 f7       	brne	.-30     	; 0x19c <LCD_Init+0xd4>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 1ba:	94 9a       	sbi	0x12, 4	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 1bc:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 1be:	94 98       	cbi	0x12, 4	; 18
+ 1c0:	3f e2       	ldi	r19, 0x2F	; 47
+ 1c2:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 1c4:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 1c6:	93 2f       	mov	r25, r19
+ 1c8:	99 1f       	adc	r25, r25
+ 1ca:	99 27       	eor	r25, r25
+ 1cc:	99 1f       	adc	r25, r25
+ 1ce:	99 0f       	add	r25, r25
+ 1d0:	85 b3       	in	r24, 0x15	; 21
+ 1d2:	8d 7f       	andi	r24, 0xFD	; 253
+ 1d4:	89 2b       	or	r24, r25
+ 1d6:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 1d8:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 1da:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 1dc:	2f 5f       	subi	r18, 0xFF	; 255
+ 1de:	28 30       	cpi	r18, 0x08	; 8
+ 1e0:	89 f7       	brne	.-30     	; 0x1c4 <LCD_Init+0xfc>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 1e2:	94 9a       	sbi	0x12, 4	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 1e4:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 1e6:	94 98       	cbi	0x12, 4	; 18
+ 1e8:	3f ea       	ldi	r19, 0xAF	; 175
+ 1ea:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 1ec:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 1ee:	93 2f       	mov	r25, r19
+ 1f0:	99 1f       	adc	r25, r25
+ 1f2:	99 27       	eor	r25, r25
+ 1f4:	99 1f       	adc	r25, r25
+ 1f6:	99 0f       	add	r25, r25
+ 1f8:	85 b3       	in	r24, 0x15	; 21
+ 1fa:	8d 7f       	andi	r24, 0xFD	; 253
+ 1fc:	89 2b       	or	r24, r25
+ 1fe:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 200:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 202:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 204:	2f 5f       	subi	r18, 0xFF	; 255
+ 206:	28 30       	cpi	r18, 0x08	; 8
+ 208:	89 f7       	brne	.-30     	; 0x1ec <LCD_Init+0x124>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 20a:	94 9a       	sbi	0x12, 4	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 20c:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 20e:	94 98       	cbi	0x12, 4	; 18
+ 210:	30 e6       	ldi	r19, 0x60	; 96
+ 212:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 214:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 216:	93 2f       	mov	r25, r19
+ 218:	99 1f       	adc	r25, r25
+ 21a:	99 27       	eor	r25, r25
+ 21c:	99 1f       	adc	r25, r25
+ 21e:	99 0f       	add	r25, r25
+ 220:	85 b3       	in	r24, 0x15	; 21
+ 222:	8d 7f       	andi	r24, 0xFD	; 253
+ 224:	89 2b       	or	r24, r25
+ 226:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 228:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 22a:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 22c:	2f 5f       	subi	r18, 0xFF	; 255
+ 22e:	28 30       	cpi	r18, 0x08	; 8
+ 230:	89 f7       	brne	.-30     	; 0x214 <LCD_Init+0x14c>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 232:	94 9a       	sbi	0x12, 4	; 18
+ SPLC501_SPIwrite(0x10,0);   //亮度调节为双字节命令,前一个参数控制字的深浅
+ SPLC501_SPIwrite(0x2f,0); //上电控制，打开调压器、稳压器和电压跟随
+ SPLC501_SPIwrite(0xaf,0); //set display off。0xaf:set display on
+ SPLC501_SPIwrite(0x60,0);//其实行设置
+
+}
+ 234:	08 95       	ret
+
+00000236 <Test>:
+//-------------------------------------------------------------------------------
+
+void Test(unsigned char a,unsigned char b)//全屏测试
+{
+ 236:	e8 2f       	mov	r30, r24
+ 238:	70 eb       	ldi	r23, 0xB0	; 176
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 23a:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 23c:	94 98       	cbi	0x12, 4	; 18
+ 23e:	37 2f       	mov	r19, r23
+ 240:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 242:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 244:	93 2f       	mov	r25, r19
+ 246:	99 1f       	adc	r25, r25
+ 248:	99 27       	eor	r25, r25
+ 24a:	99 1f       	adc	r25, r25
+ 24c:	99 0f       	add	r25, r25
+ 24e:	85 b3       	in	r24, 0x15	; 21
+ 250:	8d 7f       	andi	r24, 0xFD	; 253
+ 252:	89 2b       	or	r24, r25
+ 254:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 256:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 258:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 25a:	2f 5f       	subi	r18, 0xFF	; 255
+ 25c:	28 30       	cpi	r18, 0x08	; 8
+ 25e:	89 f7       	brne	.-30     	; 0x242 <Test+0xc>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 260:	94 9a       	sbi	0x12, 4	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 262:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 264:	94 98       	cbi	0x12, 4	; 18
+ 266:	30 e1       	ldi	r19, 0x10	; 16
+ 268:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 26a:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 26c:	93 2f       	mov	r25, r19
+ 26e:	99 1f       	adc	r25, r25
+ 270:	99 27       	eor	r25, r25
+ 272:	99 1f       	adc	r25, r25
+ 274:	99 0f       	add	r25, r25
+ 276:	85 b3       	in	r24, 0x15	; 21
+ 278:	8d 7f       	andi	r24, 0xFD	; 253
+ 27a:	89 2b       	or	r24, r25
+ 27c:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 27e:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 280:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 282:	2f 5f       	subi	r18, 0xFF	; 255
+ 284:	28 30       	cpi	r18, 0x08	; 8
+ 286:	89 f7       	brne	.-30     	; 0x26a <Test+0x34>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 288:	94 9a       	sbi	0x12, 4	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 28a:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 28c:	94 98       	cbi	0x12, 4	; 18
+ 28e:	34 e0       	ldi	r19, 0x04	; 4
+ 290:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 292:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 294:	93 2f       	mov	r25, r19
+ 296:	99 1f       	adc	r25, r25
+ 298:	99 27       	eor	r25, r25
+ 29a:	99 1f       	adc	r25, r25
+ 29c:	99 0f       	add	r25, r25
+ 29e:	85 b3       	in	r24, 0x15	; 21
+ 2a0:	8d 7f       	andi	r24, 0xFD	; 253
+ 2a2:	89 2b       	or	r24, r25
+ 2a4:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 2a6:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 2a8:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 2aa:	2f 5f       	subi	r18, 0xFF	; 255
+ 2ac:	28 30       	cpi	r18, 0x08	; 8
+ 2ae:	89 f7       	brne	.-30     	; 0x292 <Test+0x5c>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 2b0:	94 9a       	sbi	0x12, 4	; 18
+ 2b2:	40 e0       	ldi	r20, 0x00	; 0
+ 2b4:	50 e0       	ldi	r21, 0x00	; 0
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 2b6:	97 9a       	sbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 2b8:	94 98       	cbi	0x12, 4	; 18
+ 2ba:	3e 2f       	mov	r19, r30
+ 2bc:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 2be:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 2c0:	93 2f       	mov	r25, r19
+ 2c2:	99 1f       	adc	r25, r25
+ 2c4:	99 27       	eor	r25, r25
+ 2c6:	99 1f       	adc	r25, r25
+ 2c8:	99 0f       	add	r25, r25
+ 2ca:	85 b3       	in	r24, 0x15	; 21
+ 2cc:	8d 7f       	andi	r24, 0xFD	; 253
+ 2ce:	89 2b       	or	r24, r25
+ 2d0:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 2d2:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 2d4:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 2d6:	2f 5f       	subi	r18, 0xFF	; 255
+ 2d8:	28 30       	cpi	r18, 0x08	; 8
+ 2da:	89 f7       	brne	.-30     	; 0x2be <Test+0x88>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 2dc:	94 9a       	sbi	0x12, 4	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 2de:	97 9a       	sbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 2e0:	94 98       	cbi	0x12, 4	; 18
+ 2e2:	36 2f       	mov	r19, r22
+ 2e4:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 2e6:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 2e8:	93 2f       	mov	r25, r19
+ 2ea:	99 1f       	adc	r25, r25
+ 2ec:	99 27       	eor	r25, r25
+ 2ee:	99 1f       	adc	r25, r25
+ 2f0:	99 0f       	add	r25, r25
+ 2f2:	85 b3       	in	r24, 0x15	; 21
+ 2f4:	8d 7f       	andi	r24, 0xFD	; 253
+ 2f6:	89 2b       	or	r24, r25
+ 2f8:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 2fa:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 2fc:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 2fe:	2f 5f       	subi	r18, 0xFF	; 255
+ 300:	28 30       	cpi	r18, 0x08	; 8
+ 302:	89 f7       	brne	.-30     	; 0x2e6 <Test+0xb0>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 304:	94 9a       	sbi	0x12, 4	; 18
+  unsigned int i,j,page=0xb0;//指向首页命令
+  for(i=0;i<8;i++)
+   { SPLC501_SPIwrite(page++,0);//指向对应页
+     SPLC501_SPIwrite(0x10,0);//SET COLUMN(列) ADDRESS MSB(高4位)为0
+     SPLC501_SPIwrite(0x04,0);//SET COLUMN ADDRESS LSB(低4位)为0
+     for(j=0;j<64;j++) 
+ 306:	4f 5f       	subi	r20, 0xFF	; 255
+ 308:	5f 4f       	sbci	r21, 0xFF	; 255
+ 30a:	40 34       	cpi	r20, 0x40	; 64
+ 30c:	51 05       	cpc	r21, r1
+ 30e:	99 f6       	brne	.-90     	; 0x2b6 <Test+0x80>
+ 310:	7f 5f       	subi	r23, 0xFF	; 255
+//-------------------------------------------------------------------------------
+
+void Test(unsigned char a,unsigned char b)//全屏测试
+{
+  unsigned int i,j,page=0xb0;//指向首页命令
+  for(i=0;i<8;i++)
+ 312:	78 3b       	cpi	r23, 0xB8	; 184
+ 314:	09 f0       	breq	.+2      	; 0x318 <Test+0xe2>
+ 316:	91 cf       	rjmp	.-222    	; 0x23a <Test+0x4>
+     for(j=0;j<64;j++) 
+      {SPLC501_SPIwrite(a,1);
+       SPLC501_SPIwrite(b,1);
+      } 
+   } 
+}
+ 318:	08 95       	ret
+
+0000031a <clrscr>:
+    unsigned char page_sum,unsigned char column_f,unsigned char column_sum )//x*8
+{//参数：指向字首地址，起始页，占多少页，起始列，占多少列
+  unsigned char i,j,page=0xb0;//指向首页命令
+  for(i=page_f;i<page_sum+page_f;i++)
+   { SPLC501_SPIwrite(page+i,0); 
+     SPLC501_SPIwrite(0x10|((0xf0&column_f)>>4),0);//设定列地址高4位为0
+ 31a:	a4 2f       	mov	r26, r20
+ 31c:	a2 95       	swap	r26
+ 31e:	af 70       	andi	r26, 0x0F	; 15
+ 320:	a0 61       	ori	r26, 0x10	; 16
+ 322:	78 2f       	mov	r23, r24
+//------------------------------------------------------------------------------
+void clrscr(unsigned char page_f, //显示一个字或多个字函数
+    unsigned char page_sum,unsigned char column_f,unsigned char column_sum )//x*8
+{//参数：指向字首地址，起始页，占多少页，起始列，占多少列
+  unsigned char i,j,page=0xb0;//指向首页命令
+  for(i=page_f;i<page_sum+page_f;i++)
+ 324:	e8 2f       	mov	r30, r24
+ 326:	f0 e0       	ldi	r31, 0x00	; 0
+ 328:	e6 0f       	add	r30, r22
+ 32a:	f1 1d       	adc	r31, r1
+   { SPLC501_SPIwrite(page+i,0); 
+     SPLC501_SPIwrite(0x10|((0xf0&column_f)>>4),0);//设定列地址高4位为0
+     SPLC501_SPIwrite(0x04|(0x0f&column_f),0);    //设定列地址低4位为0
+ 32c:	4b 70       	andi	r20, 0x0B	; 11
+ 32e:	44 60       	ori	r20, 0x04	; 4
+ 330:	4d c0       	rjmp	.+154    	; 0x3cc <clrscr+0xb2>
+//------------------------------------------------------------------------------
+void clrscr(unsigned char page_f, //显示一个字或多个字函数
+    unsigned char page_sum,unsigned char column_f,unsigned char column_sum )//x*8
+{//参数：指向字首地址，起始页，占多少页，起始列，占多少列
+  unsigned char i,j,page=0xb0;//指向首页命令
+  for(i=page_f;i<page_sum+page_f;i++)
+ 332:	57 2f       	mov	r21, r23
+ 334:	50 55       	subi	r21, 0x50	; 80
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 336:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 338:	94 98       	cbi	0x12, 4	; 18
+ 33a:	30 e0       	ldi	r19, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 33c:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 33e:	95 2f       	mov	r25, r21
+ 340:	99 1f       	adc	r25, r25
+ 342:	99 27       	eor	r25, r25
+ 344:	99 1f       	adc	r25, r25
+ 346:	99 0f       	add	r25, r25
+ 348:	85 b3       	in	r24, 0x15	; 21
+ 34a:	8d 7f       	andi	r24, 0xFD	; 253
+ 34c:	89 2b       	or	r24, r25
+ 34e:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 350:	55 0f       	add	r21, r21
+   SPLC501_CLK=1;
+ 352:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 354:	3f 5f       	subi	r19, 0xFF	; 255
+ 356:	38 30       	cpi	r19, 0x08	; 8
+ 358:	89 f7       	brne	.-30     	; 0x33c <clrscr+0x22>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 35a:	94 9a       	sbi	0x12, 4	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 35c:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 35e:	94 98       	cbi	0x12, 4	; 18
+ 360:	5a 2f       	mov	r21, r26
+ 362:	30 e0       	ldi	r19, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 364:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 366:	95 2f       	mov	r25, r21
+ 368:	99 1f       	adc	r25, r25
+ 36a:	99 27       	eor	r25, r25
+ 36c:	99 1f       	adc	r25, r25
+ 36e:	99 0f       	add	r25, r25
+ 370:	85 b3       	in	r24, 0x15	; 21
+ 372:	8d 7f       	andi	r24, 0xFD	; 253
+ 374:	89 2b       	or	r24, r25
+ 376:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 378:	55 0f       	add	r21, r21
+   SPLC501_CLK=1;
+ 37a:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 37c:	3f 5f       	subi	r19, 0xFF	; 255
+ 37e:	38 30       	cpi	r19, 0x08	; 8
+ 380:	89 f7       	brne	.-30     	; 0x364 <clrscr+0x4a>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 382:	94 9a       	sbi	0x12, 4	; 18
+{//参数：指向字首地址，起始页，占多少页，起始列，占多少列
+  unsigned char i,j,page=0xb0;//指向首页命令
+  for(i=page_f;i<page_sum+page_f;i++)
+   { SPLC501_SPIwrite(page+i,0); 
+     SPLC501_SPIwrite(0x10|((0xf0&column_f)>>4),0);//设定列地址高4位为0
+     SPLC501_SPIwrite(0x04|(0x0f&column_f),0);    //设定列地址低4位为0
+ 384:	54 2f       	mov	r21, r20
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 386:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 388:	94 98       	cbi	0x12, 4	; 18
+ 38a:	30 e0       	ldi	r19, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 38c:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 38e:	95 2f       	mov	r25, r21
+ 390:	99 1f       	adc	r25, r25
+ 392:	99 27       	eor	r25, r25
+ 394:	99 1f       	adc	r25, r25
+ 396:	99 0f       	add	r25, r25
+ 398:	85 b3       	in	r24, 0x15	; 21
+ 39a:	8d 7f       	andi	r24, 0xFD	; 253
+ 39c:	89 2b       	or	r24, r25
+ 39e:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 3a0:	55 0f       	add	r21, r21
+   SPLC501_CLK=1;
+ 3a2:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 3a4:	3f 5f       	subi	r19, 0xFF	; 255
+ 3a6:	38 30       	cpi	r19, 0x08	; 8
+ 3a8:	89 f7       	brne	.-30     	; 0x38c <clrscr+0x72>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 3aa:	94 9a       	sbi	0x12, 4	; 18
+ 3ac:	90 e0       	ldi	r25, 0x00	; 0
+ 3ae:	0b c0       	rjmp	.+22     	; 0x3c6 <clrscr+0xac>
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 3b0:	97 9a       	sbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 3b2:	94 98       	cbi	0x12, 4	; 18
+ 3b4:	80 e0       	ldi	r24, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 3b6:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 3b8:	a9 98       	cbi	0x15, 1	; 21
+   data_command<<=1;
+   SPLC501_CLK=1;
+ 3ba:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 3bc:	8f 5f       	subi	r24, 0xFF	; 255
+ 3be:	88 30       	cpi	r24, 0x08	; 8
+ 3c0:	d1 f7       	brne	.-12     	; 0x3b6 <clrscr+0x9c>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 3c2:	94 9a       	sbi	0x12, 4	; 18
+  unsigned char i,j,page=0xb0;//指向首页命令
+  for(i=page_f;i<page_sum+page_f;i++)
+   { SPLC501_SPIwrite(page+i,0); 
+     SPLC501_SPIwrite(0x10|((0xf0&column_f)>>4),0);//设定列地址高4位为0
+     SPLC501_SPIwrite(0x04|(0x0f&column_f),0);    //设定列地址低4位为0
+     for(j=0;j<column_sum;j++)
+ 3c4:	9f 5f       	subi	r25, 0xFF	; 255
+ 3c6:	92 17       	cp	r25, r18
+ 3c8:	98 f3       	brcs	.-26     	; 0x3b0 <clrscr+0x96>
+//------------------------------------------------------------------------------
+void clrscr(unsigned char page_f, //显示一个字或多个字函数
+    unsigned char page_sum,unsigned char column_f,unsigned char column_sum )//x*8
+{//参数：指向字首地址，起始页，占多少页，起始列，占多少列
+  unsigned char i,j,page=0xb0;//指向首页命令
+  for(i=page_f;i<page_sum+page_f;i++)
+ 3ca:	7f 5f       	subi	r23, 0xFF	; 255
+ 3cc:	87 2f       	mov	r24, r23
+ 3ce:	90 e0       	ldi	r25, 0x00	; 0
+ 3d0:	8e 17       	cp	r24, r30
+ 3d2:	9f 07       	cpc	r25, r31
+ 3d4:	0c f4       	brge	.+2      	; 0x3d8 <clrscr+0xbe>
+ 3d6:	ad cf       	rjmp	.-166    	; 0x332 <clrscr+0x18>
+     for(j=0;j<column_sum;j++)
+      {
+	   SPLC501_SPIwrite(0x00,1);
+	  }
+   }
+}  
+ 3d8:	08 95       	ret
+
+000003da <Display_Words>:
+ 
+//------------------------------------------------------------------------------
+void Display_Words(unsigned char *p,unsigned char page_f, //显示一个字或多个字函数
+    unsigned char page_sum,unsigned char column_f,unsigned char column_sum )//x*8
+{//参数：指向字首地址，起始页，占多少页，起始列，占多少列
+ 3da:	0f 93       	push	r16
+ 3dc:	1f 93       	push	r17
+ 3de:	cf 93       	push	r28
+ 3e0:	df 93       	push	r29
+ 3e2:	dc 01       	movw	r26, r24
+  unsigned char i,j,page=0xb0;//指向首页命令
+  for(i=page_f;i<page_sum+page_f;i++)
+   { SPLC501_SPIwrite(page+i,0); 
+     SPLC501_SPIwrite(0x10|((0xf0&column_f)>>4),0);//设定列地址高4位为0
+ 3e4:	12 2f       	mov	r17, r18
+ 3e6:	12 95       	swap	r17
+ 3e8:	1f 70       	andi	r17, 0x0F	; 15
+ 3ea:	10 61       	ori	r17, 0x10	; 16
+ 3ec:	56 2f       	mov	r21, r22
+//------------------------------------------------------------------------------
+void Display_Words(unsigned char *p,unsigned char page_f, //显示一个字或多个字函数
+    unsigned char page_sum,unsigned char column_f,unsigned char column_sum )//x*8
+{//参数：指向字首地址，起始页，占多少页，起始列，占多少列
+  unsigned char i,j,page=0xb0;//指向首页命令
+  for(i=page_f;i<page_sum+page_f;i++)
+ 3ee:	70 e0       	ldi	r23, 0x00	; 0
+ 3f0:	64 0f       	add	r22, r20
+ 3f2:	71 1d       	adc	r23, r1
+   { SPLC501_SPIwrite(page+i,0); 
+     SPLC501_SPIwrite(0x10|((0xf0&column_f)>>4),0);//设定列地址高4位为0
+     SPLC501_SPIwrite(0x04|(0x0f&column_f),0);    //设定列地址低4位为0
+ 3f4:	2b 70       	andi	r18, 0x0B	; 11
+ 3f6:	24 60       	ori	r18, 0x04	; 4
+}  
+ 
+//------------------------------------------------------------------------------
+void Display_Words(unsigned char *p,unsigned char page_f, //显示一个字或多个字函数
+    unsigned char page_sum,unsigned char column_f,unsigned char column_sum )//x*8
+{//参数：指向字首地址，起始页，占多少页，起始列，占多少列
+ 3f8:	c0 2f       	mov	r28, r16
+ 3fa:	d0 e0       	ldi	r29, 0x00	; 0
+ 3fc:	5b c0       	rjmp	.+182    	; 0x4b4 <__stack+0x55>
+  unsigned char i,j,page=0xb0;//指向首页命令
+  for(i=page_f;i<page_sum+page_f;i++)
+ 3fe:	45 2f       	mov	r20, r21
+ 400:	40 55       	subi	r20, 0x50	; 80
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 402:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 404:	94 98       	cbi	0x12, 4	; 18
+ 406:	30 e0       	ldi	r19, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 408:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 40a:	94 2f       	mov	r25, r20
+ 40c:	99 1f       	adc	r25, r25
+ 40e:	99 27       	eor	r25, r25
+ 410:	99 1f       	adc	r25, r25
+ 412:	99 0f       	add	r25, r25
+ 414:	85 b3       	in	r24, 0x15	; 21
+ 416:	8d 7f       	andi	r24, 0xFD	; 253
+ 418:	89 2b       	or	r24, r25
+ 41a:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 41c:	44 0f       	add	r20, r20
+   SPLC501_CLK=1;
+ 41e:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 420:	3f 5f       	subi	r19, 0xFF	; 255
+ 422:	38 30       	cpi	r19, 0x08	; 8
+ 424:	89 f7       	brne	.-30     	; 0x408 <Display_Words+0x2e>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 426:	94 9a       	sbi	0x12, 4	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 428:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 42a:	94 98       	cbi	0x12, 4	; 18
+ 42c:	41 2f       	mov	r20, r17
+ 42e:	30 e0       	ldi	r19, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 430:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 432:	94 2f       	mov	r25, r20
+ 434:	99 1f       	adc	r25, r25
+ 436:	99 27       	eor	r25, r25
+ 438:	99 1f       	adc	r25, r25
+ 43a:	99 0f       	add	r25, r25
+ 43c:	85 b3       	in	r24, 0x15	; 21
+ 43e:	8d 7f       	andi	r24, 0xFD	; 253
+ 440:	89 2b       	or	r24, r25
+ 442:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 444:	44 0f       	add	r20, r20
+   SPLC501_CLK=1;
+ 446:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 448:	3f 5f       	subi	r19, 0xFF	; 255
+ 44a:	38 30       	cpi	r19, 0x08	; 8
+ 44c:	89 f7       	brne	.-30     	; 0x430 <Display_Words+0x56>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 44e:	94 9a       	sbi	0x12, 4	; 18
+{//参数：指向字首地址，起始页，占多少页，起始列，占多少列
+  unsigned char i,j,page=0xb0;//指向首页命令
+  for(i=page_f;i<page_sum+page_f;i++)
+   { SPLC501_SPIwrite(page+i,0); 
+     SPLC501_SPIwrite(0x10|((0xf0&column_f)>>4),0);//设定列地址高4位为0
+     SPLC501_SPIwrite(0x04|(0x0f&column_f),0);    //设定列地址低4位为0
+ 450:	42 2f       	mov	r20, r18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 452:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 454:	94 98       	cbi	0x12, 4	; 18
+ 456:	30 e0       	ldi	r19, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 458:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 45a:	94 2f       	mov	r25, r20
+ 45c:	99 1f       	adc	r25, r25
+ 45e:	99 27       	eor	r25, r25
+ 460:	99 1f       	adc	r25, r25
+ 462:	99 0f       	add	r25, r25
+ 464:	85 b3       	in	r24, 0x15	; 21
+ 466:	8d 7f       	andi	r24, 0xFD	; 253
+ 468:	89 2b       	or	r24, r25
+ 46a:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 46c:	44 0f       	add	r20, r20
+   SPLC501_CLK=1;
+ 46e:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 470:	3f 5f       	subi	r19, 0xFF	; 255
+ 472:	38 30       	cpi	r19, 0x08	; 8
+ 474:	89 f7       	brne	.-30     	; 0x458 <Display_Words+0x7e>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 476:	94 9a       	sbi	0x12, 4	; 18
+ 478:	fd 01       	movw	r30, r26
+ 47a:	15 c0       	rjmp	.+42     	; 0x4a6 <__stack+0x47>
+   { SPLC501_SPIwrite(page+i,0); 
+     SPLC501_SPIwrite(0x10|((0xf0&column_f)>>4),0);//设定列地址高4位为0
+     SPLC501_SPIwrite(0x04|(0x0f&column_f),0);    //设定列地址低4位为0
+     for(j=0;j<column_sum;j++)
+      {
+	   SPLC501_SPIwrite(*p++,1);
+ 47c:	40 81       	ld	r20, Z
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 47e:	97 9a       	sbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 480:	94 98       	cbi	0x12, 4	; 18
+ 482:	30 e0       	ldi	r19, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 484:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 486:	94 2f       	mov	r25, r20
+ 488:	99 1f       	adc	r25, r25
+ 48a:	99 27       	eor	r25, r25
+ 48c:	99 1f       	adc	r25, r25
+ 48e:	99 0f       	add	r25, r25
+ 490:	85 b3       	in	r24, 0x15	; 21
+ 492:	8d 7f       	andi	r24, 0xFD	; 253
+ 494:	89 2b       	or	r24, r25
+ 496:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 498:	44 0f       	add	r20, r20
+   SPLC501_CLK=1;
+ 49a:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 49c:	3f 5f       	subi	r19, 0xFF	; 255
+ 49e:	38 30       	cpi	r19, 0x08	; 8
+ 4a0:	89 f7       	brne	.-30     	; 0x484 <__stack+0x25>
+   { SPLC501_SPIwrite(page+i,0); 
+     SPLC501_SPIwrite(0x10|((0xf0&column_f)>>4),0);//设定列地址高4位为0
+     SPLC501_SPIwrite(0x04|(0x0f&column_f),0);    //设定列地址低4位为0
+     for(j=0;j<column_sum;j++)
+      {
+	   SPLC501_SPIwrite(*p++,1);
+ 4a2:	31 96       	adiw	r30, 0x01	; 1
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 4a4:	94 9a       	sbi	0x12, 4	; 18
+  unsigned char i,j,page=0xb0;//指向首页命令
+  for(i=page_f;i<page_sum+page_f;i++)
+   { SPLC501_SPIwrite(page+i,0); 
+     SPLC501_SPIwrite(0x10|((0xf0&column_f)>>4),0);//设定列地址高4位为0
+     SPLC501_SPIwrite(0x04|(0x0f&column_f),0);    //设定列地址低4位为0
+     for(j=0;j<column_sum;j++)
+ 4a6:	8e 2f       	mov	r24, r30
+ 4a8:	8a 1b       	sub	r24, r26
+ 4aa:	80 17       	cp	r24, r16
+ 4ac:	38 f3       	brcs	.-50     	; 0x47c <__stack+0x1d>
+}  
+ 
+//------------------------------------------------------------------------------
+void Display_Words(unsigned char *p,unsigned char page_f, //显示一个字或多个字函数
+    unsigned char page_sum,unsigned char column_f,unsigned char column_sum )//x*8
+{//参数：指向字首地址，起始页，占多少页，起始列，占多少列
+ 4ae:	ac 0f       	add	r26, r28
+ 4b0:	bd 1f       	adc	r27, r29
+  unsigned char i,j,page=0xb0;//指向首页命令
+  for(i=page_f;i<page_sum+page_f;i++)
+ 4b2:	5f 5f       	subi	r21, 0xFF	; 255
+ 4b4:	85 2f       	mov	r24, r21
+ 4b6:	90 e0       	ldi	r25, 0x00	; 0
+ 4b8:	86 17       	cp	r24, r22
+ 4ba:	97 07       	cpc	r25, r23
+ 4bc:	0c f4       	brge	.+2      	; 0x4c0 <__stack+0x61>
+ 4be:	9f cf       	rjmp	.-194    	; 0x3fe <Display_Words+0x24>
+     for(j=0;j<column_sum;j++)
+      {
+	   SPLC501_SPIwrite(*p++,1);
+	  }
+   }
+}  
+ 4c0:	df 91       	pop	r29
+ 4c2:	cf 91       	pop	r28
+ 4c4:	1f 91       	pop	r17
+ 4c6:	0f 91       	pop	r16
+ 4c8:	08 95       	ret
+
+000004ca <Plot>:
+//------------------------------------------------------------------------------
+void Plot(unsigned char *P)//p指向曲线数组
+{ volatile unsigned char i,j,x,x1;//,page,temp,move_bit,*p_map_bit;
+ 4ca:	df 93       	push	r29
+ 4cc:	cf 93       	push	r28
+ 4ce:	00 d0       	rcall	.+0      	; 0x4d0 <Plot+0x6>
+ 4d0:	00 d0       	rcall	.+0      	; 0x4d2 <Plot+0x8>
+ 4d2:	cd b7       	in	r28, 0x3d	; 61
+ 4d4:	de b7       	in	r29, 0x3e	; 62
+ 4d6:	fc 01       	movw	r30, r24
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 4d8:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 4da:	94 98       	cbi	0x12, 4	; 18
+ 4dc:	30 e1       	ldi	r19, 0x10	; 16
+ 4de:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 4e0:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 4e2:	93 2f       	mov	r25, r19
+ 4e4:	99 1f       	adc	r25, r25
+ 4e6:	99 27       	eor	r25, r25
+ 4e8:	99 1f       	adc	r25, r25
+ 4ea:	99 0f       	add	r25, r25
+ 4ec:	85 b3       	in	r24, 0x15	; 21
+ 4ee:	8d 7f       	andi	r24, 0xFD	; 253
+ 4f0:	89 2b       	or	r24, r25
+ 4f2:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 4f4:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 4f6:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 4f8:	2f 5f       	subi	r18, 0xFF	; 255
+ 4fa:	28 30       	cpi	r18, 0x08	; 8
+ 4fc:	89 f7       	brne	.-30     	; 0x4e0 <Plot+0x16>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 4fe:	94 9a       	sbi	0x12, 4	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 500:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 502:	94 98       	cbi	0x12, 4	; 18
+ 504:	34 e0       	ldi	r19, 0x04	; 4
+ 506:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 508:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 50a:	93 2f       	mov	r25, r19
+ 50c:	99 1f       	adc	r25, r25
+ 50e:	99 27       	eor	r25, r25
+ 510:	99 1f       	adc	r25, r25
+ 512:	99 0f       	add	r25, r25
+ 514:	85 b3       	in	r24, 0x15	; 21
+ 516:	8d 7f       	andi	r24, 0xFD	; 253
+ 518:	89 2b       	or	r24, r25
+ 51a:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 51c:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 51e:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 520:	2f 5f       	subi	r18, 0xFF	; 255
+ 522:	28 30       	cpi	r18, 0x08	; 8
+ 524:	89 f7       	brne	.-30     	; 0x508 <Plot+0x3e>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 526:	94 9a       	sbi	0x12, 4	; 18
+	 d=(*P++)|((*P++)<<8);
+     if(d>max)max=d;
+    }
+   c=(double)60/max;
+    P=p1;  */
+  for(i=0;i<128;i++)
+ 528:	19 82       	std	Y+1, r1	; 0x01
+   { //d=(*P++)|((*P++)<<8);
+     //d=(double)d*c;
+	 d=*P;
+	 if(d>63)d=63;
+	 x=7-d/8;
+ 52a:	67 e0       	ldi	r22, 0x07	; 7
+       SPLC501_SPIwrite(0x10|((0xf0&i)>>4),0);//SET COLUMN ADDRESS MSB
+       SPLC501_SPIwrite(0x00|(0x0f&i),0);   //SET COLUMN ADDRESS LSB,
+	   if(j!=x)
+	    SPLC501_SPIwrite(0,1);
+	   else 
+	    SPLC501_SPIwrite(1<<x1,1); //
+ 52c:	41 e0       	ldi	r20, 0x01	; 1
+ 52e:	50 e0       	ldi	r21, 0x00	; 0
+ 530:	8b c0       	rjmp	.+278    	; 0x648 <Plot+0x17e>
+   c=(double)60/max;
+    P=p1;  */
+  for(i=0;i<128;i++)
+   { //d=(*P++)|((*P++)<<8);
+     //d=(double)d*c;
+	 d=*P;
+ 532:	80 81       	ld	r24, Z
+ 534:	90 e0       	ldi	r25, 0x00	; 0
+ 536:	9c 01       	movw	r18, r24
+ 538:	20 34       	cpi	r18, 0x40	; 64
+ 53a:	31 05       	cpc	r19, r1
+ 53c:	10 f0       	brcs	.+4      	; 0x542 <Plot+0x78>
+ 53e:	2f e3       	ldi	r18, 0x3F	; 63
+ 540:	30 e0       	ldi	r19, 0x00	; 0
+	 if(d>63)d=63;
+	 x=7-d/8;
+ 542:	c9 01       	movw	r24, r18
+ 544:	33 e0       	ldi	r19, 0x03	; 3
+ 546:	96 95       	lsr	r25
+ 548:	87 95       	ror	r24
+ 54a:	3a 95       	dec	r19
+ 54c:	e1 f7       	brne	.-8      	; 0x546 <Plot+0x7c>
+ 54e:	76 2f       	mov	r23, r22
+ 550:	78 1b       	sub	r23, r24
+ 552:	7b 83       	std	Y+3, r23	; 0x03
+	 x1=7-(d&7);
+ 554:	82 2f       	mov	r24, r18
+ 556:	80 95       	com	r24
+ 558:	87 70       	andi	r24, 0x07	; 7
+ 55a:	8c 83       	std	Y+4, r24	; 0x04
+	 for(j=0;j<8;j++)
+ 55c:	1a 82       	std	Y+2, r1	; 0x02
+ 55e:	6d c0       	rjmp	.+218    	; 0x63a <Plot+0x170>
+	  {
+	   SPLC501_SPIwrite(0xb0+j,0);//
+ 560:	2a 81       	ldd	r18, Y+2	; 0x02
+ 562:	20 55       	subi	r18, 0x50	; 80
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 564:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 566:	94 98       	cbi	0x12, 4	; 18
+ 568:	30 e0       	ldi	r19, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 56a:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 56c:	92 2f       	mov	r25, r18
+ 56e:	99 1f       	adc	r25, r25
+ 570:	99 27       	eor	r25, r25
+ 572:	99 1f       	adc	r25, r25
+ 574:	99 0f       	add	r25, r25
+ 576:	85 b3       	in	r24, 0x15	; 21
+ 578:	8d 7f       	andi	r24, 0xFD	; 253
+ 57a:	89 2b       	or	r24, r25
+ 57c:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 57e:	22 0f       	add	r18, r18
+   SPLC501_CLK=1;
+ 580:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 582:	3f 5f       	subi	r19, 0xFF	; 255
+ 584:	38 30       	cpi	r19, 0x08	; 8
+ 586:	89 f7       	brne	.-30     	; 0x56a <Plot+0xa0>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 588:	94 9a       	sbi	0x12, 4	; 18
+	 x=7-d/8;
+	 x1=7-(d&7);
+	 for(j=0;j<8;j++)
+	  {
+	   SPLC501_SPIwrite(0xb0+j,0);//
+       SPLC501_SPIwrite(0x10|((0xf0&i)>>4),0);//SET COLUMN ADDRESS MSB
+ 58a:	29 81       	ldd	r18, Y+1	; 0x01
+ 58c:	22 95       	swap	r18
+ 58e:	2f 70       	andi	r18, 0x0F	; 15
+ 590:	20 61       	ori	r18, 0x10	; 16
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 592:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 594:	94 98       	cbi	0x12, 4	; 18
+ 596:	30 e0       	ldi	r19, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 598:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 59a:	92 2f       	mov	r25, r18
+ 59c:	99 1f       	adc	r25, r25
+ 59e:	99 27       	eor	r25, r25
+ 5a0:	99 1f       	adc	r25, r25
+ 5a2:	99 0f       	add	r25, r25
+ 5a4:	85 b3       	in	r24, 0x15	; 21
+ 5a6:	8d 7f       	andi	r24, 0xFD	; 253
+ 5a8:	89 2b       	or	r24, r25
+ 5aa:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 5ac:	22 0f       	add	r18, r18
+   SPLC501_CLK=1;
+ 5ae:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 5b0:	3f 5f       	subi	r19, 0xFF	; 255
+ 5b2:	38 30       	cpi	r19, 0x08	; 8
+ 5b4:	89 f7       	brne	.-30     	; 0x598 <Plot+0xce>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 5b6:	94 9a       	sbi	0x12, 4	; 18
+	 x1=7-(d&7);
+	 for(j=0;j<8;j++)
+	  {
+	   SPLC501_SPIwrite(0xb0+j,0);//
+       SPLC501_SPIwrite(0x10|((0xf0&i)>>4),0);//SET COLUMN ADDRESS MSB
+       SPLC501_SPIwrite(0x00|(0x0f&i),0);   //SET COLUMN ADDRESS LSB,
+ 5b8:	29 81       	ldd	r18, Y+1	; 0x01
+ 5ba:	2f 70       	andi	r18, 0x0F	; 15
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 5bc:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 5be:	94 98       	cbi	0x12, 4	; 18
+ 5c0:	30 e0       	ldi	r19, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 5c2:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 5c4:	92 2f       	mov	r25, r18
+ 5c6:	99 1f       	adc	r25, r25
+ 5c8:	99 27       	eor	r25, r25
+ 5ca:	99 1f       	adc	r25, r25
+ 5cc:	99 0f       	add	r25, r25
+ 5ce:	85 b3       	in	r24, 0x15	; 21
+ 5d0:	8d 7f       	andi	r24, 0xFD	; 253
+ 5d2:	89 2b       	or	r24, r25
+ 5d4:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 5d6:	22 0f       	add	r18, r18
+   SPLC501_CLK=1;
+ 5d8:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 5da:	3f 5f       	subi	r19, 0xFF	; 255
+ 5dc:	38 30       	cpi	r19, 0x08	; 8
+ 5de:	89 f7       	brne	.-30     	; 0x5c2 <Plot+0xf8>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 5e0:	94 9a       	sbi	0x12, 4	; 18
+	 for(j=0;j<8;j++)
+	  {
+	   SPLC501_SPIwrite(0xb0+j,0);//
+       SPLC501_SPIwrite(0x10|((0xf0&i)>>4),0);//SET COLUMN ADDRESS MSB
+       SPLC501_SPIwrite(0x00|(0x0f&i),0);   //SET COLUMN ADDRESS LSB,
+	   if(j!=x)
+ 5e2:	9a 81       	ldd	r25, Y+2	; 0x02
+ 5e4:	8b 81       	ldd	r24, Y+3	; 0x03
+ 5e6:	98 17       	cp	r25, r24
+ 5e8:	51 f0       	breq	.+20     	; 0x5fe <Plot+0x134>
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 5ea:	97 9a       	sbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 5ec:	94 98       	cbi	0x12, 4	; 18
+ 5ee:	80 e0       	ldi	r24, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 5f0:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 5f2:	a9 98       	cbi	0x15, 1	; 21
+   data_command<<=1;
+   SPLC501_CLK=1;
+ 5f4:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 5f6:	8f 5f       	subi	r24, 0xFF	; 255
+ 5f8:	88 30       	cpi	r24, 0x08	; 8
+ 5fa:	d1 f7       	brne	.-12     	; 0x5f0 <Plot+0x126>
+ 5fc:	1a c0       	rjmp	.+52     	; 0x632 <Plot+0x168>
+       SPLC501_SPIwrite(0x10|((0xf0&i)>>4),0);//SET COLUMN ADDRESS MSB
+       SPLC501_SPIwrite(0x00|(0x0f&i),0);   //SET COLUMN ADDRESS LSB,
+	   if(j!=x)
+	    SPLC501_SPIwrite(0,1);
+	   else 
+	    SPLC501_SPIwrite(1<<x1,1); //
+ 5fe:	8c 81       	ldd	r24, Y+4	; 0x04
+ 600:	9a 01       	movw	r18, r20
+ 602:	02 c0       	rjmp	.+4      	; 0x608 <Plot+0x13e>
+ 604:	22 0f       	add	r18, r18
+ 606:	33 1f       	adc	r19, r19
+ 608:	8a 95       	dec	r24
+ 60a:	e2 f7       	brpl	.-8      	; 0x604 <Plot+0x13a>
+ 60c:	32 2f       	mov	r19, r18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 60e:	97 9a       	sbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 610:	94 98       	cbi	0x12, 4	; 18
+ 612:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 614:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 616:	93 2f       	mov	r25, r19
+ 618:	99 1f       	adc	r25, r25
+ 61a:	99 27       	eor	r25, r25
+ 61c:	99 1f       	adc	r25, r25
+ 61e:	99 0f       	add	r25, r25
+ 620:	85 b3       	in	r24, 0x15	; 21
+ 622:	8d 7f       	andi	r24, 0xFD	; 253
+ 624:	89 2b       	or	r24, r25
+ 626:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 628:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 62a:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 62c:	2f 5f       	subi	r18, 0xFF	; 255
+ 62e:	28 30       	cpi	r18, 0x08	; 8
+ 630:	89 f7       	brne	.-30     	; 0x614 <Plot+0x14a>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 632:	94 9a       	sbi	0x12, 4	; 18
+     //d=(double)d*c;
+	 d=*P;
+	 if(d>63)d=63;
+	 x=7-d/8;
+	 x1=7-(d&7);
+	 for(j=0;j<8;j++)
+ 634:	8a 81       	ldd	r24, Y+2	; 0x02
+ 636:	8f 5f       	subi	r24, 0xFF	; 255
+ 638:	8a 83       	std	Y+2, r24	; 0x02
+ 63a:	8a 81       	ldd	r24, Y+2	; 0x02
+ 63c:	88 30       	cpi	r24, 0x08	; 8
+ 63e:	08 f4       	brcc	.+2      	; 0x642 <Plot+0x178>
+ 640:	8f cf       	rjmp	.-226    	; 0x560 <Plot+0x96>
+	 d=(*P++)|((*P++)<<8);
+     if(d>max)max=d;
+    }
+   c=(double)60/max;
+    P=p1;  */
+  for(i=0;i<128;i++)
+ 642:	89 81       	ldd	r24, Y+1	; 0x01
+ 644:	8f 5f       	subi	r24, 0xFF	; 255
+ 646:	89 83       	std	Y+1, r24	; 0x01
+ 648:	89 81       	ldd	r24, Y+1	; 0x01
+ 64a:	87 ff       	sbrs	r24, 7
+ 64c:	72 cf       	rjmp	.-284    	; 0x532 <Plot+0x68>
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 64e:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 650:	94 98       	cbi	0x12, 4	; 18
+ 652:	30 e4       	ldi	r19, 0x40	; 64
+ 654:	20 e0       	ldi	r18, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 656:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 658:	93 2f       	mov	r25, r19
+ 65a:	99 1f       	adc	r25, r25
+ 65c:	99 27       	eor	r25, r25
+ 65e:	99 1f       	adc	r25, r25
+ 660:	99 0f       	add	r25, r25
+ 662:	85 b3       	in	r24, 0x15	; 21
+ 664:	8d 7f       	andi	r24, 0xFD	; 253
+ 666:	89 2b       	or	r24, r25
+ 668:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 66a:	33 0f       	add	r19, r19
+   SPLC501_CLK=1;
+ 66c:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 66e:	2f 5f       	subi	r18, 0xFF	; 255
+ 670:	28 30       	cpi	r18, 0x08	; 8
+ 672:	89 f7       	brne	.-30     	; 0x656 <Plot+0x18c>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 674:	94 9a       	sbi	0x12, 4	; 18
+	    SPLC501_SPIwrite(1<<x1,1); //
+	  }
+    }
+   SPLC501_SPIwrite(0x40,0); //start h
+   //SPLC501_SPIwrite(0x0af,0);//set display on
+}
+ 676:	0f 90       	pop	r0
+ 678:	0f 90       	pop	r0
+ 67a:	0f 90       	pop	r0
+ 67c:	0f 90       	pop	r0
+ 67e:	cf 91       	pop	r28
+ 680:	df 91       	pop	r29
+ 682:	08 95       	ret
+
+00000684 <Draw_word>:
+0x00,0x00,0x7F,0x20,0x10,0x20,0x20,0x1F,0x10,0x10,0x01,0x06,0x18,0x20,0x78,0x00,
+};
+//------------------------------------------------------------------------------
+void Draw_word(unsigned int d_where,unsigned char page_f, //显示一个字或多个字函数
+    unsigned char page_sum,unsigned char column_f,unsigned char column_sum )//x*8
+{//参数：指向字首地址，起始页，占多少页，起始列，占多少列
+ 684:	ff 92       	push	r15
+ 686:	0f 93       	push	r16
+ 688:	1f 93       	push	r17
+ 68a:	cf 93       	push	r28
+ 68c:	df 93       	push	r29
+ 68e:	f0 2e       	mov	r15, r16
+  unsigned char i,j,page=0xb0;//指向首页命令
+  d_where=d_where*32;
+ 690:	ec 01       	movw	r28, r24
+ 692:	55 e0       	ldi	r21, 0x05	; 5
+ 694:	cc 0f       	add	r28, r28
+ 696:	dd 1f       	adc	r29, r29
+ 698:	5a 95       	dec	r21
+ 69a:	e1 f7       	brne	.-8      	; 0x694 <Draw_word+0x10>
+  for(i=page_f;i<page_sum+page_f;i++)
+   { SPLC501_SPIwrite(page+i,0); 
+     SPLC501_SPIwrite(0x10|((0xf0&column_f)>>4),0);//设定列地址高4位为0
+ 69c:	72 2f       	mov	r23, r18
+ 69e:	72 95       	swap	r23
+ 6a0:	7f 70       	andi	r23, 0x0F	; 15
+ 6a2:	70 61       	ori	r23, 0x10	; 16
+void Draw_word(unsigned int d_where,unsigned char page_f, //显示一个字或多个字函数
+    unsigned char page_sum,unsigned char column_f,unsigned char column_sum )//x*8
+{//参数：指向字首地址，起始页，占多少页，起始列，占多少列
+  unsigned char i,j,page=0xb0;//指向首页命令
+  d_where=d_where*32;
+  for(i=page_f;i<page_sum+page_f;i++)
+ 6a4:	a6 2f       	mov	r26, r22
+ 6a6:	b0 e0       	ldi	r27, 0x00	; 0
+ 6a8:	a4 0f       	add	r26, r20
+ 6aa:	b1 1d       	adc	r27, r1
+   { SPLC501_SPIwrite(page+i,0); 
+     SPLC501_SPIwrite(0x10|((0xf0&column_f)>>4),0);//设定列地址高4位为0
+     SPLC501_SPIwrite(0x04|(0x0f&column_f),0);    //设定列地址低4位为0
+ 6ac:	2b 70       	andi	r18, 0x0B	; 11
+ 6ae:	24 60       	ori	r18, 0x04	; 4
+     for(j=0;j<column_sum;j++)
+ 6b0:	10 e0       	ldi	r17, 0x00	; 0
+ 6b2:	5d c0       	rjmp	.+186    	; 0x76e <Draw_word+0xea>
+void Draw_word(unsigned int d_where,unsigned char page_f, //显示一个字或多个字函数
+    unsigned char page_sum,unsigned char column_f,unsigned char column_sum )//x*8
+{//参数：指向字首地址，起始页，占多少页，起始列，占多少列
+  unsigned char i,j,page=0xb0;//指向首页命令
+  d_where=d_where*32;
+  for(i=page_f;i<page_sum+page_f;i++)
+ 6b4:	46 2f       	mov	r20, r22
+ 6b6:	40 55       	subi	r20, 0x50	; 80
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 6b8:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 6ba:	94 98       	cbi	0x12, 4	; 18
+ 6bc:	30 e0       	ldi	r19, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 6be:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 6c0:	94 2f       	mov	r25, r20
+ 6c2:	99 1f       	adc	r25, r25
+ 6c4:	99 27       	eor	r25, r25
+ 6c6:	99 1f       	adc	r25, r25
+ 6c8:	99 0f       	add	r25, r25
+ 6ca:	85 b3       	in	r24, 0x15	; 21
+ 6cc:	8d 7f       	andi	r24, 0xFD	; 253
+ 6ce:	89 2b       	or	r24, r25
+ 6d0:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 6d2:	44 0f       	add	r20, r20
+   SPLC501_CLK=1;
+ 6d4:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 6d6:	3f 5f       	subi	r19, 0xFF	; 255
+ 6d8:	38 30       	cpi	r19, 0x08	; 8
+ 6da:	89 f7       	brne	.-30     	; 0x6be <Draw_word+0x3a>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 6dc:	94 9a       	sbi	0x12, 4	; 18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 6de:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 6e0:	94 98       	cbi	0x12, 4	; 18
+ 6e2:	47 2f       	mov	r20, r23
+ 6e4:	30 e0       	ldi	r19, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 6e6:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 6e8:	94 2f       	mov	r25, r20
+ 6ea:	99 1f       	adc	r25, r25
+ 6ec:	99 27       	eor	r25, r25
+ 6ee:	99 1f       	adc	r25, r25
+ 6f0:	99 0f       	add	r25, r25
+ 6f2:	85 b3       	in	r24, 0x15	; 21
+ 6f4:	8d 7f       	andi	r24, 0xFD	; 253
+ 6f6:	89 2b       	or	r24, r25
+ 6f8:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 6fa:	44 0f       	add	r20, r20
+   SPLC501_CLK=1;
+ 6fc:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 6fe:	3f 5f       	subi	r19, 0xFF	; 255
+ 700:	38 30       	cpi	r19, 0x08	; 8
+ 702:	89 f7       	brne	.-30     	; 0x6e6 <Draw_word+0x62>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 704:	94 9a       	sbi	0x12, 4	; 18
+   { SPLC501_SPIwrite(page+i,0); 
+     SPLC501_SPIwrite(0x10|((0xf0&column_f)>>4),0);//设定列地址高4位为0
+     SPLC501_SPIwrite(0x04|(0x0f&column_f),0);    //设定列地址低4位为0
+ 706:	42 2f       	mov	r20, r18
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 708:	97 98       	cbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 70a:	94 98       	cbi	0x12, 4	; 18
+ 70c:	30 e0       	ldi	r19, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 70e:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 710:	94 2f       	mov	r25, r20
+ 712:	99 1f       	adc	r25, r25
+ 714:	99 27       	eor	r25, r25
+ 716:	99 1f       	adc	r25, r25
+ 718:	99 0f       	add	r25, r25
+ 71a:	85 b3       	in	r24, 0x15	; 21
+ 71c:	8d 7f       	andi	r24, 0xFD	; 253
+ 71e:	89 2b       	or	r24, r25
+ 720:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 722:	44 0f       	add	r20, r20
+   SPLC501_CLK=1;
+ 724:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 726:	3f 5f       	subi	r19, 0xFF	; 255
+ 728:	38 30       	cpi	r19, 0x08	; 8
+ 72a:	89 f7       	brne	.-30     	; 0x70e <Draw_word+0x8a>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 72c:	94 9a       	sbi	0x12, 4	; 18
+ 72e:	fe 01       	movw	r30, r28
+ 730:	e0 5a       	subi	r30, 0xA0	; 160
+ 732:	ff 4f       	sbci	r31, 0xFF	; 255
+ 734:	50 e0       	ldi	r21, 0x00	; 0
+ 736:	16 c0       	rjmp	.+44     	; 0x764 <Draw_word+0xe0>
+     for(j=0;j<column_sum;j++)
+      {
+	   SPLC501_SPIwrite(BMP[d_where],1);
+ 738:	40 81       	ld	r20, Z
+
+//------------------------------------------------------------------------------
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+ 73a:	97 9a       	sbi	0x12, 7	; 18
+  SPLC501_CS=0;  
+ 73c:	94 98       	cbi	0x12, 4	; 18
+ 73e:	30 e0       	ldi	r19, 0x00	; 0
+  for(nc=0;nc<8;nc++)
+  {
+   SPLC501_CLK=0;
+ 740:	a8 98       	cbi	0x15, 0	; 21
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+ 742:	94 2f       	mov	r25, r20
+ 744:	99 1f       	adc	r25, r25
+ 746:	99 27       	eor	r25, r25
+ 748:	99 1f       	adc	r25, r25
+ 74a:	99 0f       	add	r25, r25
+ 74c:	85 b3       	in	r24, 0x15	; 21
+ 74e:	8d 7f       	andi	r24, 0xFD	; 253
+ 750:	89 2b       	or	r24, r25
+ 752:	85 bb       	out	0x15, r24	; 21
+   data_command<<=1;
+ 754:	44 0f       	add	r20, r20
+   SPLC501_CLK=1;
+ 756:	a8 9a       	sbi	0x15, 0	; 21
+void SPLC501_SPIwrite(unsigned char data_command,unsigned char dc) 
+{//参数dc=0时表示发命令，dc=1时表示发送数据
+  unsigned char nc;
+  SPLC501_A0=dc;
+  SPLC501_CS=0;  
+  for(nc=0;nc<8;nc++)
+ 758:	3f 5f       	subi	r19, 0xFF	; 255
+ 75a:	38 30       	cpi	r19, 0x08	; 8
+ 75c:	89 f7       	brne	.-30     	; 0x740 <Draw_word+0xbc>
+   SPLC501_CLK=0;
+   SPLC501_DIN=(data_command&0x80)==0?0:1;
+   data_command<<=1;
+   SPLC501_CLK=1;
+  }
+  SPLC501_CS=1;  
+ 75e:	94 9a       	sbi	0x12, 4	; 18
+  d_where=d_where*32;
+  for(i=page_f;i<page_sum+page_f;i++)
+   { SPLC501_SPIwrite(page+i,0); 
+     SPLC501_SPIwrite(0x10|((0xf0&column_f)>>4),0);//设定列地址高4位为0
+     SPLC501_SPIwrite(0x04|(0x0f&column_f),0);    //设定列地址低4位为0
+     for(j=0;j<column_sum;j++)
+ 760:	5f 5f       	subi	r21, 0xFF	; 255
+ 762:	31 96       	adiw	r30, 0x01	; 1
+ 764:	5f 15       	cp	r21, r15
+ 766:	40 f3       	brcs	.-48     	; 0x738 <Draw_word+0xb4>
+ 768:	c0 0f       	add	r28, r16
+ 76a:	d1 1f       	adc	r29, r17
+void Draw_word(unsigned int d_where,unsigned char page_f, //显示一个字或多个字函数
+    unsigned char page_sum,unsigned char column_f,unsigned char column_sum )//x*8
+{//参数：指向字首地址，起始页，占多少页，起始列，占多少列
+  unsigned char i,j,page=0xb0;//指向首页命令
+  d_where=d_where*32;
+  for(i=page_f;i<page_sum+page_f;i++)
+ 76c:	6f 5f       	subi	r22, 0xFF	; 255
+ 76e:	86 2f       	mov	r24, r22
+ 770:	90 e0       	ldi	r25, 0x00	; 0
+ 772:	8a 17       	cp	r24, r26
+ 774:	9b 07       	cpc	r25, r27
+ 776:	0c f4       	brge	.+2      	; 0x77a <Draw_word+0xf6>
+ 778:	9d cf       	rjmp	.-198    	; 0x6b4 <Draw_word+0x30>
+      {
+	   SPLC501_SPIwrite(BMP[d_where],1);
+       d_where++;
+	  }
+   }
+}
+ 77a:	df 91       	pop	r29
+ 77c:	cf 91       	pop	r28
+ 77e:	1f 91       	pop	r17
+ 780:	0f 91       	pop	r16
+ 782:	ff 90       	pop	r15
+ 784:	08 95       	ret
+
+00000786 <main>:
+
+//------------------------------------------------------------------------------
+int main(void)
+{
+ 786:	0f 93       	push	r16
+unsigned char i=0;
+ DDRC=0xff;
+ 788:	8f ef       	ldi	r24, 0xFF	; 255
+ 78a:	84 bb       	out	0x14, r24	; 20
+ DDRD=0xff;
+ 78c:	81 bb       	out	0x11, r24	; 17
+
+ LCD_Init();
+ 78e:	0e 94 64 00 	call	0xc8	; 0xc8 <LCD_Init>
+ clrscr(0,8,0,128);
+ 792:	80 e0       	ldi	r24, 0x00	; 0
+ 794:	68 e0       	ldi	r22, 0x08	; 8
+ 796:	40 e0       	ldi	r20, 0x00	; 0
+ 798:	20 e8       	ldi	r18, 0x80	; 128
+ 79a:	0e 94 8d 01 	call	0x31a	; 0x31a <clrscr>
+ Draw_word(0,4,2,24,16);
+ 79e:	80 e0       	ldi	r24, 0x00	; 0
+ 7a0:	90 e0       	ldi	r25, 0x00	; 0
+ 7a2:	64 e0       	ldi	r22, 0x04	; 4
+ 7a4:	42 e0       	ldi	r20, 0x02	; 2
+ 7a6:	28 e1       	ldi	r18, 0x18	; 24
+ 7a8:	00 e1       	ldi	r16, 0x10	; 16
+ 7aa:	0e 94 42 03 	call	0x684	; 0x684 <Draw_word>
+ Draw_word(1,4,2,40,16);
+ 7ae:	81 e0       	ldi	r24, 0x01	; 1
+ 7b0:	90 e0       	ldi	r25, 0x00	; 0
+ 7b2:	64 e0       	ldi	r22, 0x04	; 4
+ 7b4:	42 e0       	ldi	r20, 0x02	; 2
+ 7b6:	28 e2       	ldi	r18, 0x28	; 40
+ 7b8:	0e 94 42 03 	call	0x684	; 0x684 <Draw_word>
+ 7bc:	ff cf       	rjmp	.-2      	; 0x7bc <main+0x36>
+
+000007be <_exit>:
+ 7be:	f8 94       	cli
+
+000007c0 <__stop_program>:
+ 7c0:	ff cf       	rjmp	.-2      	; 0x7c0 <__stop_program>

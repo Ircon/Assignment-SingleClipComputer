@@ -1,0 +1,110 @@
+C51 COMPILER V9.60.0.0   ZZXX2                                                             12/16/2019 13:00:20 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE ZZXX2
+OBJECT MODULE PLACED IN .\Objects\zzxx2.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE zzxx2.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\zzx
+                    -x2.lst) OBJECT(.\Objects\zzxx2.obj)
+
+line level    source
+
+   1          //C??:???????????????
+   2          #include"Hzimo.h"                                                               //字模头文件
+   3          //#include"DS1302.h"                                                    //时钟读写头文件
+   4          //#include"DS18B20.h"                                                   //温度传感器操作头文件
+   5          #include"KS0108.h"                                                      //液晶显示操作头文件
+   6          #include<reg52.h>       
+   7          //#include"keyscan.h"                                                   //?????????
+   8          uchar DT[]=                                                                             //DS1302读写数据缓存
+   9          {       0x00,0x58,0x12,0x16,0x02,0x07,0x14      };
+  10          void fixed_display()                                                    //固定显示(按显示屏幕、页,列,字码,字数定位)
+  11          {
+  12   1              sz_Disp1(2,0,16,num[11],1);                                     //左屏0页第16列显示'-'
+*** WARNING C182 IN LINE 12 OF zzxx2.c: pointer to different objects
+  13   1              sz_Disp1(2,0,40,num[11],1);                                     //左屏0页第40列显示'-'
+*** WARNING C182 IN LINE 13 OF zzxx2.c: pointer to different objects
+  14   1              hz_Disp16(2,2,0,HZ[8],2);                                       //左屏2页第0列显示"星期"
+*** WARNING C182 IN LINE 14 OF zzxx2.c: pointer to different objects
+  15   1              sz_Disp1(2,2,32,num[10],2);                                     //左屏2页第32列填充黑块"■" 2个
+*** WARNING C182 IN LINE 15 OF zzxx2.c: pointer to different objects
+  16   1              sz_Disp1(2,4,16,num[12],1);                                     //左屏4页第16列显示':'
+*** WARNING C182 IN LINE 16 OF zzxx2.c: pointer to different objects
+  17   1              sz_Disp1(2,4,40,num[12],1);                                     //左屏4页第40列显示':'
+*** WARNING C182 IN LINE 17 OF zzxx2.c: pointer to different objects
+  18   1              //hz_Disp16(1,6,0,HZ[10],2);                                    //左屏6页第0列显示"气温"
+  19   1              //hz_Disp16(1,6,48,HZ[0],1);                                    //左屏6页第48列显示"℃"
+  20   1              /*
+  21   1              //hz_Disp16(2,0,0,HZ[18],4);                                    //左屏第一行时间提醒
+  22   1              hz_Disp16(2,0,0,HZ[20],2);                                      //提醒1
+  23   1              sz_Disp1(2,0,34,num[13],1);
+  24   1              hz_Disp16(2,2,0,HZ[20],2);                                      //提醒2
+  25   1              sz_Disp1(2,2,34,num[14],1);
+  26   1              hz_Disp16(2,4,0,HZ[20],2);                                      //提醒3
+  27   1              sz_Disp1(2,4,34,num[15],1);*/
+  28   1      }
+  29          
+  30          void dynamic_display()                                                  //动态显示（随时更新的数值）
+  31          {
+  32   1              sz_Disp1(2,0, 0,num[1],1);                      //左屏0页第 0列显示'年十位'
+*** WARNING C182 IN LINE 32 OF zzxx2.c: pointer to different objects
+  33   1              sz_Disp1(2,0, 8,num[9],1);                      //左屏0页第 8列显示'年个位'
+*** WARNING C182 IN LINE 33 OF zzxx2.c: pointer to different objects
+  34   1              sz_Disp1(2,0,24,num[1],1);                      //左屏0页第24列显示'月十位'
+*** WARNING C182 IN LINE 34 OF zzxx2.c: pointer to different objects
+  35   1              sz_Disp1(2,0,32,num[2],1);                      //左屏0页第32列显示'月个位'
+*** WARNING C182 IN LINE 35 OF zzxx2.c: pointer to different objects
+  36   1              sz_Disp1(2,0,48,num[1],1);                      //左屏0页第48列显示'日十位'
+*** WARNING C182 IN LINE 36 OF zzxx2.c: pointer to different objects
+  37   1              sz_Disp1(2,0,56,num[6],1);                      //左屏0页第56列显示'日个位'
+*** WARNING C182 IN LINE 37 OF zzxx2.c: pointer to different objects
+  38   1              hz_Disp16(2,2,48,HZ[1],1);                              //左屏2页第48列显示"星期值"
+*** WARNING C182 IN LINE 38 OF zzxx2.c: pointer to different objects
+  39   1              
+  40   1              sz_Disp1(2,4, 0,num[1],1);                      //左屏4页第 0列显示'时十位'
+*** WARNING C182 IN LINE 40 OF zzxx2.c: pointer to different objects
+C51 COMPILER V9.60.0.0   ZZXX2                                                             12/16/2019 13:00:20 PAGE 2   
+
+  41   1              sz_Disp1(2,4, 8,num[2],1);                      //左屏4页第 8列显示'时个位'
+*** WARNING C182 IN LINE 41 OF zzxx2.c: pointer to different objects
+  42   1              sz_Disp1(2,4,24,num[1],1);                      //左屏4页第24列显示'分十位'
+*** WARNING C182 IN LINE 42 OF zzxx2.c: pointer to different objects
+  43   1              sz_Disp1(2,4,32,num[2],1);                      //左屏4页第32列显示'分个位'
+*** WARNING C182 IN LINE 43 OF zzxx2.c: pointer to different objects
+  44   1              sz_Disp1(2,4,48,num[3],1);                      //左屏4页第48列显示'秒十位'
+*** WARNING C182 IN LINE 44 OF zzxx2.c: pointer to different objects
+  45   1              sz_Disp1(2,4,56,num[4],1);                      //左屏4页第56列显示'秒个位'
+*** WARNING C182 IN LINE 45 OF zzxx2.c: pointer to different objects
+  46   1              //sz_Disp1(1,6,32,num[],1);                     //左屏6页第32列显示'温度十位'
+  47   1              //sz_Disp1(1,6,40,num[6],1);                    //左屏6页第40列显示'温度个位'
+  48   1              
+  49   1      }
+  50          void delayms(uint tim){
+  51   1              uint x,y;
+  52   1              for(x = 0 ; x < tim ; ++x)
+  53   1                      for(y = 0 ; y < 212 ; ++y);
+  54   1      }
+  55          void main(void)
+  56          {
+  57   1      
+  58   1              init_lcd(0);                                                            //LCD初始化
+  59   1              Clr_Scr(0);                                                                     //清屏
+  60   1              while(1)                                                                        //动态刷新
+  61   1              {
+  62   2                      fixed_display();                                                        //固定显示
+  63   2                      dynamic_display();                                              //动态显示（随时更新的数值）
+  64   2              }
+  65   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    903    ----
+   CONSTANT SIZE    =   1696    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      7      19
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  19 WARNING(S),  0 ERROR(S)

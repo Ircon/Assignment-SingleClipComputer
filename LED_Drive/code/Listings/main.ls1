@@ -1,0 +1,508 @@
+A51 MACRO ASSEMBLER  MAIN                                                                 12/16/2019 19:40:37 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\main.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE .\Objects\main.src PR(.\Listings\main.ls1) EP DEBUG
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; .\Objects\main.SRC generated from: main.c
+                       2     ; COMPILER INVOKED BY:
+                       3     ;        C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRIN
+                             T(.\Listings\main.lst) SRC(.\Objects\main.SRC)
+                       4     
+                       5     $nomod51 
+                       6     
+                       7     NAME    MAIN
+                       8     
+  0080                 9     P0      DATA    080H
+  0090                10     P1      DATA    090H
+  00A0                11     P2      DATA    0A0H
+  00B0                12     P3      DATA    0B0H
+  00B4                13     T0      BIT     0B0H.4
+  00D6                14     AC      BIT     0D0H.6
+  00B5                15     T1      BIT     0B0H.5
+  00AF                16     EA      BIT     0A8H.7
+  00A5                17     LED1    BIT     0A0H.5
+  00A6                18     LED2    BIT     0A0H.6
+  00A7                19     LED3    BIT     0A0H.7
+  00A8                20     IE      DATA    0A8H
+  00A4                21     EN      BIT     0A0H.4
+  00B7                22     RD      BIT     0B0H.7
+  00AC                23     ES      BIT     0A8H.4
+  00B8                24     IP      DATA    0B8H
+  0098                25     RI      BIT     098H.0
+  00B2                26     INT0    BIT     0B0H.2
+  00D7                27     CY      BIT     0D0H.7
+  0099                28     TI      BIT     098H.1
+  00B3                29     INT1    BIT     0B0H.3
+  00BC                30     PS      BIT     0B8H.4
+  0081                31     SP      DATA    081H
+  00A3                32     RS      BIT     0A0H.3
+  00D2                33     OV      BIT     0D0H.2
+  00A2                34     RW      BIT     0A0H.2
+  00B6                35     WR      BIT     0B0H.6
+  0099                36     SBUF    DATA    099H
+  0087                37     PCON    DATA    087H
+  0098                38     SCON    DATA    098H
+  0089                39     TMOD    DATA    089H
+  0088                40     TCON    DATA    088H
+  0089                41     IE0     BIT     088H.1
+  008B                42     IE1     BIT     088H.3
+  00F0                43     B       DATA    0F0H
+  00A0                44     CS1     BIT     0A0H.0
+  00E0                45     ACC     DATA    0E0H
+  00A1                46     CS2     BIT     0A0H.1
+  00A9                47     ET0     BIT     0A8H.1
+  00AB                48     ET1     BIT     0A8H.3
+  008D                49     TF0     BIT     088H.5
+  008F                50     TF1     BIT     088H.7
+  009A                51     RB8     BIT     098H.2
+  008C                52     TH0     DATA    08CH
+  00A8                53     EX0     BIT     0A8H.0
+  0088                54     IT0     BIT     088H.0
+  008D                55     TH1     DATA    08DH
+  009B                56     TB8     BIT     098H.3
+  00AA                57     EX1     BIT     0A8H.2
+A51 MACRO ASSEMBLER  MAIN                                                                 12/16/2019 19:40:37 PAGE     2
+
+  008A                58     IT1     BIT     088H.2
+  00D0                59     P       BIT     0D0H.0
+  009F                60     SM0     BIT     098H.7
+  008A                61     TL0     DATA    08AH
+  009E                62     SM1     BIT     098H.6
+  008B                63     TL1     DATA    08BH
+  009D                64     SM2     BIT     098H.5
+  00B9                65     PT0     BIT     0B8H.1
+  00BB                66     PT1     BIT     0B8H.3
+  00D3                67     RS0     BIT     0D0H.3
+  008C                68     TR0     BIT     088H.4
+  00D4                69     RS1     BIT     0D0H.4
+  008E                70     TR1     BIT     088H.6
+  00B8                71     PX0     BIT     0B8H.0
+  00BA                72     PX1     BIT     0B8H.2
+  0083                73     DPH     DATA    083H
+  0082                74     DPL     DATA    082H
+  009C                75     REN     BIT     098H.4
+  00B0                76     RXD     BIT     0B0H.0
+  00B1                77     TXD     BIT     0B0H.1
+  00D5                78     F0      BIT     0D0H.5
+  00D0                79     PSW     DATA    0D0H
+                      80     ?PR?_select_side?MAIN                    SEGMENT CODE 
+                      81     ?PR?wait_busy?MAIN   SEGMENT CODE 
+                      82     ?PR?_writ_com?MAIN   SEGMENT CODE 
+                      83     ?PR?_writ_data?MAIN  SEGMENT CODE 
+                      84     ?PR?clr_view?MAIN    SEGMENT CODE 
+                      85     ?DT?clr_view?MAIN    SEGMENT DATA OVERLAYABLE 
+                      86     ?PR?lcd_init?MAIN    SEGMENT CODE 
+                      87     ?PR?main?MAIN        SEGMENT CODE 
+                      88             EXTRN   CODE (?C_STARTUP)
+                      89             PUBLIC  main
+                      90             PUBLIC  lcd_init
+                      91             PUBLIC  clr_view
+                      92             PUBLIC  _writ_data
+                      93             PUBLIC  _writ_com
+                      94             PUBLIC  wait_busy
+                      95             PUBLIC  _select_side
+                      96     
+----                  97             RSEG  ?DT?clr_view?MAIN
+0000                  98     ?clr_view?BYTE:
+0000                  99               i?447:   DS   1
+0001                 100             ORG  1
+0001                 101               j?448:   DS   1
+0002                 102             ORG  2
+0002                 103               z?449:   DS   1
+                     104     ; #include <reg51.h>
+                     105     ; 
+                     106     ; typedef unsigned int uint;
+                     107     ; typedef unsigned char uchar;
+                     108     ; 
+                     109     ; #define DATA (P0)
+                     110     ; sbit CS1 = P2 ^ 0;
+                     111     ; sbit CS2 = P2 ^ 1;
+                     112     ; sbit RW = P2 ^ 2;
+                     113     ; sbit RS = P2 ^ 3;
+                     114     ; sbit EN = P2 ^ 4;
+                     115     ; 
+                     116     ; sbit LED1 = P2 ^ 5;
+                     117     ; sbit LED2 = P2 ^ 6;
+                     118     ; sbit LED3 = P2 ^ 7;
+                     119     ; 
+                     120     ; void select_side (uchar buf){
+                     121     
+----                 122             RSEG  ?PR?_select_side?MAIN
+0000                 123     _select_side:
+A51 MACRO ASSEMBLER  MAIN                                                                 12/16/2019 19:40:37 PAGE     3
+
+                     124                             ; SOURCE LINE # 17
+                     125     ;---- Variable 'buf?040' assigned to Register 'R7' ----
+                     126     ;       if(buf & 1){
+                     127                             ; SOURCE LINE # 18
+0000 EF              128             MOV     A,R7
+0001 30E004          129             JNB     ACC.0,?C0001
+                     130     ;               CS1 = 0;
+                     131                             ; SOURCE LINE # 19
+0004 C2A0            132             CLR     CS1
+                     133     ;       }else{
+                     134                             ; SOURCE LINE # 20
+0006 8002            135             SJMP    ?C0002
+0008                 136     ?C0001:
+                     137     ;               CS1 = 1;
+                     138                             ; SOURCE LINE # 21
+0008 D2A0            139             SETB    CS1
+                     140     ;       }
+                     141                             ; SOURCE LINE # 22
+000A                 142     ?C0002:
+                     143     ;       
+                     144     ;       if(buf & (uchar)2){
+                     145                             ; SOURCE LINE # 24
+000A EF              146             MOV     A,R7
+000B 30E103          147             JNB     ACC.1,?C0003
+                     148     ;               CS2 = 0;
+                     149                             ; SOURCE LINE # 25
+000E C2A1            150             CLR     CS2
+                     151     ;       }else{
+                     152                             ; SOURCE LINE # 26
+0010 22              153             RET     
+0011                 154     ?C0003:
+                     155     ;               CS2 = 1;
+                     156                             ; SOURCE LINE # 27
+0011 D2A1            157             SETB    CS2
+                     158     ;       }
+                     159                             ; SOURCE LINE # 28
+                     160     ; }
+                     161                             ; SOURCE LINE # 29
+0013                 162     ?C0005:
+0013 22              163             RET     
+                     164     ; END OF _select_side
+                     165     
+                     166     ; void wait_busy(){ // ?
+                     167     
+----                 168             RSEG  ?PR?wait_busy?MAIN
+0000                 169     wait_busy:
+                     170             USING   0
+                     171                             ; SOURCE LINE # 30
+                     172     ;       uchar buf;
+                     173     ;       RS = 0;
+                     174                             ; SOURCE LINE # 32
+0000 C2A3            175             CLR     RS
+                     176     ;       RW = 1;
+                     177                             ; SOURCE LINE # 33
+0002 D2A2            178             SETB    RW
+                     179     ;       LED2 = 0;
+                     180                             ; SOURCE LINE # 34
+0004 C2A6            181             CLR     LED2
+0006                 182     ?C0008:
+                     183     ;       //return;
+                     184     ;       do{
+                     185                             ; SOURCE LINE # 36
+                     186     ;               DATA = 0x00; // ?
+                     187                             ; SOURCE LINE # 37
+0006 E4              188             CLR     A
+0007 F580            189             MOV     P0,A
+A51 MACRO ASSEMBLER  MAIN                                                                 12/16/2019 19:40:37 PAGE     4
+
+                     190     ;               EN = 1;
+                     191                             ; SOURCE LINE # 38
+0009 D2A4            192             SETB    EN
+                     193     ;               EN = 0;
+                     194                             ; SOURCE LINE # 39
+000B C2A4            195             CLR     EN
+                     196     ;               
+                     197     ;               buf = DATA;
+                     198                             ; SOURCE LINE # 41
+                     199     ;---- Variable 'buf?141' assigned to Register 'R7' ----
+000D AF80            200             MOV     R7,P0
+                     201     ;               P1 = DATA;
+                     202                             ; SOURCE LINE # 42
+000F 858090          203             MOV     P1,P0
+                     204     ;       }while(buf & 0x80);
+                     205                             ; SOURCE LINE # 43
+0012 EF              206             MOV     A,R7
+0013 20E7F0          207             JB      ACC.7,?C0008
+                     208     ;       LED1 = 0;
+                     209                             ; SOURCE LINE # 44
+0016 C2A5            210             CLR     LED1
+                     211     ; }
+                     212                             ; SOURCE LINE # 45
+0018 22              213             RET     
+                     214     ; END OF wait_busy
+                     215     
+                     216     ; void writ_com(uchar com){
+                     217     
+----                 218             RSEG  ?PR?_writ_com?MAIN
+0000                 219     _writ_com:
+                     220             USING   0
+                     221                             ; SOURCE LINE # 46
+                     222     ;---- Variable 'com?242' assigned to Register 'R6' ----
+0000 AE07            223             MOV     R6,AR7
+                     224     ;       wait_busy();
+                     225                             ; SOURCE LINE # 47
+0002 120000   F      226             LCALL   wait_busy
+                     227     ;       
+                     228     ;       RS = 0;
+                     229                             ; SOURCE LINE # 49
+0005 C2A3            230             CLR     RS
+                     231     ;       RW = 0;
+                     232                             ; SOURCE LINE # 50
+0007 C2A2            233             CLR     RW
+                     234     ;       DATA = com;
+                     235                             ; SOURCE LINE # 51
+0009 8E80            236             MOV     P0,R6
+                     237     ;       EN = 1;
+                     238                             ; SOURCE LINE # 52
+000B D2A4            239             SETB    EN
+                     240     ;       EN = 0;
+                     241                             ; SOURCE LINE # 53
+000D C2A4            242             CLR     EN
+                     243     ; }
+                     244                             ; SOURCE LINE # 54
+000F 22              245             RET     
+                     246     ; END OF _writ_com
+                     247     
+                     248     ; void writ_data(uchar info){
+                     249     
+----                 250             RSEG  ?PR?_writ_data?MAIN
+0000                 251     _writ_data:
+                     252             USING   0
+                     253                             ; SOURCE LINE # 55
+                     254     ;---- Variable 'info?343' assigned to Register 'R6' ----
+0000 AE07            255             MOV     R6,AR7
+A51 MACRO ASSEMBLER  MAIN                                                                 12/16/2019 19:40:37 PAGE     5
+
+                     256     ;       wait_busy();
+                     257                             ; SOURCE LINE # 56
+0002 120000   F      258             LCALL   wait_busy
+                     259     ;       RS = 1;
+                     260                             ; SOURCE LINE # 57
+0005 D2A3            261             SETB    RS
+                     262     ;       RW = 0;
+                     263                             ; SOURCE LINE # 58
+0007 C2A2            264             CLR     RW
+                     265     ;       DATA = info;
+                     266                             ; SOURCE LINE # 59
+0009 8E80            267             MOV     P0,R6
+                     268     ;       EN = 1;
+                     269                             ; SOURCE LINE # 60
+000B D2A4            270             SETB    EN
+                     271     ;       EN = 0;
+                     272                             ; SOURCE LINE # 61
+000D C2A4            273             CLR     EN
+                     274     ; }
+                     275                             ; SOURCE LINE # 62
+000F 22              276             RET     
+                     277     ; END OF _writ_data
+                     278     
+                     279     ; void clr_view(){
+                     280     
+----                 281             RSEG  ?PR?clr_view?MAIN
+0000                 282     clr_view:
+                     283             USING   0
+                     284                             ; SOURCE LINE # 63
+                     285     ; 
+                     286     ;       uchar YE = 0xb8; // < 8
+                     287                             ; SOURCE LINE # 65
+                     288     ;---- Variable 'YE?444' assigned to Register 'R6' ----
+0000 7EB8            289             MOV     R6,#0B8H
+                     290     ;       uchar LIE = 0x40; // < 64
+                     291                             ; SOURCE LINE # 66
+                     292     ;---- Variable 'LIE?445' assigned to Register 'R5' ----
+0002 7D40            293             MOV     R5,#040H
+                     294     ;       uchar play = 0x00;
+                     295                             ; SOURCE LINE # 67
+                     296     ;---- Variable 'play?446' assigned to Register 'R4' ----
+0004 E4              297             CLR     A
+0005 FC              298             MOV     R4,A
+                     299     ;       uchar i,j,z;
+                     300     ;       select_side(3);
+                     301                             ; SOURCE LINE # 69
+0006 7F03            302             MOV     R7,#03H
+0008 120000   F      303             LCALL   _select_side
+                     304     ;       /*
+                     305     ;       for(i = 0 ; i < 8 ; ++i){
+                     306     ;               writ_com(YE | i);
+                     307     ;               for(j = 0 ; j < 64 ; ++j){
+                     308     ; 
+                     309     ;                       
+                     310     ;                       writ_com(LIE | j);
+                     311     ;                       writ_data(play);
+                     312     ;                       //for(z = 0 ; z < 16 ; ++z)
+                     313     ;                               //writ_data(play);
+                     314     ;                       
+                     315     ;                       
+                     316     ;               }
+                     317     ;       }*/
+                     318     ;       writ_com(YE | 0);
+                     319                             ; SOURCE LINE # 84
+000B 7FB8            320             MOV     R7,#0B8H
+000D 120000   F      321             LCALL   _writ_com
+A51 MACRO ASSEMBLER  MAIN                                                                 12/16/2019 19:40:37 PAGE     6
+
+                     322     ;       writ_com(LIE | 32);
+                     323                             ; SOURCE LINE # 85
+0010 ED              324             MOV     A,R5
+0011 4420            325             ORL     A,#020H
+0013 FF              326             MOV     R7,A
+0014 120000   F      327             LCALL   _writ_com
+                     328     ;       writ_data(play);
+                     329                             ; SOURCE LINE # 86
+0017 7F00            330             MOV     R7,#00H
+0019 020000   F      331             LJMP    _writ_data
+                     332     ; END OF clr_view
+                     333     
+                     334     ;       //for(z = 0 ; z < 64 ; ++z)
+                     335     ;               
+                     336     ; }
+                     337     ; 
+                     338     ; void lcd_init(){
+                     339     
+----                 340             RSEG  ?PR?lcd_init?MAIN
+0000                 341     lcd_init:
+                     342             USING   0
+                     343                             ; SOURCE LINE # 91
+                     344     ;       
+                     345     ;       writ_com(0x3f);
+                     346                             ; SOURCE LINE # 93
+0000 7F3F            347             MOV     R7,#03FH
+0002 120000   F      348             LCALL   _writ_com
+                     349     ;       writ_com(0xc0);
+                     350                             ; SOURCE LINE # 94
+0005 7FC0            351             MOV     R7,#0C0H
+0007 020000   F      352             LJMP    _writ_com
+                     353     ; END OF lcd_init
+                     354     
+                     355     ; }
+                     356     ; void main(void){
+                     357     
+----                 358             RSEG  ?PR?main?MAIN
+0000                 359     main:
+                     360             USING   0
+                     361                             ; SOURCE LINE # 96
+                     362     ;       lcd_init();
+                     363                             ; SOURCE LINE # 97
+0000 120000   F      364             LCALL   lcd_init
+                     365     ;       clr_view();
+                     366                             ; SOURCE LINE # 98
+0003 120000   F      367             LCALL   clr_view
+0006                 368     ?C0014:
+                     369     ;       while(1){}
+                     370                             ; SOURCE LINE # 99
+0006 80FE            371             SJMP    ?C0014
+                     372     ; END OF main
+                     373     
+                     374             END
+A51 MACRO ASSEMBLER  MAIN                                                                 12/16/2019 19:40:37 PAGE     7
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E                T Y P E  V A L U E   ATTRIBUTES
+
+?C0001. . . . . . . .  C ADDR   0008H   R   SEG=?PR?_SELECT_SIDE?MAIN
+?C0002. . . . . . . .  C ADDR   000AH   R   SEG=?PR?_SELECT_SIDE?MAIN
+?C0003. . . . . . . .  C ADDR   0011H   R   SEG=?PR?_SELECT_SIDE?MAIN
+?C0005. . . . . . . .  C ADDR   0013H   R   SEG=?PR?_SELECT_SIDE?MAIN
+?C0008. . . . . . . .  C ADDR   0006H   R   SEG=?PR?WAIT_BUSY?MAIN
+?C0014. . . . . . . .  C ADDR   0006H   R   SEG=?PR?MAIN?MAIN
+?CLR_VIEW?BYTE. . . .  D ADDR   0000H   R   SEG=?DT?CLR_VIEW?MAIN
+?C_STARTUP. . . . . .  C ADDR   -----       EXT
+?DT?CLR_VIEW?MAIN . .  D SEG    0003H       REL=UNIT
+?PR?CLR_VIEW?MAIN . .  C SEG    001CH       REL=UNIT
+?PR?LCD_INIT?MAIN . .  C SEG    000AH       REL=UNIT
+?PR?MAIN?MAIN . . . .  C SEG    0008H       REL=UNIT
+?PR?WAIT_BUSY?MAIN. .  C SEG    0019H       REL=UNIT
+?PR?_SELECT_SIDE?MAIN  C SEG    0014H       REL=UNIT
+?PR?_WRIT_COM?MAIN. .  C SEG    0010H       REL=UNIT
+?PR?_WRIT_DATA?MAIN .  C SEG    0010H       REL=UNIT
+AC. . . . . . . . . .  B ADDR   00D0H.6 A   
+ACC . . . . . . . . .  D ADDR   00E0H   A   
+AR7 . . . . . . . . .  D ADDR   0007H   A   
+B . . . . . . . . . .  D ADDR   00F0H   A   
+CLR_VIEW. . . . . . .  C ADDR   0000H   R   SEG=?PR?CLR_VIEW?MAIN
+CS1 . . . . . . . . .  B ADDR   00A0H.0 A   
+CS2 . . . . . . . . .  B ADDR   00A0H.1 A   
+CY. . . . . . . . . .  B ADDR   00D0H.7 A   
+DPH . . . . . . . . .  D ADDR   0083H   A   
+DPL . . . . . . . . .  D ADDR   0082H   A   
+EA. . . . . . . . . .  B ADDR   00A8H.7 A   
+EN. . . . . . . . . .  B ADDR   00A0H.4 A   
+ES. . . . . . . . . .  B ADDR   00A8H.4 A   
+ET0 . . . . . . . . .  B ADDR   00A8H.1 A   
+ET1 . . . . . . . . .  B ADDR   00A8H.3 A   
+EX0 . . . . . . . . .  B ADDR   00A8H.0 A   
+EX1 . . . . . . . . .  B ADDR   00A8H.2 A   
+F0. . . . . . . . . .  B ADDR   00D0H.5 A   
+I?447 . . . . . . . .  D ADDR   0000H   R   SEG=?DT?CLR_VIEW?MAIN
+IE. . . . . . . . . .  D ADDR   00A8H   A   
+IE0 . . . . . . . . .  B ADDR   0088H.1 A   
+IE1 . . . . . . . . .  B ADDR   0088H.3 A   
+INT0. . . . . . . . .  B ADDR   00B0H.2 A   
+INT1. . . . . . . . .  B ADDR   00B0H.3 A   
+IP. . . . . . . . . .  D ADDR   00B8H   A   
+IT0 . . . . . . . . .  B ADDR   0088H.0 A   
+IT1 . . . . . . . . .  B ADDR   0088H.2 A   
+J?448 . . . . . . . .  D ADDR   0001H   R   SEG=?DT?CLR_VIEW?MAIN
+LCD_INIT. . . . . . .  C ADDR   0000H   R   SEG=?PR?LCD_INIT?MAIN
+LED1. . . . . . . . .  B ADDR   00A0H.5 A   
+LED2. . . . . . . . .  B ADDR   00A0H.6 A   
+LED3. . . . . . . . .  B ADDR   00A0H.7 A   
+MAIN. . . . . . . . .  C ADDR   0000H   R   SEG=?PR?MAIN?MAIN
+OV. . . . . . . . . .  B ADDR   00D0H.2 A   
+P . . . . . . . . . .  B ADDR   00D0H.0 A   
+P0. . . . . . . . . .  D ADDR   0080H   A   
+P1. . . . . . . . . .  D ADDR   0090H   A   
+P2. . . . . . . . . .  D ADDR   00A0H   A   
+P3. . . . . . . . . .  D ADDR   00B0H   A   
+PCON. . . . . . . . .  D ADDR   0087H   A   
+PS. . . . . . . . . .  B ADDR   00B8H.4 A   
+PSW . . . . . . . . .  D ADDR   00D0H   A   
+PT0 . . . . . . . . .  B ADDR   00B8H.1 A   
+PT1 . . . . . . . . .  B ADDR   00B8H.3 A   
+A51 MACRO ASSEMBLER  MAIN                                                                 12/16/2019 19:40:37 PAGE     8
+
+PX0 . . . . . . . . .  B ADDR   00B8H.0 A   
+PX1 . . . . . . . . .  B ADDR   00B8H.2 A   
+RB8 . . . . . . . . .  B ADDR   0098H.2 A   
+RD. . . . . . . . . .  B ADDR   00B0H.7 A   
+REN . . . . . . . . .  B ADDR   0098H.4 A   
+RI. . . . . . . . . .  B ADDR   0098H.0 A   
+RS. . . . . . . . . .  B ADDR   00A0H.3 A   
+RS0 . . . . . . . . .  B ADDR   00D0H.3 A   
+RS1 . . . . . . . . .  B ADDR   00D0H.4 A   
+RW. . . . . . . . . .  B ADDR   00A0H.2 A   
+RXD . . . . . . . . .  B ADDR   00B0H.0 A   
+SBUF. . . . . . . . .  D ADDR   0099H   A   
+SCON. . . . . . . . .  D ADDR   0098H   A   
+SM0 . . . . . . . . .  B ADDR   0098H.7 A   
+SM1 . . . . . . . . .  B ADDR   0098H.6 A   
+SM2 . . . . . . . . .  B ADDR   0098H.5 A   
+SP. . . . . . . . . .  D ADDR   0081H   A   
+T0. . . . . . . . . .  B ADDR   00B0H.4 A   
+T1. . . . . . . . . .  B ADDR   00B0H.5 A   
+TB8 . . . . . . . . .  B ADDR   0098H.3 A   
+TCON. . . . . . . . .  D ADDR   0088H   A   
+TF0 . . . . . . . . .  B ADDR   0088H.5 A   
+TF1 . . . . . . . . .  B ADDR   0088H.7 A   
+TH0 . . . . . . . . .  D ADDR   008CH   A   
+TH1 . . . . . . . . .  D ADDR   008DH   A   
+TI. . . . . . . . . .  B ADDR   0098H.1 A   
+TL0 . . . . . . . . .  D ADDR   008AH   A   
+TL1 . . . . . . . . .  D ADDR   008BH   A   
+TMOD. . . . . . . . .  D ADDR   0089H   A   
+TR0 . . . . . . . . .  B ADDR   0088H.4 A   
+TR1 . . . . . . . . .  B ADDR   0088H.6 A   
+TXD . . . . . . . . .  B ADDR   00B0H.1 A   
+WAIT_BUSY . . . . . .  C ADDR   0000H   R   SEG=?PR?WAIT_BUSY?MAIN
+WR. . . . . . . . . .  B ADDR   00B0H.6 A   
+Z?449 . . . . . . . .  D ADDR   0002H   R   SEG=?DT?CLR_VIEW?MAIN
+_SELECT_SIDE. . . . .  C ADDR   0000H   R   SEG=?PR?_SELECT_SIDE?MAIN
+_WRIT_COM . . . . . .  C ADDR   0000H   R   SEG=?PR?_WRIT_COM?MAIN
+_WRIT_DATA. . . . . .  C ADDR   0000H   R   SEG=?PR?_WRIT_DATA?MAIN
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

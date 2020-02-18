@@ -1,0 +1,436 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              12/19/2019 15:45:24 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+NO OBJECT MODULE REQUESTED
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) SRC(.\Objects\main.SRC)
+
+line level    source
+
+   1          #include <KS0108.h>
+   2          #include <lang.h>
+   3          #include <FONT.h>
+   4          #include <DS1302.h>
+   5          #include <DS18B20.h>
+   6          
+   7          sbit SOUND = P1 ^ 0;
+   8          sbit UP = P1 ^ 2;
+   9          sbit DOWN = P1 ^ 3;
+  10          sbit LEFT = P1 ^ 4;
+  11          sbit RIGHT = P1 ^ 5;
+  12          sbit EXIT = P1 ^ 6;
+  13          sbit LED = P2 ^ 7;
+  14          uchar SWITCH = 0;
+  15          uchar res[7] = {
+  16                  0,29,17,17,12,2,19
+  17          };
+  18          uchar POI = 0;
+  19          uchar LOC[6] = {0,2,3,4,5,6};
+  20          uchar cla_[3][3];
+  21          code uchar XLOC[] = {0,1,2,0,1,2,0,1,2};
+  22          code uchar YLOC[] = {0,0,0,1,1,1,2,2,2};
+  23          code uchar MAX_LOC[] = {24,60,60};
+  24          uchar X_POI = 0;
+  25          uchar Y_POI = 0;
+  26          uchar XY_POI = 0;
+  27          void show_first_word(){
+  28   1      
+  29   1              show_font_16(1,32,3,HanZi_16[0]);
+  30   1              show_font_16(1,48,3,HanZi_16[1]);
+  31   1              show_font_16(2,0,3,HanZi_16[2]);
+  32   1              show_font_16(2,16,3,HanZi_16[3]);
+  33   1              dely_ms(2500);
+  34   1              cls_disy(3);
+  35   1      
+  36   1      }
+  37          
+  38          void show_time(){
+  39   1              uchar buf;
+  40   1              // 第一行
+  41   1              // 年
+  42   1              buf = res[0];
+  43   1              show_font_8(1,8*1,0,NUM[buf%10]);
+  44   1              buf /= 10;
+  45   1              show_font_8(1,8*0,0,NUM[buf%10]);
+  46   1              
+  47   1              show_font_8(1,8*2,0,Sing[1]);
+  48   1              //月
+  49   1              buf = res[2];
+  50   1              show_font_8(1,8*4,0,NUM[buf%10]);
+  51   1              buf /= 10;
+  52   1              show_font_8(1,8*3,0,NUM[buf%10]);
+  53   1              
+  54   1              show_font_8(1,8*5,0,Sing[1]);
+C51 COMPILER V9.60.0.0   MAIN                                                              12/19/2019 15:45:24 PAGE 2   
+
+  55   1              
+  56   1              //日
+  57   1              buf = res[3];
+  58   1              show_font_8(1,8*7,0,NUM[buf%10]);
+  59   1              buf /= 10;
+  60   1              show_font_8(1,8*6,0,NUM[buf%10]);
+  61   1              
+  62   1              //第二行
+  63   1              // 时
+  64   1              buf = res[4];
+  65   1              show_font_8(1,8*1,2,NUM[buf%10]);
+  66   1              buf /= 10;
+  67   1              show_font_8(1,8*0,2,NUM[buf%10]);
+  68   1              
+  69   1              show_font_8(1,8*2,2,Sing[0]);
+  70   1              //分
+  71   1              buf = res[5];
+  72   1              show_font_8(1,8*4,2,NUM[buf%10]);
+  73   1              buf /= 10;
+  74   1              show_font_8(1,8*3,2,NUM[buf%10]);
+  75   1              
+  76   1              show_font_8(1,8*5,2,Sing[0]);
+  77   1              
+  78   1              //秒
+  79   1              buf = res[6];
+  80   1              show_font_8(1,8*7,2,NUM[buf%10]);
+  81   1              buf /= 10;
+  82   1              show_font_8(1,8*6,2,NUM[buf%10]);
+  83   1              
+  84   1              //第三行
+  85   1              buf = res[1];
+  86   1              show_font_16(1,0,4,HanZi_16[4]);
+  87   1              show_font_16(1,16,4,HanZi_16[5]);
+  88   1              show_font_16(1,16*2,4,HZ_Num[buf]);
+  89   1      }
+  90          
+  91          void show_del(){
+  92   1              uchar buf;
+  93   1              //第一行
+  94   1              // 时
+  95   1              buf = cla_[0][0];
+  96   1              show_font_8f(2,8*1,0,NUM[buf%10],(X_POI == 0 && Y_POI == 0));
+  97   1              buf /= 10;
+  98   1              show_font_8f(2,8*0,0,NUM[buf%10],(X_POI == 0 && Y_POI == 0));
+  99   1              
+ 100   1              show_font_8(2,8*2,0,Sing[0]);
+ 101   1              //分
+ 102   1              buf = cla_[0][1];
+ 103   1              show_font_8f(2,8*4,0,NUM[buf%10],(X_POI == 1 && Y_POI == 0));
+ 104   1              buf /= 10;
+ 105   1              show_font_8f(2,8*3,0,NUM[buf%10],(X_POI == 1 && Y_POI == 0));
+ 106   1              
+ 107   1              show_font_8(2,8*5,0,Sing[0]);
+ 108   1              
+ 109   1              //秒
+ 110   1              buf = cla_[0][2];
+ 111   1              show_font_8f(2,8*7,0,NUM[buf%10],(X_POI == 2 && Y_POI == 0));
+ 112   1              buf /= 10;
+ 113   1              show_font_8f(2,8*6,0,NUM[buf%10],(X_POI == 2 && Y_POI == 0));   
+ 114   1              
+ 115   1              //第二行
+ 116   1              // 时
+C51 COMPILER V9.60.0.0   MAIN                                                              12/19/2019 15:45:24 PAGE 3   
+
+ 117   1              buf = cla_[1][0];
+ 118   1              show_font_8f(2,8*1,2,NUM[buf%10],(X_POI == 0 && Y_POI == 1));
+ 119   1              buf /= 10;
+ 120   1              show_font_8f(2,8*0,2,NUM[buf%10],(X_POI == 0 && Y_POI == 1));
+ 121   1              
+ 122   1              show_font_8(2,8*2,2,Sing[0]);
+ 123   1              //分
+ 124   1              buf = cla_[1][1];
+ 125   1              show_font_8f(2,8*4,2,NUM[buf%10],(X_POI == 1 && Y_POI == 1));
+ 126   1              buf /= 10;
+ 127   1              show_font_8f(2,8*3,2,NUM[buf%10],(X_POI == 1 && Y_POI == 1));
+ 128   1              
+ 129   1              show_font_8(2,8*5,2,Sing[0]);
+ 130   1              
+ 131   1              //秒
+ 132   1              buf = cla_[1][2];
+ 133   1              show_font_8f(2,8*7,2,NUM[buf%10],(X_POI == 2 && Y_POI == 1));
+ 134   1              buf /= 10;
+ 135   1              show_font_8f(2,8*6,2,NUM[buf%10],(X_POI == 2 && Y_POI == 1));
+ 136   1              
+ 137   1              //第二行
+ 138   1              // 时
+ 139   1              buf = cla_[2][0];
+ 140   1              show_font_8f(2,8*1,4,NUM[buf%10],(X_POI == 0 && Y_POI == 2));
+ 141   1              buf /= 10;
+ 142   1              show_font_8f(2,8*0,4,NUM[buf%10],(X_POI == 0 && Y_POI == 2));
+ 143   1              
+ 144   1              show_font_8(2,8*2,4,Sing[0]);
+ 145   1              //分
+ 146   1              buf = cla_[2][1];
+ 147   1              show_font_8f(2,8*4,4,NUM[buf%10],(X_POI == 1 && Y_POI == 2));
+ 148   1              buf /= 10;
+ 149   1              show_font_8f(2,8*3,4,NUM[buf%10],(X_POI == 1 && Y_POI == 2));
+ 150   1              
+ 151   1              show_font_8(2,8*5,4,Sing[0]);
+ 152   1              
+ 153   1              //秒
+ 154   1              buf = cla_[2][2];
+ 155   1              show_font_8f(2,8*7,4,NUM[buf%10],(X_POI == 2 && Y_POI == 2));
+ 156   1              buf /= 10;
+ 157   1              show_font_8f(2,8*6,4,NUM[buf%10],(X_POI == 2 && Y_POI == 2));
+ 158   1              
+ 159   1      }
+ 160          void drmatic_display(){
+ 161   1              show_time();
+ 162   1              show_del();
+ 163   1      }
+ 164          
+ 165          uchar on_time(){
+ 166   1              uchar ans,x;
+ 167   1              ans = 0;
+ 168   1              for(x = 0 ; x < 3 ; ++x){
+ 169   2                      if(
+ 170   2                              (cla_[x][0] == res[2]) &&
+ 171   2                              cla_[x][1] == res[1] &&
+ 172   2                              cla_[x][2] == res[0]
+ 173   2                      ){
+ 174   3                              ans = 1;
+ 175   3                              break;
+ 176   3                      }
+ 177   2              }
+ 178   1              return ans;
+C51 COMPILER V9.60.0.0   MAIN                                                              12/19/2019 15:45:24 PAGE 4   
+
+ 179   1      }
+ 180          uint last_val = 0;
+ 181          void show_temper(){
+ 182   1              
+ 183   1              uint te = ReadTemperature();
+ 184   1              
+ 185   1              if(last_val == te) return;
+ 186   1              last_val = te;
+ 187   1              show_font_16(1,16*0,6,HanZi_16[6]);
+ 188   1              show_font_16(1,16*1,6,HanZi_16[7]);
+ 189   1              show_font_16(1,16*2,6,HanZi_16[8]);
+ 190   1              
+ 191   1              show_font_8(1,16*2,6,NUM[te/10]);
+ 192   1              show_font_8(1,16*2+8,6,NUM[te%10]);
+ 193   1              
+ 194   1              show_font_16(1,16*2+8+8,6,HanZi_16[9]);
+ 195   1      }
+ 196          
+ 197          
+ 198          
+ 199          void set_view(uchar opt){
+ 200   1              uchar buf;
+ 201   1              
+ 202   1              
+ 203   1              if(opt != 0)
+ 204   1              {
+ 205   2                      if(opt == 1){
+ 206   3                              ++res[LOC[POI]];
+ 207   3                      }else if(opt == 2){
+ 208   3                              --res[LOC[POI]];
+ 209   3                      }else if(opt == 3){
+ 210   3                              POI = (POI + 5) % 6;
+ 211   3                      }else if(opt == 4){
+ 212   3                              POI = (POI + 1) % 6;
+ 213   3                      }
+ 214   2                      if(POI == 1){
+ 215   3                              if(res[LOC[POI]] == 0) res[LOC[POI]] = 12;
+ 216   3                              else if(res[LOC[POI]] > 12) res[LOC[POI]] = 1;
+ 217   3                      }else if(POI == 2){
+ 218   3                              if(res[LOC[POI]] == 0) res[LOC[POI]] = 30;
+ 219   3                              else if(res[LOC[POI]] > 30) res[LOC[POI]] = 1;
+ 220   3                      }else if(POI == 3){
+ 221   3                              if(res[LOC[POI]] == 0) res[LOC[POI]] = 24;
+ 222   3                              else if(res[LOC[POI]] > 24) res[LOC[POI]] = 1;
+ 223   3                      }else if(POI == 4){
+ 224   3                              if(res[LOC[POI]] == 0) res[LOC[POI]] = 60;
+ 225   3                              else if(res[LOC[POI]] > 60) res[LOC[POI]] = 1;
+ 226   3                      }else if(POI == 5){
+ 227   3                              if(res[LOC[POI]] == 0) res[LOC[POI]] = 60;
+ 228   3                              else if(res[LOC[POI]] > 60) res[LOC[POI]] = 1;
+ 229   3                      }
+ 230   2                      cls_disy(3);
+ 231   2              }
+ 232   1              
+ 233   1              if(POI < 3){
+ 234   2                      show_font_16(1,16*POI,0,HanZi_16[10]);
+ 235   2              }else{
+ 236   2                      show_font_16(2,16*(POI-3),0,HanZi_16[10]);
+ 237   2              }
+ 238   1              
+ 239   1              // 年 月 日 时 分 秒
+ 240   1              show_font_16(1,16*0,2,RiZi[0]);
+C51 COMPILER V9.60.0.0   MAIN                                                              12/19/2019 15:45:24 PAGE 5   
+
+ 241   1              show_font_16(1,16*1,2,RiZi[1]);
+ 242   1              show_font_16(1,16*2,2,RiZi[2]);
+ 243   1              show_font_16(2,16*0,2,RiZi[3]);
+ 244   1              show_font_16(2,16*1,2,RiZi[4]);
+ 245   1              show_font_16(2,16*2,2,RiZi[5]);
+ 246   1              
+ 247   1              
+ 248   1              // 第一行
+ 249   1              // 年
+ 250   1              buf = res[0];
+ 251   1              show_font_8(1,8*1,4,NUM[buf%10]);
+ 252   1              buf /= 10;
+ 253   1              show_font_8(1,8*0,4,NUM[buf%10]);
+ 254   1              
+ 255   1              
+ 256   1              //月
+ 257   1              buf = res[2];
+ 258   1              show_font_8(1,8*3,4,NUM[buf%10]);
+ 259   1              buf /= 10;
+ 260   1              show_font_8(1,8*2,4,NUM[buf%10]);
+ 261   1              
+ 262   1              
+ 263   1              //日
+ 264   1              buf = res[3];
+ 265   1              show_font_8(1,8*5,4,NUM[buf%10]);
+ 266   1              buf /= 10;
+ 267   1              show_font_8(1,8*4,4,NUM[buf%10]);
+ 268   1              
+ 269   1              //第二行
+ 270   1              // 时
+ 271   1              buf = res[4];
+ 272   1              show_font_8(2,8*1,4,NUM[buf%10]);
+ 273   1              buf /= 10;
+ 274   1              show_font_8(2,8*0,4,NUM[buf%10]);
+ 275   1              
+ 276   1              //分
+ 277   1              buf = res[5];
+ 278   1              show_font_8(2,8*3,4,NUM[buf%10]);
+ 279   1              buf /= 10;
+ 280   1              show_font_8(2,8*2,4,NUM[buf%10]);
+ 281   1              
+ 282   1              
+ 283   1              //秒
+ 284   1              buf = res[6];
+ 285   1              show_font_8(2,8*5,4,NUM[buf%10]);
+ 286   1              buf /= 10;
+ 287   1              show_font_8(2,8*4,4,NUM[buf%10]);
+ 288   1      }
+ 289          
+ 290          
+ 291          
+ 292          void key_scan(){
+ 293   1              LED = 0;
+ 294   1              if(UP == 0 || DOWN == 0 || LEFT == 0 || RIGHT == 0){
+ 295   2                      dely_ms(50);
+ 296   2                      if(UP == 0 || DOWN == 0 || LEFT == 0 || RIGHT == 0){
+ 297   3                              if(UP == 0){
+ 298   4                                      cla_[Y_POI][X_POI] =
+ 299   4                                              (cla_[Y_POI][X_POI] + 1) % MAX_LOC[X_POI];
+ 300   4                              }else if(DOWN == 0){
+ 301   4                                      cla_[Y_POI][X_POI] = (cla_[Y_POI][X_POI] + MAX_LOC[X_POI] - 1) % MAX_LOC[X_POI];
+ 302   4                              }else if(LEFT == 0){
+C51 COMPILER V9.60.0.0   MAIN                                                              12/19/2019 15:45:24 PAGE 6   
+
+ 303   4                                      XY_POI = (XY_POI + 8) % 9;
+ 304   4                                      X_POI = XLOC[XY_POI];
+ 305   4                                      Y_POI = YLOC[XY_POI];
+ 306   4                              }else if(RIGHT == 0){
+ 307   4                                      XY_POI = (XY_POI + 1) % 9;
+ 308   4                                      X_POI = XLOC[XY_POI];
+ 309   4                                      Y_POI = YLOC[XY_POI];
+ 310   4                              }
+ 311   3                      }
+ 312   2              }
+ 313   1      }
+ 314          
+ 315          void main(void){
+ 316   1              uchar x= 16,y,z=0,flag;
+ 317   1              uchar buf_time[3];
+ 318   1              int buf;
+ 319   1              
+ 320   1              flag = 0;
+ 321   1              // 初始化 显示器
+ 322   1              select_side(3);
+ 323   1              led_init();     
+ 324   1              show_first_word();
+ 325   1              
+ 326   1              // 中断
+ 327   1              IT0 = 1;        //设置外部中断1的触发方式为下降沿触发。
+ 328   1              EX0 = 1;        //开启外部中断1
+ 329   1              EA = 1;         //中断总开关
+ 330   1              
+ 331   1              while(1){
+ 332   2                      
+ 333   2                      if(SWITCH){
+ 334   3                              if(UP == 0 || DOWN == 0 || LEFT == 0 || RIGHT == 0 || EXIT == 0){
+ 335   4                              
+ 336   4                                      dely_ms(100);
+ 337   4                                      if(UP == 0 || DOWN == 0 || LEFT == 0 || RIGHT == 0 || EXIT == 0){
+ 338   5                                              if(UP == 0)
+ 339   5                                                      set_view(1);
+ 340   5                                              else if(DOWN == 0)
+ 341   5                                                      set_view(2);
+ 342   5                                              else if(LEFT == 0)
+ 343   5                                                      set_view(3);
+ 344   5                                              else if(RIGHT == 0)
+ 345   5                                                      set_view(4);
+ 346   5                                              else if(EXIT == 0){
+ 347   6                                                      SWITCH = 0;
+ 348   6                                                      EA = 1;
+ 349   6                                                      LED = 1;
+ 350   6                                                      last_val = 0;
+ 351   6                                                      // 写日期
+ 352   6                                                      //for(y = 0 ; y < 7 ; ++y)
+ 353   6                                                      //      res[y] = Dec_BCD(res[y]);
+ 354   6                                                      write_time(res);
+ 355   6                                              }
+ 356   5                                      }
+ 357   4                              }else{
+ 358   4                                      set_view(0);
+ 359   4                              }
+ 360   3                              
+ 361   3                      }else{
+ 362   3                              read_time(res);
+ 363   3                              //for(y = 0 ; y < 7 ; ++y)
+ 364   3                                      //res[y] = BCD_Decimal(res[y]);
+C51 COMPILER V9.60.0.0   MAIN                                                              12/19/2019 15:45:24 PAGE 7   
+
+ 365   3                              key_scan();
+ 366   3                              drmatic_display();
+ 367   3                              show_temper();
+ 368   3                              if(on_time()){
+ 369   4                                      flag = 1;
+ 370   4                                      buf_time[2] = res[2];
+ 371   4                                      buf_time[1] = res[1];
+ 372   4                                      buf_time[0] = res[0];
+ 373   4                              }
+ 374   3                              if(flag){
+ 375   4                                      buf = (res[2]*60*60 + res[1]*60 + res[0]) 
+ 376   4                                              - (buf_time[2]*60*60 + buf_time[1]*60 + buf_time[0]);
+ 377   4                                      if(buf<0) buf = -buf;
+ 378   4                                      if(buf <= 5){
+ 379   5                                              SOUND = 0;
+ 380   5                                      }else {
+ 381   5                                              SOUND =1;
+ 382   5                                              flag = 0;
+ 383   5                                      }       
+ 384   4                              }
+ 385   3                              dely_ms(50);
+ 386   3                      }
+ 387   2              }
+ 388   1                      
+ 389   1              return;
+ 390   1      }
+*** WARNING C280 IN LINE 316 OF main.c: 'y': unreferenced local variable
+ 391          
+ 392          
+ 393          void int0_fun(void) interrupt 0 {
+ 394   1              EA = 0;
+ 395   1              set_view(0);
+ 396   1              cls_disy(3);
+ 397   1              LED = 0;
+ 398   1              SWITCH = 1;
+ 399   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   4639    ----
+   CONSTANT SIZE    =   1013    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     29      47
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,188 @@
+                        .module bitmap.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:\ygksb0108\programme2_can_run\bitmap.c
+ 0000                   .dbfunc e lcd_bitmap _lcd_bitmap fV
+ 0000                   .dbstruct 0 4 IMG_DEF
+ 0000                   .dbfield 0 width_in_pixels kc
+ 0000                   .dbfield 1 height_in_pixels kc
+ 0000                   .dbfield 2 char_table pkc
+ 0000                   .dbend
+ 0000           ;         heigth -> y+2
+ 0000           ;              h -> R22
+ 0000           ;          width -> y+1
+ 0000           ;         ptable -> R12,R13
+ 0000           ;        pattern -> R20
+ 0000           ;              w -> R14
+ 0000           ;           mask -> R10
+ 0000           ;           mode -> y+19
+ 0000           ;        img_ptr -> y+17
+ 0000           ;            top -> y+15
+ 0000           ;           left -> y+13
+                        .even
+ 0000           _lcd_bitmap::
+ 0000 0E940000          xcall push_arg4
+ 0004 0E940000          xcall push_gset5
+ 0008 2397              sbiw R28,3
+ 000A                   .dbline -1
+ 000A                   .dbline 13
+ 000A           ; //*****************************************************************
+ 000A           ; //本文件实现了显示位图的基本数据结构和加载位图的函数
+ 000A           ; //                                    ---北京交通大学电气学院 杨罡
+ 000A           ; //*****************************************************************
+ 000A           ; 
+ 000A           ; #include "bitmap.h"
+ 000A           ; 
+ 000A           ; 
+ 000A           ; /* Draws a bitmap into the Framebuffer.
+ 000A           ;    Bitmaps are converted from Windows BMP-Format to 
+ 000A           ;    C-Arrays with the fontgen-tool (see files bmp.h/bmp.c) */
+ 000A           ; void lcd_bitmap( uint8_t left,  uint8_t top, const struct IMG_DEF *img_ptr, uint8_t mode)
+ 000A           ;  { uint8_t width, heigth, h, w, pattern, mask;
+ 000A                   .dbline 16
+ 000A           ;    uint8_t* ptable;
+ 000A           ; 
+ 000A           ;    width  = pgm_read_byte( &(img_ptr->width_in_pixels) );
+ 000A 0989              ldd R16,y+17
+ 000C 1A89              ldd R17,y+18
+ 000E 0E940000          xcall _pgm_read_byte
+ 0012 0983              std y+1,R16
+ 0014                   .dbline 17
+ 0014           ;    heigth = pgm_read_byte( &(img_ptr->height_in_pixels) );
+ 0014 0989              ldd R16,y+17
+ 0016 1A89              ldd R17,y+18
+ 0018 0F5F              subi R16,255  ; offset = 1
+ 001A 1F4F              sbci R17,255
+ 001C 0E940000          xcall _pgm_read_byte
+ 0020 0A83              std y+2,R16
+ 0022                   .dbline 18
+ 0022           ;    ptable  = (uint8_t*) pgm_read_word( (uint16_t*)(&(img_ptr->char_table)) ); 
+ 0022 0989              ldd R16,y+17
+ 0024 1A89              ldd R17,y+18
+ 0026 0E5F              subi R16,254  ; offset = 2
+ 0028 1F4F              sbci R17,255
+ 002A 0E940000          xcall _pgm_read_word
+ 002E 6801              movw R12,R16
+ 0030                   .dbline 21
+ 0030           ;    //ptable  = (uint8_t*) pgm_read_word( &(img_ptr->char_table) ); 
+ 0030           ; 
+ 0030           ;    for ( h=0; h<heigth; h++ ) 
+ 0030 6627              clr R22
+ 0032 28C0              xjmp L5
+ 0034           L2:
+ 0034                   .dbline 22
+ 0034           ;     { mask = 0x80;
+ 0034                   .dbline 22
+ 0034 80E8              ldi R24,128
+ 0036 A82E              mov R10,R24
+ 0038                   .dbline 23
+ 0038           ;       pattern = pgm_read_byte( ptable );
+ 0038 8601              movw R16,R12
+ 003A 0E940000          xcall _pgm_read_byte
+ 003E 402F              mov R20,R16
+ 0040                   .dbline 24
+ 0040           ;       ptable++;
+ 0040 C601              movw R24,R12
+ 0042 0196              adiw R24,1
+ 0044 6C01              movw R12,R24
+ 0046                   .dbline 25
+ 0046           ;       for ( w=0; w<width; w++ ) 
+ 0046 EE24              clr R14
+ 0048 19C0              xjmp L9
+ 004A           L6:
+ 004A                   .dbline 26
+ 004A           ;        { if ( pattern & mask ) 
+ 004A                   .dbline 26
+ 004A 242E              mov R2,R20
+ 004C 2A20              and R2,R10
+ 004E 51F0              breq L10
+ 0050                   .dbline 27
+ 0050           ;             lcd_dot(w+left, h+top, mode);
+ 0050 0B88              ldd R0,y+19
+ 0052 0882              std y+0,R0
+ 0054 262F              mov R18,R22
+ 0056 0F84              ldd R0,y+15
+ 0058 200D              add R18,R0
+ 005A 0E2D              mov R16,R14
+ 005C 0D84              ldd R0,y+13
+ 005E 000D              add R16,R0
+ 0060 0E940000          xcall _lcd_dot
+ 0064           L10:
+ 0064                   .dbline 29
+ 0064           ; 
+ 0064           ;          mask >>= 1;
+ 0064 A694              lsr R10
+ 0066                   .dbline 30
+ 0066           ;          if ( mask == 0 ) 
+ 0066 49F4              brne L12
+ 0068                   .dbline 31
+ 0068           ;           { mask = 0x80;
+ 0068                   .dbline 31
+ 0068 80E8              ldi R24,128
+ 006A A82E              mov R10,R24
+ 006C                   .dbline 32
+ 006C           ;             pattern = pgm_read_byte( ptable );
+ 006C 8601              movw R16,R12
+ 006E 0E940000          xcall _pgm_read_byte
+ 0072 402F              mov R20,R16
+ 0074                   .dbline 33
+ 0074           ;             ptable++;
+ 0074 C601              movw R24,R12
+ 0076 0196              adiw R24,1
+ 0078 6C01              movw R12,R24
+ 007A                   .dbline 34
+ 007A           ;           }
+ 007A           L12:
+ 007A                   .dbline 35
+ 007A           L7:
+ 007A                   .dbline 25
+ 007A E394              inc R14
+ 007C           L9:
+ 007C                   .dbline 25
+ 007C 0980              ldd R0,y+1
+ 007E E014              cp R14,R0
+ 0080 20F3              brlo L6
+ 0082                   .dbline 36
+ 0082           L3:
+ 0082                   .dbline 21
+ 0082 6395              inc R22
+ 0084           L5:
+ 0084                   .dbline 21
+ 0084 0A80              ldd R0,y+2
+ 0086 6015              cp R22,R0
+ 0088 A8F2              brlo L2
+ 008A                   .dbline -2
+ 008A           L1:
+ 008A 2396              adiw R28,3
+ 008C 0E940000          xcall pop_gset5
+ 0090 2496              adiw R28,4
+ 0092                   .dbline 0 ; func end
+ 0092 0895              ret
+ 0094                   .dbsym l heigth 2 c
+ 0094                   .dbsym r h 22 c
+ 0094                   .dbsym l width 1 c
+ 0094                   .dbsym r ptable 12 pc
+ 0094                   .dbsym r pattern 20 c
+ 0094                   .dbsym r w 14 c
+ 0094                   .dbsym r mask 10 c
+ 0094                   .dbsym l mode 19 c
+ 0094                   .dbsym l img_ptr 17 pkS[IMG_DEF]
+ 0094                   .dbsym l top 15 c
+ 0094                   .dbsym l left 13 c
+ 0094                   .dbend
+                        .area lit(rom, con, rel)
+ 0000           _icon1_char_table::
+ 0000 00                .byte 0
+ 0001                   .dbsym e icon1_char_table _icon1_char_table A[1:1]kc
+ 0001           _icon1_bmp::
+ 0001 01                .byte 1
+ 0002 01                .byte 1
+ 0003 0000              .word _icon1_char_table
+ 0005                   .dbsym e icon1_bmp _icon1_bmp kS[IMG_DEF]
+ 0005           _frame_char_table::
+ 0005 00                .byte 0
+ 0006                   .dbsym e frame_char_table _frame_char_table A[1:1]kc
+ 0006           _frame_bmp::
+ 0006 01                .byte 1
+ 0007 01                .byte 1
+ 0008 0500              .word _frame_char_table
+ 000A                   .dbsym e frame_bmp _frame_bmp kS[IMG_DEF]

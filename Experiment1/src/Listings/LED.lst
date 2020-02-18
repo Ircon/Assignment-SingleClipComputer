@@ -1,0 +1,66 @@
+A51 MACRO ASSEMBLER  LED                                                                  11/21/2019 21:33:20 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\LED.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE LED.asm SET(SMALL) DEBUG PRINT(.\Listings\LED.lst) OBJECT(.\Objects\LED
+                      .obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H
+0000 020100            2             LJMP START 
+                       3     
+0100                   4     ORG 0100H
+0100                   5     START:
+0100 74FF              6             MOV A,#0FFH 
+0102 C3                7             CLR C ;状态寄存器的psw的cy位清零
+0103 7C08              8             MOV R4,#08H 
+0105                   9     LOOP1:
+0105 13               10             RRC A
+0106 F590             11             MOV P1,A 
+0108 12011C           12             LCALL DELAY
+010B DCF8             13             DJNZ R4,LOOP1 ;R4-1后，如果为0不转移
+010D 74FF             14             MOV A,#0FFH
+010F C3               15             CLR C
+0110 7C08             16             MOV R4,#08H 
+0112                  17     LOOP2:
+0112 33               18             RLC A
+0113 F590             19             MOV P1,A
+0115 12011C           20             LCALL DELAY
+0118 DCF8             21             DJNZ R4,LOOP2
+011A 80E4             22             JMP START
+                      23     
+011C                  24     DELAY:
+011C 7920             25             MOV R1,#20H
+011E                  26     D0:
+011E 7A00             27             MOV R2,#00H
+0120                  28     D1:
+0120 7B00             29             MOV R3,#00H ;?
+0122 DBFE             30             DJNZ R3,$
+0124 DAFA             31             DJNZ R2,D1
+0126 D9F6             32             DJNZ R1,D0
+0128 22               33             RET
+                      34     
+                      35     END
+A51 MACRO ASSEMBLER  LED                                                                  11/21/2019 21:33:20 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+D0 . . . . . . . .  C ADDR   011EH   A   
+D1 . . . . . . . .  C ADDR   0120H   A   
+DELAY. . . . . . .  C ADDR   011CH   A   
+LOOP1. . . . . . .  C ADDR   0105H   A   
+LOOP2. . . . . . .  C ADDR   0112H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+START. . . . . . .  C ADDR   0100H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

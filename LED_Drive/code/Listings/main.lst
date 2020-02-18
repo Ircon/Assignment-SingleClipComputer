@@ -1,0 +1,129 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              12/16/2019 19:40:37 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+NO OBJECT MODULE REQUESTED
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) SRC(.\Objects\main.SRC)
+
+line level    source
+
+   1          #include <reg51.h>
+   2          
+   3          typedef unsigned int uint;
+   4          typedef unsigned char uchar;
+   5          
+   6          #define DATA (P0)
+   7          sbit CS1 = P2 ^ 0;
+   8          sbit CS2 = P2 ^ 1;
+   9          sbit RW = P2 ^ 2;
+  10          sbit RS = P2 ^ 3;
+  11          sbit EN = P2 ^ 4;
+  12          
+  13          sbit LED1 = P2 ^ 5;
+  14          sbit LED2 = P2 ^ 6;
+  15          sbit LED3 = P2 ^ 7;
+  16          
+  17          void select_side (uchar buf){
+  18   1              if(buf & 1){
+  19   2                      CS1 = 0;
+  20   2              }else{
+  21   2                      CS1 = 1;
+  22   2              }
+  23   1              
+  24   1              if(buf & (uchar)2){
+  25   2                      CS2 = 0;
+  26   2              }else{
+  27   2                      CS2 = 1;
+  28   2              }
+  29   1      }
+  30          void wait_busy(){ // ?
+  31   1              uchar buf;
+  32   1              RS = 0;
+  33   1              RW = 1;
+  34   1              LED2 = 0;
+  35   1              //return;
+  36   1              do{
+  37   2                      DATA = 0x00; // ?
+  38   2                      EN = 1;
+  39   2                      EN = 0;
+  40   2                      
+  41   2                      buf = DATA;
+  42   2                      P1 = DATA;
+  43   2              }while(buf & 0x80);
+  44   1              LED1 = 0;
+  45   1      }
+  46          void writ_com(uchar com){
+  47   1              wait_busy();
+  48   1              
+  49   1              RS = 0;
+  50   1              RW = 0;
+  51   1              DATA = com;
+  52   1              EN = 1;
+  53   1              EN = 0;
+  54   1      }
+C51 COMPILER V9.60.0.0   MAIN                                                              12/16/2019 19:40:37 PAGE 2   
+
+  55          void writ_data(uchar info){
+  56   1              wait_busy();
+  57   1              RS = 1;
+  58   1              RW = 0;
+  59   1              DATA = info;
+  60   1              EN = 1;
+  61   1              EN = 0;
+  62   1      }
+  63          void clr_view(){
+  64   1      
+  65   1              uchar YE = 0xb8; // < 8
+  66   1              uchar LIE = 0x40; // < 64
+  67   1              uchar play = 0x00;
+  68   1              uchar i,j,z;
+  69   1              select_side(3);
+  70   1              /*
+  71   1              for(i = 0 ; i < 8 ; ++i){
+  72   1                      writ_com(YE | i);
+  73   1                      for(j = 0 ; j < 64 ; ++j){
+  74   1      
+  75   1                              
+  76   1                              writ_com(LIE | j);
+  77   1                              writ_data(play);
+  78   1                              //for(z = 0 ; z < 16 ; ++z)
+  79   1                                      //writ_data(play);
+  80   1                              
+  81   1                              
+  82   1                      }
+  83   1              }*/
+  84   1              writ_com(YE | 0);
+  85   1              writ_com(LIE | 32);
+  86   1              writ_data(play);
+  87   1              //for(z = 0 ; z < 64 ; ++z)
+  88   1                      
+  89   1      }
+*** WARNING C280 IN LINE 68 OF main.c: 'i': unreferenced local variable
+*** WARNING C280 IN LINE 68 OF main.c: 'j': unreferenced local variable
+*** WARNING C280 IN LINE 68 OF main.c: 'z': unreferenced local variable
+  90          
+  91          void lcd_init(){
+  92   1              
+  93   1              writ_com(0x3f);
+  94   1              writ_com(0xc0);
+  95   1      }
+  96          void main(void){
+  97   1              lcd_init();
+  98   1              clr_view();
+  99   1              while(1){}
+ 100   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    123    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  3 WARNING(S),  0 ERROR(S)

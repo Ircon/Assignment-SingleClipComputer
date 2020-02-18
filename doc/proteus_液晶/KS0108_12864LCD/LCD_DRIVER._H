@@ -1,0 +1,91 @@
+#ifndef KBS0108_H
+#define KBS0108_H
+
+#include  <iom32v.h>
+#include  "m32macro.h"
+#include  "connection.h"
+//*************************************************
+//definition of lcd instruction
+//*************************************************
+#define DISPLAY_ON              0x3f
+#define DISPLAY_OFF             0x3e
+#define DISPLAY_FIRST_ROW       0x0c0 
+#define LCD_SET_PAGE            0x0b8
+#define LCD_SET_COL             0x40
+//**************************************************
+//definition of constents used
+//**************************************************
+#define  CMD_MODE          0
+#define  DATA_MODE         1
+#define  ENABLE            0
+#define  DISABLE           1
+#define  READ_MODE         1
+#define  WRITE_MODE        0
+#define  BUSY              0
+#define  NOW_DISPLAY_ON    0 
+#define  LEFT              1
+#define  RIGHT             2
+//***************************************************
+//base lcd operation functions
+//***************************************************
+#define LCD_CMD_MODE()     LCDCTRLPORT &= ~(1<<D_I)
+#define LCD_DATA_MODE()    LCDCTRLPORT |=  (1<<D_I)
+#define LCD_E_LOW()        LCDCTRLPORT &= ~(1<<E)
+#define LCD_E_HIGH()       LCDCTRLPORT |=  (1<<E)
+#define LCD_WRITE_MODE()   LCDCTRLPORT &= ~(1<<R_W)
+#define LCD_READ_MODE()    LCDCTRLPORT |=  (1<<R_W)
+#define LCD_LEFT_SELECT()  LCDCTRLPORT &= ~(1<<CS1)
+#define LCD_RIGHT_SELECT() LCDCTRLPORT &= ~(1<<CS2)
+#define LCD_LEFT_STOP()    LCDCTRLPORT |=  (1<<CS1)
+#define LCD_RIGHT_STOP()   LCDCTRLPORT |=  (1<<CS2)
+
+//***************************************************
+/* LCD screen and bitmap image array consants */
+//***************************************************
+#define LCD_X_BYTES		128
+#define LCD_Y_BYTES		8
+#define SCRN_LEFT		0
+#define SCRN_TOP		0
+#define SCRN_RIGHT		127
+#define SCRN_BOTTOM		63
+//***************************************************
+//definition of LED cotrolling functions
+//***************************************************
+void   choose_left_screen(void);   
+void   choose_right_screen(void); 
+void   choose_full_screen(void);  
+void   choose_no_screen(void);     
+
+//***************************************************
+void set_xy(unsigned char x,unsigned char y);
+void write_to_xy(unsigned char x,unsigned char y,unsigned char dat);
+void write_to_lcd(unsigned char dat);
+
+
+//***************************************************
+//base funcitions to operate LED
+//***************************************************
+ void lcd_out_dat_l(  unsigned char dat);
+ void lcd_out_dat_r(  unsigned char dat);
+ void lcd_out_ctl_l( unsigned char cmd);
+ void lcd_out_ctl_r( unsigned char cmd);
+ void lcd_out_ctl( unsigned char cmd,  unsigned char nctrl);
+ void lcd_out_dat( unsigned char dat,  unsigned char nctrl);
+ 
+unsigned char lcd_read_byte( unsigned char x,unsigned char y );
+unsigned char lcd_is_busy( void );//  1 is busy
+void lcd_init(void);
+
+//*****************************************************
+//advanced operation functions
+//*****************************************************
+void write_rect(unsigned char page0,unsigned char y0,
+                unsigned char *dat);//page is y
+				
+void read_rect(unsigned char x0,unsigned char y0,
+               unsigned char x1,unsigned char y1);
+//x0,x1 are  row number, y0 y1 are page's part
+  
+			   				
+//*****************************************************
+#endif

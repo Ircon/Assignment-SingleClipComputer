@@ -1,0 +1,52 @@
+A51 MACRO ASSEMBLER  LED                                                                  11/28/2019 15:56:41 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\led.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE led.a51 SET(SMALL) DEBUG PRINT(.\Listings\led.lst) OBJECT(.\Objects\led
+                      .obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H
+0000 020030            2             LJMP MAIN
+                       3             
+0030                   4     ORG 0030H
+0030                   5     MAIN:
+0030 C290              6             CLR P1.0
+0032 12003D            7             LCALL DELY
+                       8             
+0035 D290              9             SETB P1.0
+0037 12003D           10             LCALL DELY
+                      11             
+003A 020030           12             LJMP MAIN
+                      13             
+003D                  14     DELY:
+003D C0E0             15             PUSH ACC
+003F 74E8             16             MOV A,#1000
+*** ________________________________________^
+*** WARNING #A52 IN 16 (led.a51, LINE 16): VALUE HAS BEEN TRUNCATED TO 8 BITS
+0041                  17     DELY_LOP:
+0041 D5E0FD           18             DJNZ ACC,DELY_LOP
+0044 D0E0             19             POP ACC
+0046 22               20             RET
+                      21     END
+A51 MACRO ASSEMBLER  LED                                                                  11/28/2019 15:56:41 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+DELY . . . . . . .  C ADDR   003DH   A   
+DELY_LOP . . . . .  C ADDR   0041H   A   
+MAIN . . . . . . .  C ADDR   0030H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  1 WARNING(S), 0 ERROR(S)

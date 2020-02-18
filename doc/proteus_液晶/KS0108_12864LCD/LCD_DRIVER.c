@@ -1,0 +1,224 @@
+//**********************************************************
+//本文件实现了用于驱动KS0108B/HD61202的基本常量和
+//函数，用于基本的读写操作（没有实现读的函数，
+//当然你可以自己实现）.
+//              ---北京交通大学电气学院 杨罡 2008.8
+//**********************************************************
+
+#include  "LCD_DRIVER.H"
+
+//***********************************************************
+//if you want it to run on the protues then define this below
+//***********************************************************
+#define debug_protues
+//***********************************************************
+
+void lcd_out_dat_l( unsigned char dat)
+
+{    
+     choose_left_screen();
+     LCD_DATA_MODE();   //D_I = CMD_MODE;
+	 LCD_WRITE_MODE();  //R_W=WRITE_MODE;
+	 LCD_E_HIGH();      //E=1;
+	 DATA_PORT=dat;
+	 _delay_us(2);
+	 LCD_E_LOW();       //E=0;
+	  _delay_us(2);
+}
+
+void lcd_out_dat_r(  unsigned char dat)
+{    
+     choose_right_screen() ;
+     LCD_DATA_MODE();   //D_I = CMD_MODE;
+	 LCD_WRITE_MODE();  //R_W=WRITE_MODE;
+	 LCD_E_HIGH();      //E=1;
+	 DATA_PORT=dat;
+	  _delay_us(2);
+	 LCD_E_LOW();       //E=0;
+	  _delay_us(2);
+}
+void lcd_out_ctl_l( unsigned char cmd)
+{
+     choose_left_screen();
+     LCD_CMD_MODE();    //D_I = CMD_MODE;
+	 LCD_WRITE_MODE();  //R_W=WRITE_MODE;
+	 LCD_E_HIGH();      //E=1;
+	 DATA_PORT=cmd;
+	  _delay_us(2);
+	 LCD_E_LOW();       //E=0;
+      _delay_us(2);
+}
+void lcd_out_ctl_r( unsigned char cmd)
+{    
+     choose_right_screen() ;
+     LCD_CMD_MODE();    //D_I = CMD_MODE;
+	 LCD_WRITE_MODE();  //R_W=WRITE_MODE;
+	 LCD_E_HIGH();      //E=1;
+	 DATA_PORT=cmd;
+	  _delay_us(2);
+	 LCD_E_LOW();       //E=0;
+      _delay_us(2);
+}
+void lcd_out_ctl( unsigned char cmd,  unsigned char nctrl)
+{
+      if(nctrl==1)lcd_out_ctl_l(cmd);
+	  if(nctrl==2)lcd_out_ctl_r(cmd);
+	  if(nctrl==3){
+	                lcd_out_ctl_l(cmd);
+					lcd_out_ctl_r(cmd);
+				   }
+}
+void lcd_out_dat( unsigned char dat,  unsigned char nctrl)
+{
+     if(nctrl==1)lcd_out_dat_l(dat);
+	  if(nctrl==2)lcd_out_dat_r(dat);
+	  if(nctrl==3){
+	               lcd_out_dat_l(dat);
+				   lcd_out_dat_r(dat);
+				  }
+}
+void   choose_left_screen(void)   
+{ 
+   #ifndef debug_protues
+  LCD_LEFT_SELECT();
+  LCD_RIGHT_STOP();
+  #else
+  LCD_LEFT_STOP();
+  LCD_RIGHT_SELECT();
+  #endif
+}
+void   choose_right_screen(void)  
+{
+  #ifndef debug_protues
+  LCD_LEFT_STOP();
+  LCD_RIGHT_SELECT();
+  #else
+  LCD_LEFT_SELECT();
+  LCD_RIGHT_STOP();
+  #endif
+}
+void   choose_full_screen(void)  
+{
+  LCD_LEFT_SELECT();
+  LCD_RIGHT_SELECT();
+}
+void   choose_no_screen(void)     
+{
+   LCD_LEFT_STOP();
+   LCD_RIGHT_STOP();
+}
+
+unsigned char lcd_read_byte( unsigned char x,unsigned char y )
+{
+    /*if(which & 1== 1)
+	{
+	  choose_left_screen();
+	  LCD_CMD_MODE();//D_I=0;
+	  LCD_READ_MODE();//R_W=READ_MODE;
+	  do
+	 {DATA_PORT=0xff;//??????????????????????????????
+	  LCD_E_HIGH():E=1;
+	  tmp=DATA_PORT;
+	  LCD_E_LOW();//E=0;
+	 }while( !(tmp&0x80) );
+	 LCD_DATA_MODE();//D_I=DATA_MODE;
+	 DATA_PORT=0x0ff;
+	 LCD_E_HIGH();//E=1
+	 tmp=DATA_PORT;
+	 LCD_E_LOW()://E=0;
+	 return tmp;
+	}
+	if(which &2== 2)
+	{
+	  choose_right_screen();
+	  LCD_CMD_MODE();//D_I=0;
+	  LCD_READ_MODE();//R_W=READ_MODE;
+	  do
+	 {DATA_PORT=0xff;//????????????????????????????????
+	  LCD_E_HIGH();//E=1;
+	  tmp=DATA_PORT;
+	  LCD_E_LOW();//E=0;
+	 }while( !(tmp&0x80) );
+	 LCD_DATA_MODE();//D_I=DATA_MODE;
+	 DATA_PORT=0x0ff;
+	 LCD_E_HIGH();//E=1
+	 tmp=DATA_PORT;
+     LCD_E_LOW();//E=0;
+	 return tmp;
+	}*/
+	return 1;
+}
+unsigned char lcd_is_busy( void )
+{  
+   unsigned char tmp;
+   LCD_CMD_MODE();//D_I=CMD_MODE;
+   LCD_READ_MODE();//R_W=READ_MODE;
+   DATA_PORT=0x0ff;//?????????????????????????
+   LCD_E_HIGH();//E=1;
+   tmp=DATA_PORT;
+   LCD_E_LOW();//E=0;
+   return tmp&0x80;
+}
+void lcd_init(void)
+{
+  _delay_us(3000);
+  //choose_full_screen();
+  //write_cmd(DISPLAY_FIRST_ROW);//first row display 0x0c0
+  //write_cmd(DISPLAY_ON);//open display 0x03f
+  //choose_no_screen(); 
+  lcd_out_ctl(DISPLAY_FIRST_ROW,3);
+  lcd_out_ctl(DISPLAY_ON,3);
+ 
+  
+}
+void write_rect(unsigned char page0,unsigned char y0,
+                unsigned char *dat)
+{
+
+}
+void read_rect(unsigned char x0,unsigned char y0,
+               unsigned char x1,unsigned char y1)
+{
+
+}			   
+
+void write_to_xy(unsigned char x,unsigned char y,unsigned char dat)
+{
+  unsigned char page;
+  page=y>>3;
+  if(x>63)
+  { x=x-64;
+    //choose_right_screen();
+    lcd_out_ctl_r(LCD_SET_PAGE+page);
+	lcd_out_ctl_r(LCD_SET_COL+x);
+	lcd_out_ctl_r(dat);
+  }
+  else    
+  { //choose_left_screen();
+    lcd_out_ctl_l(LCD_SET_PAGE+page);
+	lcd_out_ctl_l(LCD_SET_COL+x);
+	lcd_out_ctl_l(dat);
+  }
+}
+
+void set_xy(unsigned char x,unsigned char y)
+{
+ unsigned char page;
+  page=y>>3;
+  if(x>63)
+  { x=x-64;
+    //choose_right_screen();
+    lcd_out_ctl_r(LCD_SET_PAGE+page);//write_cmd(PAGE_CO+page);
+	lcd_out_ctl_r(LCD_SET_COL+x);//write_cmd(ROW_CO+x);
+  }
+  else    
+  { //choose_left_screen();
+    lcd_out_ctl_l(LCD_SET_PAGE+page);
+	lcd_out_ctl_l(LCD_SET_COL+x);
+  }
+}
+
+void write_to_lcd(unsigned char dat)
+{
+  lcd_out_dat_l(dat);
+}

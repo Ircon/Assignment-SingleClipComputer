@@ -1,0 +1,593 @@
+; .\Objects\led.SRC generated from: led.c
+; COMPILER INVOKED BY:
+;        C:\Keil_v5\C51\BIN\C51.EXE led.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\led.lst) SRC(.\Objects\led.SRC)
+
+$NOMOD51
+
+NAME	LED
+
+P0	DATA	080H
+P1	DATA	090H
+P2	DATA	0A0H
+P3	DATA	0B0H
+T0	BIT	0B0H.4
+AC	BIT	0D0H.6
+T1	BIT	0B0H.5
+EA	BIT	0A8H.7
+LED1	BIT	090H.0
+LED2	BIT	090H.1
+IE	DATA	0A8H
+P0_0	BIT	080H.0
+P0_1	BIT	080H.1
+P0_2	BIT	080H.2
+P0_3	BIT	080H.3
+RD	BIT	0B0H.7
+P1_7	BIT	090H.7
+ES	BIT	0A8H.4
+IP	DATA	0B8H
+RI	BIT	098H.0
+INT0	BIT	0B0H.2
+CY	BIT	0D0H.7
+TI	BIT	098H.1
+INT1	BIT	0B0H.3
+PS	BIT	0B8H.4
+SP	DATA	081H
+OV	BIT	0D0H.2
+WR	BIT	0B0H.6
+SBUF	DATA	099H
+PCON	DATA	087H
+SCON	DATA	098H
+TMOD	DATA	089H
+TCON	DATA	088H
+IE0	BIT	088H.1
+IE1	BIT	088H.3
+B	DATA	0F0H
+ACC	DATA	0E0H
+ET0	BIT	0A8H.1
+ET1	BIT	0A8H.3
+TF0	BIT	088H.5
+TF1	BIT	088H.7
+RB8	BIT	098H.2
+TH0	DATA	08CH
+EX0	BIT	0A8H.0
+IT0	BIT	088H.0
+TH1	DATA	08DH
+TB8	BIT	098H.3
+EX1	BIT	0A8H.2
+IT1	BIT	088H.2
+P	BIT	0D0H.0
+SM0	BIT	098H.7
+TL0	DATA	08AH
+SM1	BIT	098H.6
+TL1	DATA	08BH
+SM2	BIT	098H.5
+PT0	BIT	0B8H.1
+PT1	BIT	0B8H.3
+RS0	BIT	0D0H.3
+TR0	BIT	088H.4
+RS1	BIT	0D0H.4
+TR1	BIT	088H.6
+PX0	BIT	0B8H.0
+PX1	BIT	0B8H.2
+DPH	DATA	083H
+DPL	DATA	082H
+REN	BIT	098H.4
+RXD	BIT	0B0H.0
+TXD	BIT	0B0H.1
+F0	BIT	0D0H.5
+PSW	DATA	0D0H
+?PR?main?LED         SEGMENT CODE 
+?PR?frist_1?LED      SEGMENT CODE 
+?DT?frist_1?LED      SEGMENT DATA OVERLAYABLE 
+?PR?dely?LED         SEGMENT CODE 
+?PR?dely_1s?LED      SEGMENT CODE 
+?PR?INT0_INC_SPEED?LED                   SEGMENT CODE 
+?PR?TIMER?LED        SEGMENT CODE 
+?PR?INT0_DEC_SPEED?LED                   SEGMENT CODE 
+?C_INITSEG           SEGMENT CODE 
+?DT?LED              SEGMENT DATA 
+	EXTRN	CODE (?C_STARTUP)
+	PUBLIC	SPEED
+	PUBLIC	CNT
+	PUBLIC	IS_OK
+	PUBLIC	INT0_DEC_SPEED
+	PUBLIC	TIMER
+	PUBLIC	INT0_INC_SPEED
+	PUBLIC	dely_1s
+	PUBLIC	dely
+	PUBLIC	frist_1
+	PUBLIC	main
+
+	RSEG  ?DT?frist_1?LED
+?frist_1?BYTE:
+          i?140:   DS   2
+
+	RSEG  ?DT?LED
+          IS_OK:   DS   1
+            CNT:   DS   1
+          SPEED:   DS   1
+
+	RSEG  ?C_INITSEG
+	DB	001H
+	DB	SPEED
+	DB	000H
+
+	DB	001H
+	DB	IS_OK
+	DB	000H
+
+	DB	001H
+	DB	CNT
+	DB	000H
+
+; #include <reg51.h>
+; sbit LED1 = P1 ^ 0;
+; sbit LED2 = P1 ^ 1;
+; 
+; sbit P0_0 = P0 ^ 0;
+; sbit P0_1 = P0 ^ 1;
+; sbit P0_2 = P0 ^ 2;
+; sbit P0_3 = P0 ^ 3;
+; sbit P1_7 = P1 ^ 7;
+; unsigned char SPEED = 0;
+; unsigned char IS_OK = 0;
+; unsigned char CNT = 0;
+; // fun
+; 
+; void dely_1s();
+; void frist_1();
+; void dely();
+; 
+; 
+; 
+; main(){
+
+	RSEG  ?PR?main?LED
+main:
+	USING	0
+			; SOURCE LINE # 21
+; 	frist_1();
+			; SOURCE LINE # 22
+	LCALL	frist_1
+?C0001:
+; 	while(1){
+			; SOURCE LINE # 23
+; 		
+; 		if(!P0_0){ // 开始
+			; SOURCE LINE # 25
+	JB   	P0_0,?C0003
+; 			IS_OK = 1;
+			; SOURCE LINE # 26
+	MOV  	IS_OK,#01H
+; 		}else if(!P0_1){ // 暂停
+			; SOURCE LINE # 27
+	SJMP 	?C0004
+?C0003:
+	JB   	P0_1,?C0004
+; 			IS_OK = 0;
+			; SOURCE LINE # 28
+	CLR  	A
+	MOV  	IS_OK,A
+; 			LED1 = 1;
+			; SOURCE LINE # 29
+	SETB 	LED1
+; 			LED2 = 1;
+			; SOURCE LINE # 30
+	SETB 	LED2
+; 		}
+			; SOURCE LINE # 31
+?C0004:
+; 		P0_2 = P0_0;
+			; SOURCE LINE # 32
+	MOV  	C,P0_0
+	MOV  	P0_2,C
+; 		P0_3 = P0_1;
+			; SOURCE LINE # 33
+	MOV  	C,P0_1
+	MOV  	P0_3,C
+; 		P1_7 = IS_OK;
+			; SOURCE LINE # 34
+	MOV  	A,IS_OK
+	ADD  	A,#0FFH
+	MOV  	P1_7,C
+; 		
+; 		P2 = SPEED;
+			; SOURCE LINE # 36
+	MOV  	P2,SPEED
+; 	}
+			; SOURCE LINE # 37
+	SJMP 	?C0001
+; END OF main
+
+; }
+; 
+; void frist_1(){
+
+	RSEG  ?PR?frist_1?LED
+frist_1:
+	USING	0
+			; SOURCE LINE # 40
+; 	
+; 	int i;
+; 		
+; 	LED1 = 0;
+			; SOURCE LINE # 44
+	CLR  	LED1
+; 	LED2 = 0;
+			; SOURCE LINE # 45
+	CLR  	LED2
+; 	for(i = 0 ; i< 5 ; ++i)
+			; SOURCE LINE # 46
+	CLR  	A
+	MOV  	i?140,A
+	MOV  	i?140+01H,A
+?C0007:
+; 		dely_1s();
+			; SOURCE LINE # 47
+	LCALL	dely_1s
+	INC  	i?140+01H
+	MOV  	A,i?140+01H
+	JNZ  	?C0033
+	INC  	i?140
+?C0033:
+	CLR  	C
+	SUBB 	A,#05H
+	MOV  	A,i?140
+	XRL  	A,#080H
+	SUBB 	A,#080H
+	JC   	?C0007
+?C0008:
+; 	
+; 	LED1 = 1;
+			; SOURCE LINE # 49
+	SETB 	LED1
+; 	LED2 = 1;
+			; SOURCE LINE # 50
+	SETB 	LED2
+; 	for(i = 0 ; i < 5 ; ++i)
+			; SOURCE LINE # 51
+	CLR  	A
+	MOV  	i?140,A
+	MOV  	i?140+01H,A
+?C0010:
+; 		dely_1s();
+			; SOURCE LINE # 52
+	LCALL	dely_1s
+	INC  	i?140+01H
+	MOV  	A,i?140+01H
+	JNZ  	?C0034
+	INC  	i?140
+?C0034:
+	CLR  	C
+	SUBB 	A,#05H
+	MOV  	A,i?140
+	XRL  	A,#080H
+	SUBB 	A,#080H
+	JC   	?C0010
+?C0011:
+; #pragma asm
+; 	MOV  TMOD,#01H	;定时器0工作方式1
+	  MOV  TMOD,#01H	;定时器0工作方式1
+; 	MOV  TH0, #60H	;赋初值
+	  MOV  TH0, #60H	;赋初值
+; 	MOV  TL0, #176  
+	  MOV  TL0, #176  
+; 	SETB TR0		;启动定时器0
+	  SETB TR0		;启动定时器0
+; 	SETB ET0		;打开定时器0开关
+	  SETB ET0		;打开定时器0开关
+; 	SETB EX0
+	  SETB EX0
+; 	SETB IT0
+	  SETB IT0
+; 	SETB EX1
+	  SETB EX1
+; 	SETB IT1
+	  SETB IT1
+; 	SETB EA 		;总开关
+	  SETB EA 		;总开关
+; #pragma endasm
+; }
+			; SOURCE LINE # 65
+	RET  	
+; END OF frist_1
+
+; void dely(){
+
+	RSEG  ?PR?dely?LED
+dely:
+	USING	0
+			; SOURCE LINE # 66
+; 	int i ;
+; 	for(i = 0 ; i < 10000 ; ++i);
+			; SOURCE LINE # 68
+;---- Variable 'i?241' assigned to Register 'R6/R7' ----
+	CLR  	A
+	MOV  	R7,A
+	MOV  	R6,A
+?C0014:
+	INC  	R7
+	CJNE 	R7,#00H,?C0035
+	INC  	R6
+?C0035:
+	CJNE 	R6,#027H,?C0014
+	CJNE 	R7,#010H,?C0014
+; }
+			; SOURCE LINE # 69
+?C0017:
+	RET  	
+; END OF dely
+
+; void dely_1s(){
+
+	RSEG  ?PR?dely_1s?LED
+dely_1s:
+	USING	0
+			; SOURCE LINE # 70
+; // djnz 2 个机器周期
+; // PUSH 2
+; // POP  2
+; #pragma asm
+; 	PUSH ACC
+	  PUSH ACC
+; 	PUSH PSW
+	  PUSH PSW
+; 	
+	  
+; 	MOV ACC,#4
+	  MOV ACC,#4
+; 	
+	  
+; LOP3:
+	  LOP3:
+; 	PUSH ACC
+	  PUSH ACC
+; 	MOV ACC,#249
+	  MOV ACC,#249
+; LOP2:	
+	  LOP2:	
+; 
+	  
+; 	PUSH ACC
+	  PUSH ACC
+; 	MOV ACC,#248
+	  MOV ACC,#248
+; LOP1:
+	  LOP1:
+; 	DJNZ ACC,LOP1
+	  DJNZ ACC,LOP1
+; 	POP ACC
+	  POP ACC
+; 	
+	  
+; 	DJNZ ACC,LOP2
+	  DJNZ ACC,LOP2
+; 	POP ACC
+	  POP ACC
+; 	
+	  
+; 	DJNZ ACC,LOP3
+	  DJNZ ACC,LOP3
+; 	
+	  
+; 	POP PSW
+	  POP PSW
+; 	POP ACC
+	  POP ACC
+; 	
+	  
+; #pragma endasm
+; }
+			; SOURCE LINE # 100
+	RET  	
+; END OF dely_1s
+
+CSEG	AT	00003H
+	LJMP	INT0_INC_SPEED
+
+; 
+; // 中断
+; void INT0_INC_SPEED(void) interrupt 0 {
+
+	RSEG  ?PR?INT0_INC_SPEED?LED
+	USING	0
+INT0_INC_SPEED:
+	PUSH 	ACC
+	PUSH 	B
+	PUSH 	PSW
+			; SOURCE LINE # 103
+; 	++SPEED;
+			; SOURCE LINE # 104
+	INC  	SPEED
+; 	SPEED %= 5;
+			; SOURCE LINE # 105
+	MOV  	A,SPEED
+	MOV  	B,#05H
+	DIV  	AB
+	MOV  	SPEED,B
+; }
+			; SOURCE LINE # 106
+	POP  	PSW
+	POP  	B
+	POP  	ACC
+	RETI 	
+; END OF INT0_INC_SPEED
+
+CSEG	AT	0000BH
+	LJMP	TIMER
+
+; void TIMER(void) interrupt 1 {
+
+	RSEG  ?PR?TIMER?LED
+	USING	0
+TIMER:
+	PUSH 	ACC
+	PUSH 	B
+	PUSH 	DPH
+	PUSH 	DPL
+	PUSH 	PSW
+	MOV  	PSW,#00H
+	PUSH 	AR0
+	PUSH 	AR1
+	PUSH 	AR2
+	PUSH 	AR3
+	PUSH 	AR4
+	PUSH 	AR5
+	PUSH 	AR6
+	PUSH 	AR7
+	USING	0
+			; SOURCE LINE # 107
+; 	if(IS_OK != 0){
+			; SOURCE LINE # 108
+	MOV  	A,IS_OK
+	JZ   	?C0020
+; #pragma asm
+; 		MOV  TH0, #60H	;赋初值
+	  MOV  TH0, #60H	;赋初值
+; 		MOV  TL0, #176 
+	  MOV  TL0, #176 
+; #pragma endasm
+; 		LED1 = 1;
+			; SOURCE LINE # 113
+	SETB 	LED1
+; 		LED2 = 1;
+			; SOURCE LINE # 114
+	SETB 	LED2
+	SJMP 	?C0021
+; 		return;
+; 	}
+			; SOURCE LINE # 116
+?C0020:
+; 			
+; 	if(CNT > SPEED){
+			; SOURCE LINE # 118
+	MOV  	A,CNT
+	SETB 	C
+	SUBB 	A,SPEED
+	JC   	?C0022
+; 		CNT = 0;
+			; SOURCE LINE # 119
+	MOV  	CNT,#00H
+; 		if(SPEED == 0){
+			; SOURCE LINE # 120
+	MOV  	R7,SPEED
+	MOV  	R6,#00H
+	MOV  	A,R7
+	JNZ  	?C0023
+; 			LED1 = 0;
+			; SOURCE LINE # 121
+; 			LED2 = 0;
+			; SOURCE LINE # 122
+; 		}else if(SPEED == 1){
+			; SOURCE LINE # 123
+	SJMP 	?C0036
+?C0023:
+	MOV  	A,R7
+	XRL  	A,#01H
+	ORL  	A,R6
+	JNZ  	?C0025
+; 			LED1 = !LED1;
+			; SOURCE LINE # 124
+	CPL  	LED1
+; 		}else if(SPEED == 2){
+			; SOURCE LINE # 125
+	SJMP 	?C0031
+?C0025:
+	MOV  	A,R7
+	XRL  	A,#02H
+	ORL  	A,R6
+	JNZ  	?C0027
+; 			LED2 = !LED2;
+			; SOURCE LINE # 126
+	CPL  	LED2
+; 		}else if(SPEED == 5){
+			; SOURCE LINE # 127
+	SJMP 	?C0031
+?C0027:
+	MOV  	A,R7
+	XRL  	A,#05H
+	ORL  	A,R6
+	JNZ  	?C0029
+; 			LED1 = 0;
+			; SOURCE LINE # 128
+?C0036:
+	CLR  	LED1
+; 			LED2 = 0;
+			; SOURCE LINE # 129
+	CLR  	LED2
+; 		}else{
+			; SOURCE LINE # 130
+	SJMP 	?C0031
+?C0029:
+; 			LED1 = !LED1;
+			; SOURCE LINE # 131
+	CPL  	LED1
+; 			LED2 = !LED2;
+			; SOURCE LINE # 132
+	CPL  	LED2
+; 		}
+			; SOURCE LINE # 133
+; 	}else{
+			; SOURCE LINE # 134
+	SJMP 	?C0031
+?C0022:
+; 		++CNT;
+			; SOURCE LINE # 135
+	INC  	CNT
+; 	}
+			; SOURCE LINE # 136
+?C0031:
+; #pragma asm
+; 	MOV  TH0, #60hH	;赋初值
+	  MOV  TH0, #60hH	;赋初值
+; 	MOV  TL0, #176 
+	  MOV  TL0, #176 
+; #pragma endasm
+; }
+			; SOURCE LINE # 141
+?C0021:
+	POP  	AR7
+	POP  	AR6
+	POP  	AR5
+	POP  	AR4
+	POP  	AR3
+	POP  	AR2
+	POP  	AR1
+	POP  	AR0
+	POP  	PSW
+	POP  	DPL
+	POP  	DPH
+	POP  	B
+	POP  	ACC
+	RETI 	
+; END OF TIMER
+
+CSEG	AT	00013H
+	LJMP	INT0_DEC_SPEED
+
+; void INT0_DEC_SPEED(void) interrupt 2 {
+
+	RSEG  ?PR?INT0_DEC_SPEED?LED
+	USING	0
+INT0_DEC_SPEED:
+	PUSH 	ACC
+	PUSH 	B
+	PUSH 	PSW
+			; SOURCE LINE # 142
+; 	--SPEED;
+			; SOURCE LINE # 143
+	DEC  	SPEED
+; 	SPEED %= 5;
+			; SOURCE LINE # 144
+	MOV  	A,SPEED
+	MOV  	B,#05H
+	DIV  	AB
+	MOV  	SPEED,B
+; }			; SOURCE LINE # 145
+	POP  	PSW
+	POP  	B
+	POP  	ACC
+	RETI 	
+; END OF INT0_DEC_SPEED
+
+	END

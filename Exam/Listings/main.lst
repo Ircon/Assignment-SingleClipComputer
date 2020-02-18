@@ -1,0 +1,77 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              01/02/2020 16:10:56 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <reg51.h>
+   2          
+   3          typedef unsigned char uchar;
+   4          typedef unsigned int uint;
+   5          typedef unsigned long ulong;
+   6          
+   7          #define RES (P2)
+   8          sbit ADDA = P1 ^ 3;
+   9          sbit ADDB = P1 ^ 4;
+  10          sbit ADDC = P1 ^ 5;
+  11          
+  12          sbit ALE = P1 ^ 1;
+  13          
+  14          sbit START = P1 ^ 0;
+  15          sbit OE = P1 ^ 2;
+  16          sbit LED = P1 ^ 6;
+  17          sbit EO = P3 ^ 2;
+  18          uchar RES_DATA;
+  19          
+  20          void init(){
+  21   1              // ÷–∂œ
+  22   1              EA = 1;
+  23   1              IT0 = 1;
+  24   1              EX0 = 1;
+  25   1              
+  26   1              //µÿ÷∑
+  27   1              ADDA = 1;
+  28   1              ADDB = 1;
+  29   1              ADDC = 1;
+  30   1              ALE = 1;
+  31   1              
+  32   1              START = 1;
+  33   1              START = 0;
+  34   1      }
+  35          
+  36          void main(){
+  37   1              init();
+  38   1              while(1)
+  39   1                      P0 = ~RES_DATA;
+  40   1                      
+  41   1      }
+  42          
+  43          void INT0_INT() interrupt 0{
+  44   1              LED = ~LED;
+  45   1              OE = 1;
+  46   1              RES_DATA = RES;
+  47   1              OE = 0;
+  48   1              EO = 1;
+  49   1              START = 1;
+  50   1              START = 0;
+  51   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+C51 COMPILER V9.60.0.0   MAIN                                                              01/02/2020 16:10:56 PAGE 2   
+
+   CODE SIZE        =     45    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

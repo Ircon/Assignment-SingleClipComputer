@@ -1,0 +1,5088 @@
+; .\Objects\main.SRC generated from: main.c
+; COMPILER INVOKED BY:
+;        C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) SRC(.\Objects\main.SRC)
+
+$NOMOD51
+
+NAME	MAIN
+
+RIGHT	BIT	090H.5
+P0	DATA	080H
+P1	DATA	090H
+P2	DATA	0A0H
+P3	DATA	0B0H
+T0	BIT	0B0H.4
+AC	BIT	0D0H.6
+T1	BIT	0B0H.5
+EA	BIT	0A8H.7
+SOUND	BIT	090H.0
+T_DAT	BIT	0B0H.5
+IE	DATA	0A8H
+T_CLK	BIT	0B0H.6
+EN	BIT	0A0H.4
+DQ	BIT	090H.1
+RD	BIT	0B0H.7
+ES	BIT	0A8H.4
+IP	DATA	0B8H
+RI	BIT	098H.0
+INT0	BIT	0B0H.2
+CY	BIT	0D0H.7
+TI	BIT	098H.1
+INT1	BIT	0B0H.3
+PS	BIT	0B8H.4
+SP	DATA	081H
+UP	BIT	090H.2
+RS	BIT	0A0H.3
+OV	BIT	0D0H.2
+RW	BIT	0A0H.2
+WR	BIT	0B0H.6
+LEFT	BIT	090H.4
+T_RST	BIT	0B0H.7
+SBUF	DATA	099H
+PCON	DATA	087H
+SCON	DATA	098H
+TMOD	DATA	089H
+TCON	DATA	088H
+DOWN	BIT	090H.3
+EXIT	BIT	090H.6
+IE0	BIT	088H.1
+IE1	BIT	088H.3
+B	DATA	0F0H
+CS1	BIT	0A0H.0
+ACC	DATA	0E0H
+CS2	BIT	0A0H.1
+ET0	BIT	0A8H.1
+ET1	BIT	0A8H.3
+TF0	BIT	088H.5
+TF1	BIT	088H.7
+RB8	BIT	098H.2
+TH0	DATA	08CH
+EX0	BIT	0A8H.0
+IT0	BIT	088H.0
+TH1	DATA	08DH
+TB8	BIT	098H.3
+EX1	BIT	0A8H.2
+IT1	BIT	088H.2
+P	BIT	0D0H.0
+SM0	BIT	098H.7
+TL0	DATA	08AH
+SM1	BIT	098H.6
+TL1	DATA	08BH
+SM2	BIT	098H.5
+PT0	BIT	0B8H.1
+LED	BIT	0A0H.7
+PT1	BIT	0B8H.3
+RS0	BIT	0D0H.3
+TR0	BIT	088H.4
+RS1	BIT	0D0H.4
+TR1	BIT	088H.6
+PX0	BIT	0B8H.0
+PX1	BIT	0B8H.2
+DPH	DATA	083H
+DPL	DATA	082H
+REN	BIT	098H.4
+RXD	BIT	0B0H.0
+TXD	BIT	0B0H.1
+F0	BIT	0D0H.5
+PSW	DATA	0D0H
+?PR?_dely_ms?MAIN    SEGMENT CODE 
+?PR?_select_side?MAIN                    SEGMENT CODE 
+?PR?wait_busy?MAIN   SEGMENT CODE 
+?PR?_write_ord?MAIN  SEGMENT CODE 
+?PR?_write_data?MAIN SEGMENT CODE 
+?PR?led_init?MAIN    SEGMENT CODE 
+?PR?_cls_disy?MAIN   SEGMENT CODE 
+?PR?_cls_disy_dely?MAIN                  SEGMENT CODE 
+?PR?_set_loc?MAIN    SEGMENT CODE 
+?PR?_show_font_8?MAIN                    SEGMENT CODE 
+?DT?_show_font_8?MAIN                    SEGMENT DATA OVERLAYABLE 
+?PR?_show_font_8f?MAIN                   SEGMENT CODE 
+?DT?_show_font_8f?MAIN                   SEGMENT DATA OVERLAYABLE 
+?PR?_show_font_16?MAIN                   SEGMENT CODE 
+?DT?_show_font_16?MAIN                   SEGMENT DATA OVERLAYABLE 
+?PR?_BCD_Decimal?MAIN                    SEGMENT CODE 
+?PR?_Dec_BCD?MAIN    SEGMENT CODE 
+?PR?_write_1302_byte?MAIN                SEGMENT CODE 
+?PR?read_1302_byte?MAIN                  SEGMENT CODE 
+?PR?_write_1302?MAIN SEGMENT CODE 
+?PR?_read_1302?MAIN  SEGMENT CODE 
+?PR?_read_time?MAIN  SEGMENT CODE 
+?DT?_read_time?MAIN  SEGMENT DATA OVERLAYABLE 
+?PR?_write_time?MAIN SEGMENT CODE 
+?DT?_write_time?MAIN SEGMENT DATA OVERLAYABLE 
+?PR?_DS18_delay?MAIN SEGMENT CODE 
+?PR?ow_reset?MAIN    SEGMENT CODE 
+?PR?_write_bit?MAIN  SEGMENT CODE 
+?PR?_ds18write_byte?MAIN                 SEGMENT CODE 
+?PR?read_bit?MAIN    SEGMENT CODE 
+?PR?DSread_byte?MAIN SEGMENT CODE 
+?PR?ReadTemperature?MAIN                 SEGMENT CODE 
+?DT?ReadTemperature?MAIN                 SEGMENT DATA OVERLAYABLE 
+?PR?show_first_word?MAIN                 SEGMENT CODE 
+?PR?show_time?MAIN   SEGMENT CODE 
+?DT?show_time?MAIN   SEGMENT DATA OVERLAYABLE 
+?PR?show_del?MAIN    SEGMENT CODE 
+?DT?show_del?MAIN    SEGMENT DATA OVERLAYABLE 
+?PR?drmatic_display?MAIN                 SEGMENT CODE 
+?PR?on_time?MAIN     SEGMENT CODE 
+?PR?show_temper?MAIN SEGMENT CODE 
+?DT?show_temper?MAIN SEGMENT DATA OVERLAYABLE 
+?PR?_set_view?MAIN   SEGMENT CODE 
+?DT?_set_view?MAIN   SEGMENT DATA OVERLAYABLE 
+?PR?key_scan?MAIN    SEGMENT CODE 
+?PR?main?MAIN        SEGMENT CODE 
+?DT?main?MAIN        SEGMENT DATA OVERLAYABLE 
+?PR?int0_fun?MAIN    SEGMENT CODE 
+?C_INITSEG           SEGMENT CODE 
+?CO?MAIN             SEGMENT CODE 
+?DT?MAIN             SEGMENT DATA 
+	EXTRN	CODE (?C?CLDOPTR)
+	EXTRN	CODE (?C?CSTPTR)
+	EXTRN	CODE (?C?CLDPTR)
+	EXTRN	CODE (?C?IMUL)
+	EXTRN	CODE (?C?UIDIV)
+	EXTRN	CODE (?C_STARTUP)
+	PUBLIC	XY_POI
+	PUBLIC	POI
+	PUBLIC	LOC
+	PUBLIC	last_val
+	PUBLIC	SWITCH
+	PUBLIC	res
+	PUBLIC	Y_POI
+	PUBLIC	X_POI
+	PUBLIC	cla_
+	PUBLIC	MAX_LOC
+	PUBLIC	YLOC
+	PUBLIC	XLOC
+	PUBLIC	HZ_Num
+	PUBLIC	RiZi
+	PUBLIC	Sing
+	PUBLIC	HanZi_16
+	PUBLIC	NUM
+	PUBLIC	int0_fun
+	PUBLIC	main
+	PUBLIC	key_scan
+	PUBLIC	_set_view
+	PUBLIC	show_temper
+	PUBLIC	on_time
+	PUBLIC	drmatic_display
+	PUBLIC	show_del
+	PUBLIC	show_time
+	PUBLIC	show_first_word
+	PUBLIC	ReadTemperature
+	PUBLIC	DSread_byte
+	PUBLIC	read_bit
+	PUBLIC	_ds18write_byte
+	PUBLIC	_write_bit
+	PUBLIC	ow_reset
+	PUBLIC	_DS18_delay
+	PUBLIC	_write_time
+	PUBLIC	_read_time
+	PUBLIC	_read_1302
+	PUBLIC	_write_1302
+	PUBLIC	read_1302_byte
+	PUBLIC	_write_1302_byte
+	PUBLIC	_Dec_BCD
+	PUBLIC	_BCD_Decimal
+	PUBLIC	?_show_font_16?BYTE
+	PUBLIC	_show_font_16
+	PUBLIC	?_show_font_8f?BYTE
+	PUBLIC	_show_font_8f
+	PUBLIC	?_show_font_8?BYTE
+	PUBLIC	_show_font_8
+	PUBLIC	_set_loc
+	PUBLIC	_cls_disy_dely
+	PUBLIC	_cls_disy
+	PUBLIC	led_init
+	PUBLIC	_write_data
+	PUBLIC	_write_ord
+	PUBLIC	wait_busy
+	PUBLIC	_select_side
+	PUBLIC	_dely_ms
+
+	RSEG  ?DT?ReadTemperature?MAIN
+?ReadTemperature?BYTE:
+       get?2695:   DS   10
+
+	RSEG  ?DT?_show_font_16?MAIN
+?_show_font_16?BYTE:
+      side?1165:   DS   1
+	ORG  1
+         x?1166:   DS   1
+	ORG  2
+         y?1167:   DS   1
+	ORG  3
+       arr?1168:   DS   3
+
+	RSEG  ?DT?main?MAIN
+?main?BYTE:
+        x?35107:   DS   1
+	ORG  1
+        y?35108:   DS   1
+	ORG  2
+        z?35109:   DS   1
+	ORG  3
+     flag?35110:   DS   1
+	ORG  4
+ buf_time?35111:   DS   3
+
+	RSEG  ?DT?_read_time?MAIN
+?_read_time?BYTE:
+         p?1881:   DS   3
+
+	RSEG  ?DT?show_temper?MAIN
+?show_temper?BYTE:
+       te?32104:   DS   2
+
+	RSEG  ?DT?_write_time?MAIN
+?_write_time?BYTE:
+         p?1983:   DS   3
+
+	RSEG  ?DT?show_time?MAIN
+?show_time?BYTE:
+      buf?28100:   DS   1
+
+	RSEG  ?DT?show_del?MAIN
+?show_del?BYTE:
+      buf?29101:   DS   1
+
+	RSEG  ?DT?_show_font_8f?MAIN
+?_show_font_8f?BYTE:
+      side?1059:   DS   1
+	ORG  1
+         x?1060:   DS   1
+	ORG  2
+         y?1061:   DS   1
+	ORG  3
+       arr?1062:   DS   3
+	ORG  6
+       isf?1063:   DS   1
+
+	RSEG  ?DT?_set_view?MAIN
+?_set_view?BYTE:
+      buf?33106:   DS   1
+
+	RSEG  ?DT?_show_font_8?MAIN
+?_show_font_8?BYTE:
+       side?954:   DS   1
+	ORG  1
+          x?955:   DS   1
+	ORG  2
+          y?956:   DS   1
+	ORG  3
+        arr?957:   DS   3
+
+	RSEG  ?DT?MAIN
+           cla_:   DS   9
+          X_POI:   DS   1
+          Y_POI:   DS   1
+            res:   DS   7
+         SWITCH:   DS   1
+       last_val:   DS   2
+            LOC:   DS   6
+            POI:   DS   1
+         XY_POI:   DS   1
+
+	RSEG  ?CO?MAIN
+NUM:
+	DB	0FFH
+	DB	01FH
+	DB	0EFH
+	DB	0F7H
+	DB	0F7H
+	DB	0EFH
+	DB	01FH
+	DB	0FFH
+	DB	0FFH
+	DB	0F0H
+	DB	0EFH
+	DB	0DFH
+	DB	0DFH
+	DB	0EFH
+	DB	0F0H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0EFH
+	DB	0EFH
+	DB	007H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0DFH
+	DB	0DFH
+	DB	0C0H
+	DB	0DFH
+	DB	0DFH
+	DB	0FFH
+	DB	0FFH
+	DB	08FH
+	DB	0F7H
+	DB	0F7H
+	DB	0F7H
+	DB	0F7H
+	DB	00FH
+	DB	0FFH
+	DB	0FFH
+	DB	0CFH
+	DB	0D7H
+	DB	0DBH
+	DB	0DDH
+	DB	0DEH
+	DB	0CFH
+	DB	0FFH
+	DB	0FFH
+	DB	0CFH
+	DB	0F7H
+	DB	0F7H
+	DB	0F7H
+	DB	077H
+	DB	08FH
+	DB	0FFH
+	DB	0FFH
+	DB	0E7H
+	DB	0DFH
+	DB	0DEH
+	DB	0DEH
+	DB	0DDH
+	DB	0E3H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	07FH
+	DB	0BFH
+	DB	0CFH
+	DB	007H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0F9H
+	DB	0FAH
+	DB	0DBH
+	DB	0DBH
+	DB	0C0H
+	DB	0DBH
+	DB	0DBH
+	DB	0FFH
+	DB	007H
+	DB	077H
+	DB	077H
+	DB	077H
+	DB	0F7H
+	DB	0F7H
+	DB	0FFH
+	DB	0FFH
+	DB	0E6H
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0EEH
+	DB	0F1H
+	DB	0FFH
+	DB	0FFH
+	DB	01FH
+	DB	0EFH
+	DB	077H
+	DB	077H
+	DB	06FH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0F0H
+	DB	0EEH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0E0H
+	DB	0FFH
+	DB	0FFH
+	DB	0E7H
+	DB	0F7H
+	DB	0F7H
+	DB	077H
+	DB	097H
+	DB	0E7H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0C1H
+	DB	0FEH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	08FH
+	DB	077H
+	DB	0F7H
+	DB	0F7H
+	DB	077H
+	DB	08FH
+	DB	0FFH
+	DB	0FFH
+	DB	0E3H
+	DB	0DDH
+	DB	0DEH
+	DB	0DEH
+	DB	0DDH
+	DB	0E3H
+	DB	0FFH
+	DB	0FFH
+	DB	00FH
+	DB	0F7H
+	DB	0F7H
+	DB	0F7H
+	DB	0EFH
+	DB	01FH
+	DB	0FFH
+	DB	0FFH
+	DB	0FEH
+	DB	0EDH
+	DB	0DDH
+	DB	0DDH
+	DB	0EEH
+	DB	0F0H
+	DB	0FFH
+
+HanZi_16:
+	DB	0FFH
+	DB	0EFH
+	DB	06BH
+	DB	0ACH
+	DB	0CDH
+	DB	0E1H
+	DB	0CDH
+	DB	0ADH
+	DB	0EFH
+	DB	0FFH
+	DB	081H
+	DB	0BDH
+	DB	0BDH
+	DB	0BDH
+	DB	081H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	000H
+	DB	0B6H
+	DB	0B6H
+	DB	0B6H
+	DB	0B6H
+	DB	0B6H
+	DB	0B6H
+	DB	0B6H
+	DB	000H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0F7H
+	DB	033H
+	DB	0B5H
+	DB	0B6H
+	DB	0B7H
+	DB	0B5H
+	DB	033H
+	DB	0E7H
+	DB	0FFH
+	DB	080H
+	DB	077H
+	DB	077H
+	DB	07BH
+	DB	07DH
+	DB	01FH
+	DB	0FFH
+	DB	0FFH
+	DB	000H
+	DB	0EDH
+	DB	0EDH
+	DB	0ADH
+	DB	06DH
+	DB	080H
+	DB	0FFH
+	DB	0FFH
+	DB	081H
+	DB	077H
+	DB	077H
+	DB	07BH
+	DB	07DH
+	DB	01FH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0DBH
+	DB	0DBH
+	DB	0DBH
+	DB	0DBH
+	DB	0DBH
+	DB	003H
+	DB	0DDH
+	DB	0DDH
+	DB	0DDH
+	DB	0DCH
+	DB	0DDH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FDH
+	DB	0FDH
+	DB	0FDH
+	DB	0FDH
+	DB	0FDH
+	DB	0BDH
+	DB	07DH
+	DB	080H
+	DB	0FDH
+	DB	0FDH
+	DB	0FDH
+	DB	0FDH
+	DB	0FDH
+	DB	0FDH
+	DB	0FDH
+	DB	0FFH
+	DB	0FFH
+	DB	0FBH
+	DB	0DBH
+	DB	0DBH
+	DB	0DBH
+	DB	0DBH
+	DB	0DBH
+	DB	000H
+	DB	0DBH
+	DB	0DBH
+	DB	0DBH
+	DB	0DBH
+	DB	0DBH
+	DB	0FBH
+	DB	0FFH
+	DB	0FFH
+	DB	0DEH
+	DB	0DEH
+	DB	0EEH
+	DB	0F6H
+	DB	002H
+	DB	07CH
+	DB	0BEH
+	DB	0DCH
+	DB	0FAH
+	DB	0F6H
+	DB	0EEH
+	DB	0D6H
+	DB	0DAH
+	DB	0BEH
+	DB	0BEH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	041H
+	DB	0D5H
+	DB	0D5H
+	DB	0D5H
+	DB	015H
+	DB	0D5H
+	DB	0D5H
+	DB	0D5H
+	DB	0C1H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0BBH
+	DB	0BDH
+	DB	0B6H
+	DB	0B6H
+	DB	0B6H
+	DB	0B6H
+	DB	080H
+	DB	0B6H
+	DB	0B6H
+	DB	0B6H
+	DB	0B6H
+	DB	0BEH
+	DB	0BFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FBH
+	DB	000H
+	DB	0DBH
+	DB	0DBH
+	DB	0DBH
+	DB	000H
+	DB	0FBH
+	DB	0FFH
+	DB	001H
+	DB	0DDH
+	DB	0DDH
+	DB	0DDH
+	DB	001H
+	DB	0FFH
+	DB	0FFH
+	DB	077H
+	DB	0B7H
+	DB	0D0H
+	DB	0F6H
+	DB	0F6H
+	DB	0E6H
+	DB	050H
+	DB	0B7H
+	DB	0CFH
+	DB	0F0H
+	DB	0FDH
+	DB	0BDH
+	DB	07DH
+	DB	080H
+	DB	0FFH
+	DB	0FFH
+	DB	0EFH
+	DB	09FH
+	DB	0FDH
+	DB	073H
+	DB	0FFH
+	DB	0FFH
+	DB	001H
+	DB	06DH
+	DB	06DH
+	DB	06DH
+	DB	06DH
+	DB	06DH
+	DB	001H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FBH
+	DB	0FBH
+	DB	081H
+	DB	0FEH
+	DB	0BFH
+	DB	081H
+	DB	0BDH
+	DB	0BDH
+	DB	081H
+	DB	0BDH
+	DB	081H
+	DB	0BDH
+	DB	0BDH
+	DB	081H
+	DB	0BFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	003H
+	DB	0DBH
+	DB	0DBH
+	DB	0DBH
+	DB	003H
+	DB	0DAH
+	DB	0D9H
+	DB	0DBH
+	DB	003H
+	DB	0DBH
+	DB	0DBH
+	DB	0DBH
+	DB	0FBH
+	DB	0FFH
+	DB	0BFH
+	DB	0CFH
+	DB	070H
+	DB	07FH
+	DB	07BH
+	DB	0B3H
+	DB	0AAH
+	DB	0DAH
+	DB	0DAH
+	DB	0DAH
+	DB	0AAH
+	DB	0B3H
+	DB	07FH
+	DB	07FH
+	DB	07FH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0C9H
+	DB	0C9H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0F9H
+	DB	0F6H
+	DB	0F6H
+	DB	019H
+	DB	007H
+	DB	0F3H
+	DB	0FBH
+	DB	0FDH
+	DB	0FDH
+	DB	0FDH
+	DB	0FDH
+	DB	0FDH
+	DB	0FBH
+	DB	0E1H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0F8H
+	DB	0E0H
+	DB	0CFH
+	DB	0DFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0DFH
+	DB	0EFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	000H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FDH
+	DB	0F3H
+	DB	0C7H
+	DB	000H
+	DB	0C7H
+	DB	0F3H
+	DB	0FDH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+
+Sing:
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	07FH
+	DB	07FH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	09EH
+	DB	09EH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FEH
+	DB	0FEH
+	DB	0FEH
+	DB	0FEH
+	DB	0FEH
+	DB	0FEH
+	DB	0FEH
+	DB	0FFH
+	DB	07FH
+	DB	09FH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	08FH
+	DB	0FFH
+	DB	0E0H
+	DB	0DFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0DFH
+	DB	0EFH
+	DB	0FFH
+	DB	0C7H
+	DB	0BBH
+	DB	07DH
+	DB	07DH
+	DB	07DH
+	DB	07DH
+	DB	0BBH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+
+RiZi:
+	DB	0FFH
+	DB	0FFH
+	DB	0DFH
+	DB	0E7H
+	DB	038H
+	DB	0BBH
+	DB	0BBH
+	DB	0BBH
+	DB	0BBH
+	DB	003H
+	DB	0BBH
+	DB	0BBH
+	DB	0BBH
+	DB	0BBH
+	DB	0FBH
+	DB	0FFH
+	DB	0FFH
+	DB	0FBH
+	DB	0FBH
+	DB	0FBH
+	DB	0F8H
+	DB	0FBH
+	DB	0FBH
+	DB	0FBH
+	DB	0FBH
+	DB	000H
+	DB	0FBH
+	DB	0FBH
+	DB	0FBH
+	DB	0FBH
+	DB	0FBH
+	DB	0FBH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	001H
+	DB	0DDH
+	DB	0DDH
+	DB	0DDH
+	DB	0DDH
+	DB	0DDH
+	DB	0DDH
+	DB	0DDH
+	DB	0DDH
+	DB	001H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	07FH
+	DB	0BFH
+	DB	0CFH
+	DB	0F0H
+	DB	0FDH
+	DB	0FDH
+	DB	0FDH
+	DB	0FDH
+	DB	0FDH
+	DB	0FDH
+	DB	0BDH
+	DB	07DH
+	DB	080H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	001H
+	DB	07DH
+	DB	07DH
+	DB	07DH
+	DB	07DH
+	DB	07DH
+	DB	07DH
+	DB	07DH
+	DB	001H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	000H
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	000H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	003H
+	DB	07BH
+	DB	07BH
+	DB	07BH
+	DB	003H
+	DB	0FFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	000H
+	DB	0EFH
+	DB	0EFH
+	DB	0FFH
+	DB	0FFH
+	DB	0C0H
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0C0H
+	DB	0FFH
+	DB	0FFH
+	DB	0FEH
+	DB	0F9H
+	DB	0BFH
+	DB	07FH
+	DB	080H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	07FH
+	DB	0BFH
+	DB	0DFH
+	DB	06FH
+	DB	077H
+	DB	079H
+	DB	07FH
+	DB	07FH
+	DB	07FH
+	DB	07CH
+	DB	073H
+	DB	0EFH
+	DB	0DFH
+	DB	0BFH
+	DB	07FH
+	DB	0FFH
+	DB	0FFH
+	DB	07FH
+	DB	0BFH
+	DB	0DFH
+	DB	0E7H
+	DB	0F8H
+	DB	0FFH
+	DB	0BFH
+	DB	07FH
+	DB	0BFH
+	DB	0C0H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0DBH
+	DB	0DBH
+	DB	05BH
+	DB	001H
+	DB	0DCH
+	DB	0DDH
+	DB	0FFH
+	DB	03FH
+	DB	0C7H
+	DB	0FFH
+	DB	000H
+	DB	0FFH
+	DB	0F7H
+	DB	0EFH
+	DB	09FH
+	DB	0FFH
+	DB	0F7H
+	DB	0F9H
+	DB	0FEH
+	DB	000H
+	DB	0FEH
+	DB	0F9H
+	DB	07EH
+	DB	07FH
+	DB	0BFH
+	DB	0BFH
+	DB	0D8H
+	DB	0EFH
+	DB	0F3H
+	DB	0FCH
+	DB	0FFH
+
+HZ_Num:
+	DB	0FFH
+	DB	07FH
+	DB	07FH
+	DB	07FH
+	DB	07FH
+	DB	07FH
+	DB	07FH
+	DB	07FH
+	DB	07FH
+	DB	07FH
+	DB	07FH
+	DB	07FH
+	DB	07FH
+	DB	07FH
+	DB	07FH
+	DB	07FH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0F7H
+	DB	0F7H
+	DB	0F7H
+	DB	0F7H
+	DB	0F7H
+	DB	0F7H
+	DB	0F7H
+	DB	0F7H
+	DB	0F7H
+	DB	0F7H
+	DB	0F7H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0EFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FBH
+	DB	07BH
+	DB	07BH
+	DB	07BH
+	DB	07BH
+	DB	07BH
+	DB	07BH
+	DB	07BH
+	DB	07BH
+	DB	07BH
+	DB	07BH
+	DB	07BH
+	DB	0FBH
+	DB	0FFH
+	DB	0FFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0FFH
+	DB	0FFH
+	DB	003H
+	DB	0FBH
+	DB	0FBH
+	DB	0FBH
+	DB	003H
+	DB	0FBH
+	DB	0FBH
+	DB	0FBH
+	DB	003H
+	DB	0FBH
+	DB	0FBH
+	DB	0FBH
+	DB	003H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	080H
+	DB	0D7H
+	DB	0DBH
+	DB	0DCH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DEH
+	DB	0DDH
+	DB	0DDH
+	DB	0DDH
+	DB	080H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FDH
+	DB	0BDH
+	DB	0BDH
+	DB	0BDH
+	DB	03DH
+	DB	081H
+	DB	0BDH
+	DB	0BDH
+	DB	0BDH
+	DB	0BDH
+	DB	03DH
+	DB	0FDH
+	DB	0FDH
+	DB	0FFH
+	DB	0FFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	087H
+	DB	0B8H
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	080H
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0FFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DEH
+	DB	0DDH
+	DB	0D3H
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0DFH
+	DB	0FFH
+	DB	0FFH
+	DB	0BFH
+	DB	0DFH
+	DB	0EFH
+	DB	0F3H
+	DB	0FCH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FEH
+	DB	0FDH
+	DB	0FBH
+	DB	0E7H
+	DB	09FH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	001H
+	DB	07DH
+	DB	07DH
+	DB	07DH
+	DB	07DH
+	DB	07DH
+	DB	07DH
+	DB	07DH
+	DB	001H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+	DB	000H
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	0BFH
+	DB	000H
+	DB	0FFH
+	DB	0FFH
+	DB	0FFH
+
+XLOC:
+	DB	000H
+	DB	001H
+	DB	002H
+	DB	000H
+	DB	001H
+	DB	002H
+	DB	000H
+	DB	001H
+	DB	002H
+
+YLOC:
+	DB	000H
+	DB	000H
+	DB	000H
+	DB	001H
+	DB	001H
+	DB	001H
+	DB	002H
+	DB	002H
+	DB	002H
+
+MAX_LOC:
+	DB	018H
+	DB	03CH
+	DB	03CH
+
+
+	RSEG  ?C_INITSEG
+	DB	001H
+	DB	SWITCH
+	DB	000H
+
+	DB	007H
+	DB	res
+	DB	000H
+	DB	01DH
+	DB	011H
+	DB	011H
+	DB	00CH
+	DB	002H
+	DB	013H
+
+	DB	001H
+	DB	POI
+	DB	000H
+
+	DB	006H
+	DB	LOC
+	DB	000H
+	DB	002H
+	DB	003H
+	DB	004H
+	DB	005H
+	DB	006H
+
+	DB	001H
+	DB	X_POI
+	DB	000H
+
+	DB	001H
+	DB	Y_POI
+	DB	000H
+
+	DB	001H
+	DB	XY_POI
+	DB	000H
+
+	DB	002H
+	DB	last_val
+	DW	00000H
+
+; #include <KS0108.h>
+; #include <lang.h>
+; #include <FONT.h>
+; #include <DS1302.h>
+; #include <DS18B20.h>
+; 
+; sbit SOUND = P1 ^ 0;
+; sbit UP = P1 ^ 2;
+
+	RSEG  ?PR?_dely_ms?MAIN
+_dely_ms:
+	USING	0
+			; SOURCE LINE # 8
+;---- Variable 'i?041' assigned to Register 'R4/R5' ----
+;---- Variable 'tim?040' assigned to Register 'R6/R7' ----
+?C0001:
+; sbit DOWN = P1 ^ 3;
+; sbit LEFT = P1 ^ 4;
+			; SOURCE LINE # 10
+	MOV  	A,R7
+	DEC  	R7
+	MOV  	R2,AR6
+	JNZ  	?C0228
+	DEC  	R6
+?C0228:
+	ORL  	A,R2
+	JZ   	?C0006
+; sbit RIGHT = P1 ^ 5;
+			; SOURCE LINE # 11
+	CLR  	A
+	MOV  	R4,A
+	MOV  	R5,A
+?C0003:
+	CLR  	C
+	MOV  	A,R5
+	SUBB 	A,#079H
+	MOV  	A,R4
+	SUBB 	A,#00H
+	JNC  	?C0001
+	INC  	R5
+	CJNE 	R5,#00H,?C0229
+	INC  	R4
+?C0229:
+	SJMP 	?C0003
+; sbit EXIT = P1 ^ 6;
+			; SOURCE LINE # 12
+?C0006:
+	RET  	
+; END OF _dely_ms
+
+; sbit LED = P2 ^ 7;
+; uchar SWITCH = 0;
+; uchar res[7] = {
+; 	0,29,17,17,12,2,19
+; };
+; uchar POI = 0;
+; uchar LOC[6] = {0,2,3,4,5,6};
+; uchar cla_[3][3];
+; code uchar XLOC[] = {0,1,2,0,1,2,0,1,2};
+; code uchar YLOC[] = {0,0,0,1,1,1,2,2,2};
+; code uchar MAX_LOC[] = {24,60,60};
+; uchar X_POI = 0;
+; uchar Y_POI = 0;
+; uchar XY_POI = 0;
+; void show_first_word(){
+; 
+; 	show_font_16(1,32,3,HanZi_16[0]);
+; 	show_font_16(1,48,3,HanZi_16[1]);
+
+	RSEG  ?PR?_select_side?MAIN
+_select_side:
+			; SOURCE LINE # 30
+;---- Variable 'buf?142' assigned to Register 'R7' ----
+; 	show_font_16(2,0,3,HanZi_16[2]);
+			; SOURCE LINE # 31
+	MOV  	A,R7
+	JNB  	ACC.0,?C0007
+; 	show_font_16(2,16,3,HanZi_16[3]);
+			; SOURCE LINE # 32
+	CLR  	CS1
+	SJMP 	?C0008
+?C0007:
+; 	dely_ms(2500);
+; 	cls_disy(3);
+			; SOURCE LINE # 34
+	SETB 	CS1
+?C0008:
+; 
+; }
+			; SOURCE LINE # 36
+	MOV  	A,R7
+	JNB  	ACC.1,?C0009
+; 
+			; SOURCE LINE # 37
+	CLR  	CS2
+	RET  	
+?C0009:
+; void show_time(){
+; 	uchar buf;
+			; SOURCE LINE # 39
+	SETB 	CS2
+; 	// 第一行
+			; SOURCE LINE # 40
+?C0011:
+	RET  	
+; END OF _select_side
+
+; 	// 年
+; 	buf = res[0];
+
+	RSEG  ?PR?wait_busy?MAIN
+wait_busy:
+			; SOURCE LINE # 42
+; 	show_font_8(1,8*1,0,NUM[buf%10]);
+			; SOURCE LINE # 43
+	CLR  	RS
+; 	buf /= 10;
+			; SOURCE LINE # 44
+	SETB 	RW
+?C0014:
+; 	show_font_8(1,8*0,0,NUM[buf%10]);
+			; SOURCE LINE # 45
+; 	
+			; SOURCE LINE # 46
+	CLR  	A
+	MOV  	P0,A
+; 	show_font_8(1,8*2,0,Sing[1]);
+			; SOURCE LINE # 47
+	SETB 	EN
+; 	//月
+			; SOURCE LINE # 48
+	CLR  	EN
+; 	buf = res[2];
+			; SOURCE LINE # 49
+	MOV  	A,P0
+	JB   	ACC.7,?C0014
+; 	show_font_8(1,8*4,0,NUM[buf%10]);
+			; SOURCE LINE # 50
+	RET  	
+; END OF wait_busy
+
+; 	buf /= 10;
+
+	RSEG  ?PR?_write_ord?MAIN
+L?0257:
+	USING	0
+	ORL  	A,#0B8H
+	MOV  	R7,A
+	LCALL	_write_ord
+	MOV  	R7,#040H
+_write_ord:
+			; SOURCE LINE # 51
+;---- Variable 'ord?343' assigned to Register 'R7' ----
+; 	show_font_8(1,8*3,0,NUM[buf%10]);
+			; SOURCE LINE # 52
+	LCALL	wait_busy
+; 	
+; 	show_font_8(1,8*5,0,Sing[1]);
+			; SOURCE LINE # 54
+	CLR  	RS
+; 	
+			; SOURCE LINE # 55
+	CLR  	RW
+; 	//日
+			; SOURCE LINE # 56
+	MOV  	P0,R7
+; 	buf = res[3];
+; 	show_font_8(1,8*7,0,NUM[buf%10]);
+			; SOURCE LINE # 58
+	SETB 	EN
+; 	buf /= 10;
+			; SOURCE LINE # 59
+	CLR  	EN
+; 	show_font_8(1,8*6,0,NUM[buf%10]);
+			; SOURCE LINE # 60
+	RET  	
+; END OF _write_ord
+
+; 	
+; 	//第二行
+
+	RSEG  ?PR?_write_data?MAIN
+L?0252:
+	USING	0
+	MOV  	R3,arr?957
+	MOV  	R2,arr?957+01H
+	MOV  	R1,arr?957+02H
+L?0253:
+	MOV  	DPL,R4
+	MOV  	DPH,#00H
+	LCALL	?C?CLDOPTR
+	MOV  	R7,A
+_write_data:
+			; SOURCE LINE # 62
+;---- Variable 'dat?444' assigned to Register 'R7' ----
+; 	// 时
+			; SOURCE LINE # 63
+	LCALL	wait_busy
+; 	buf = res[4];
+; 	show_font_8(1,8*1,2,NUM[buf%10]);
+			; SOURCE LINE # 65
+	SETB 	RS
+; 	buf /= 10;
+			; SOURCE LINE # 66
+	CLR  	RW
+; 	show_font_8(1,8*0,2,NUM[buf%10]);
+; 	
+			; SOURCE LINE # 68
+	MOV  	P0,R7
+; 	show_font_8(1,8*2,2,Sing[0]);
+; 	//分
+			; SOURCE LINE # 70
+	SETB 	EN
+; 	buf = res[5];
+			; SOURCE LINE # 71
+	CLR  	EN
+; 	show_font_8(1,8*4,2,NUM[buf%10]);
+			; SOURCE LINE # 72
+	RET  	
+; END OF _write_data
+
+; 	buf /= 10;
+; 	show_font_8(1,8*3,2,NUM[buf%10]);
+
+	RSEG  ?PR?led_init?MAIN
+led_init:
+	USING	0
+			; SOURCE LINE # 74
+; 	
+			; SOURCE LINE # 75
+	MOV  	R7,#03FH
+	LCALL	_write_ord
+; 	show_font_8(1,8*5,2,Sing[0]);
+			; SOURCE LINE # 76
+	MOV  	R7,#0B8H
+	LCALL	_write_ord
+; 	
+			; SOURCE LINE # 77
+	MOV  	R7,#040H
+	LJMP 	_write_ord
+; END OF led_init
+
+; 	//秒
+; 	buf = res[6];
+; 	show_font_8(1,8*7,2,NUM[buf%10]);
+
+	RSEG  ?PR?_cls_disy?MAIN
+_cls_disy:
+	USING	0
+			; SOURCE LINE # 80
+;---- Variable 'side?645' assigned to Register 'R7' ----
+; 	buf /= 10;
+; 	show_font_8(1,8*6,2,NUM[buf%10]);
+			; SOURCE LINE # 82
+	LCALL	_select_side
+; 	
+			; SOURCE LINE # 83
+;---- Variable 'i?646' assigned to Register 'R6' ----
+	CLR  	A
+	MOV  	R6,A
+?C0019:
+	MOV  	A,R6
+	CLR  	C
+	SUBB 	A,#08H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0025
+; 	//第三行
+			; SOURCE LINE # 84
+	MOV  	A,R6
+; 	buf = res[1];
+			; SOURCE LINE # 85
+	LCALL	L?0257
+; 	show_font_16(1,0,4,HanZi_16[4]);
+			; SOURCE LINE # 86
+;---- Variable 'j?647' assigned to Register 'R5' ----
+	CLR  	A
+	MOV  	R5,A
+?C0022:
+	MOV  	A,R5
+	CLR  	C
+	SUBB 	A,#040H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0021
+; 	show_font_16(1,16,4,HanZi_16[5]);
+			; SOURCE LINE # 87
+	MOV  	R7,#0FFH
+	LCALL	_write_data
+	INC  	R5
+	SJMP 	?C0022
+; 	show_font_16(1,16*2,4,HZ_Num[buf]);
+			; SOURCE LINE # 88
+?C0021:
+	INC  	R6
+	SJMP 	?C0019
+; }
+			; SOURCE LINE # 89
+?C0025:
+	RET  	
+; END OF _cls_disy
+
+; 
+
+	RSEG  ?PR?_cls_disy_dely?MAIN
+_cls_disy_dely:
+	USING	0
+			; SOURCE LINE # 90
+;---- Variable 'tim?749' assigned to Register 'R1' ----
+	MOV  	R1,AR5
+;---- Variable 'side?748' assigned to Register 'R7' ----
+; void show_del(){
+; 	uchar buf;
+			; SOURCE LINE # 92
+	LCALL	_select_side
+; 	//第一行
+			; SOURCE LINE # 93
+;---- Variable 'i?750' assigned to Register 'R3' ----
+	CLR  	A
+	MOV  	R3,A
+?C0026:
+	MOV  	A,R3
+	CLR  	C
+	SUBB 	A,#08H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0032
+; 	// 时
+			; SOURCE LINE # 94
+	MOV  	A,R3
+; 	buf = cla_[0][0];
+			; SOURCE LINE # 95
+	LCALL	L?0257
+; 	show_font_8f(2,8*1,0,NUM[buf%10],(X_POI == 0 && Y_POI == 0));
+			; SOURCE LINE # 96
+;---- Variable 'j?751' assigned to Register 'R6' ----
+	CLR  	A
+	MOV  	R6,A
+?C0029:
+	MOV  	A,R6
+	CLR  	C
+	SUBB 	A,#040H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0030
+; 	buf /= 10;
+			; SOURCE LINE # 97
+	MOV  	R7,#0FFH
+	LCALL	_write_data
+	INC  	R6
+	SJMP 	?C0029
+?C0030:
+; 	show_font_8f(2,8*0,0,NUM[buf%10],(X_POI == 0 && Y_POI == 0));
+			; SOURCE LINE # 98
+	MOV  	A,R1
+	MOV  	R7,A
+	MOV  	R6,#00H
+	LCALL	_dely_ms
+; 	
+			; SOURCE LINE # 99
+	INC  	R3
+	SJMP 	?C0026
+; 	show_font_8(2,8*2,0,Sing[0]);
+			; SOURCE LINE # 100
+?C0032:
+	RET  	
+; END OF _cls_disy_dely
+
+; 	//分
+; 	buf = cla_[0][1];
+; 	show_font_8f(2,8*4,0,NUM[buf%10],(X_POI == 1 && Y_POI == 0));
+; 	buf /= 10;
+; 	show_font_8f(2,8*3,0,NUM[buf%10],(X_POI == 1 && Y_POI == 0));
+
+	RSEG  ?PR?_set_loc?MAIN
+_set_loc:
+	USING	0
+			; SOURCE LINE # 105
+;---- Variable 'y?853' assigned to Register 'R5' ----
+;---- Variable 'x?852' assigned to Register 'R6' ----
+	MOV  	R6,AR7
+; 	
+			; SOURCE LINE # 106
+	MOV  	A,R6
+	CLR  	C
+	SUBB 	A,#040H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0035
+	MOV  	A,R5
+	CLR  	C
+	SUBB 	A,#09H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0035
+; 	show_font_8(2,8*5,0,Sing[0]);
+; 	
+			; SOURCE LINE # 108
+	MOV  	A,R5
+	ORL  	A,#0B8H
+	MOV  	R7,A
+	LCALL	_write_ord
+; 	//秒
+			; SOURCE LINE # 109
+	MOV  	A,R6
+	ORL  	A,#040H
+	MOV  	R7,A
+	LCALL	_write_ord
+; 	buf = cla_[0][2];
+			; SOURCE LINE # 110
+?C0035:
+	RET  	
+; END OF _set_loc
+
+; 	show_font_8f(2,8*7,0,NUM[buf%10],(X_POI == 2 && Y_POI == 0));
+; 	buf /= 10;
+
+	RSEG  ?PR?_show_font_8?MAIN
+L?0251:
+	USING	0
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R7,#01H
+_show_font_8:
+	USING	0
+			; SOURCE LINE # 112
+	MOV  	x?955,R5
+	MOV  	y?956,R3
+;---- Variable 'side?954' assigned to Register 'R7' ----
+; 	show_font_8f(2,8*6,0,NUM[buf%10],(X_POI == 2 && Y_POI == 0));	
+			; SOURCE LINE # 113
+;---- Variable 'i?958' assigned to Register 'R4' ----
+	CLR  	A
+	MOV  	R4,A
+; 	
+			; SOURCE LINE # 114
+	LCALL	_select_side
+; 	//第二行
+			; SOURCE LINE # 115
+	MOV  	R5,y?956
+	MOV  	R7,x?955
+	LCALL	_set_loc
+; 	// 时
+			; SOURCE LINE # 116
+?C0036:
+	MOV  	A,R4
+	CLR  	C
+	SUBB 	A,#08H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0037
+	LCALL	L?0252
+	INC  	R4
+	SJMP 	?C0036
+?C0037:
+; 	buf = cla_[1][0];
+			; SOURCE LINE # 117
+	MOV  	A,y?956
+	INC  	A
+	MOV  	R5,A
+	MOV  	R7,x?955
+	LCALL	_set_loc
+; 	show_font_8f(2,8*1,2,NUM[buf%10],(X_POI == 0 && Y_POI == 1));
+			; SOURCE LINE # 118
+?C0039:
+	MOV  	A,R4
+	CLR  	C
+	SUBB 	A,#010H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0042
+	LCALL	L?0252
+	INC  	R4
+	SJMP 	?C0039
+; 	buf /= 10;
+			; SOURCE LINE # 119
+?C0042:
+	RET  	
+; END OF _show_font_8
+
+; 	show_font_8f(2,8*0,2,NUM[buf%10],(X_POI == 0 && Y_POI == 1));
+; 	
+
+	RSEG  ?PR?_show_font_8f?MAIN
+L?0254:
+	USING	0
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R7,#02H
+_show_font_8f:
+	USING	0
+			; SOURCE LINE # 121
+	MOV  	x?1060,R5
+	MOV  	y?1061,R3
+;---- Variable 'side?1059' assigned to Register 'R7' ----
+; 	show_font_8(2,8*2,2,Sing[0]);
+			; SOURCE LINE # 122
+;---- Variable 'i?1064' assigned to Register 'R4' ----
+	CLR  	A
+	MOV  	R4,A
+; 	//分
+			; SOURCE LINE # 123
+	LCALL	_select_side
+; 	buf = cla_[1][1];
+			; SOURCE LINE # 124
+	MOV  	R5,y?1061
+	MOV  	R7,x?1060
+	LCALL	_set_loc
+; 	show_font_8f(2,8*4,2,NUM[buf%10],(X_POI == 1 && Y_POI == 1));
+			; SOURCE LINE # 125
+?C0043:
+	MOV  	A,R4
+	CLR  	C
+	SUBB 	A,#08H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0044
+; 	buf /= 10;
+			; SOURCE LINE # 126
+	MOV  	A,isf?1063
+	MOV  	R3,arr?1062
+	MOV  	R2,arr?1062+01H
+	MOV  	R1,arr?1062+02H
+	JZ   	?C0046
+	MOV  	DPL,R4
+	MOV  	DPH,#00H
+	LCALL	?C?CLDOPTR
+	CPL  	A
+	SJMP 	?C0236
+?C0046:
+; 	show_font_8f(2,8*3,2,NUM[buf%10],(X_POI == 1 && Y_POI == 1));
+			; SOURCE LINE # 127
+	MOV  	DPL,R4
+	MOV  	DPH,#00H
+	LCALL	?C?CLDOPTR
+?C0236:
+	MOV  	R7,A
+	LCALL	_write_data
+?C0045:
+	INC  	R4
+	SJMP 	?C0043
+?C0044:
+; 	
+			; SOURCE LINE # 128
+	MOV  	A,y?1061
+	INC  	A
+	MOV  	R5,A
+	MOV  	R7,x?1060
+	LCALL	_set_loc
+; 	show_font_8(2,8*5,2,Sing[0]);
+			; SOURCE LINE # 129
+?C0048:
+	MOV  	A,R4
+	CLR  	C
+	SUBB 	A,#010H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0053
+; 	
+			; SOURCE LINE # 130
+	MOV  	A,isf?1063
+	MOV  	R3,arr?1062
+	MOV  	R2,arr?1062+01H
+	MOV  	R1,arr?1062+02H
+	JZ   	?C0051
+	MOV  	DPL,R4
+	MOV  	DPH,#00H
+	LCALL	?C?CLDOPTR
+	CPL  	A
+	SJMP 	?C0237
+?C0051:
+; 	//秒
+			; SOURCE LINE # 131
+	MOV  	DPL,R4
+	MOV  	DPH,#00H
+	LCALL	?C?CLDOPTR
+?C0237:
+	MOV  	R7,A
+	LCALL	_write_data
+?C0050:
+	INC  	R4
+	SJMP 	?C0048
+; 	buf = cla_[1][2];
+			; SOURCE LINE # 132
+?C0053:
+	RET  	
+; END OF _show_font_8f
+
+; 	show_font_8f(2,8*7,2,NUM[buf%10],(X_POI == 2 && Y_POI == 1));
+; 	buf /= 10;
+
+	RSEG  ?PR?_show_font_16?MAIN
+L?0255:
+	USING	0
+L?0256:
+	MOV  	R5,#010H
+	MOV  	R7,#01H
+_show_font_16:
+	USING	0
+			; SOURCE LINE # 134
+	MOV  	x?1166,R5
+	MOV  	y?1167,R3
+;---- Variable 'side?1165' assigned to Register 'R7' ----
+; 	show_font_8f(2,8*6,2,NUM[buf%10],(X_POI == 2 && Y_POI == 1));
+			; SOURCE LINE # 135
+;---- Variable 'i?1169' assigned to Register 'R4' ----
+	CLR  	A
+	MOV  	R4,A
+; 	
+			; SOURCE LINE # 136
+	LCALL	_select_side
+; 	//第二行
+			; SOURCE LINE # 137
+	MOV  	R5,y?1167
+	MOV  	R7,x?1166
+	LCALL	_set_loc
+; 	// 时
+			; SOURCE LINE # 138
+?C0054:
+	MOV  	A,R4
+	CLR  	C
+	SUBB 	A,#010H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0055
+	MOV  	R3,arr?1168
+	MOV  	R2,arr?1168+01H
+	MOV  	R1,arr?1168+02H
+	LCALL	L?0253
+	INC  	R4
+	SJMP 	?C0054
+?C0055:
+; 	buf = cla_[2][0];
+			; SOURCE LINE # 139
+	MOV  	A,y?1167
+	INC  	A
+	MOV  	R5,A
+	MOV  	R7,x?1166
+	LCALL	_set_loc
+; 	show_font_8f(2,8*1,4,NUM[buf%10],(X_POI == 0 && Y_POI == 2));
+			; SOURCE LINE # 140
+?C0057:
+	MOV  	A,R4
+	CLR  	C
+	SUBB 	A,#020H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0060
+	MOV  	R3,arr?1168
+	MOV  	R2,arr?1168+01H
+	MOV  	R1,arr?1168+02H
+	LCALL	L?0253
+	INC  	R4
+	SJMP 	?C0057
+; 	buf /= 10;
+			; SOURCE LINE # 141
+?C0060:
+	RET  	
+; END OF _show_font_16
+
+
+	RSEG  ?PR?_BCD_Decimal?MAIN
+_BCD_Decimal:
+	USING	0
+			; SOURCE LINE # 33
+;---- Variable 'bcd?1270' assigned to Register 'R7' ----
+			; SOURCE LINE # 34
+			; SOURCE LINE # 36
+	MOV  	A,R7
+	SWAP 	A
+	ANL  	A,#0FH
+	MOV  	R6,A
+;---- Variable 'Decimal?1271' assigned to Register 'R6' ----
+			; SOURCE LINE # 37
+	MOV  	A,R7
+	ANL  	A,#0FH
+	MOV  	R5,A
+	MOV  	A,R6
+	MOV  	B,#0AH
+	MUL  	AB
+	ADD  	A,R5
+			; SOURCE LINE # 38
+	MOV  	R7,A
+			; SOURCE LINE # 39
+	RET  	
+; END OF _BCD_Decimal
+
+
+	RSEG  ?PR?_Dec_BCD?MAIN
+_Dec_BCD:
+	USING	0
+			; SOURCE LINE # 41
+;---- Variable 'dec?1372' assigned to Register 'R7' ----
+			; SOURCE LINE # 42
+	MOV  	A,R7
+	MOV  	B,#0AH
+	DIV  	AB
+	SWAP 	A
+	ANL  	A,#0F0H
+	MOV  	R6,A
+	MOV  	A,R7
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	ADD  	A,R6
+	MOV  	R7,A
+			; SOURCE LINE # 43
+	RET  	
+; END OF _Dec_BCD
+
+
+	RSEG  ?PR?_write_1302_byte?MAIN
+L?0258:
+	USING	0
+	CLR  	T_RST
+	CLR  	T_CLK
+	SETB 	T_RST
+_write_1302_byte:
+	USING	0
+			; SOURCE LINE # 48
+;---- Variable 'dat?1473' assigned to Register 'R7' ----
+			; SOURCE LINE # 49
+			; SOURCE LINE # 51
+;---- Variable 'i?1474' assigned to Register 'R6' ----
+	CLR  	A
+	MOV  	R6,A
+?C0063:
+	MOV  	A,R6
+	CLR  	C
+	SUBB 	A,#08H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0068
+			; SOURCE LINE # 52
+			; SOURCE LINE # 53
+	MOV  	A,R7
+	JNB  	ACC.0,?C0066
+	SETB 	T_DAT
+	SJMP 	?C0067
+?C0066:
+			; SOURCE LINE # 54
+	CLR  	T_DAT
+?C0067:
+			; SOURCE LINE # 55
+	SETB 	T_CLK
+			; SOURCE LINE # 56
+	MOV  	A,R7
+	CLR  	C
+	RRC  	A
+	MOV  	R7,A
+			; SOURCE LINE # 57
+	CLR  	T_CLK
+			; SOURCE LINE # 58
+	INC  	R6
+	SJMP 	?C0063
+			; SOURCE LINE # 59
+?C0068:
+	RET  	
+; END OF _write_1302_byte
+
+
+	RSEG  ?PR?read_1302_byte?MAIN
+read_1302_byte:
+	USING	0
+			; SOURCE LINE # 63
+;---- Variable 'dat?1576' assigned to Register 'R7' ----
+			; SOURCE LINE # 64
+			; SOURCE LINE # 66
+	SETB 	T_DAT
+			; SOURCE LINE # 67
+;---- Variable 'i?1575' assigned to Register 'R6' ----
+	CLR  	A
+	MOV  	R6,A
+?C0069:
+	MOV  	A,R6
+	CLR  	C
+	SUBB 	A,#08H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0070
+			; SOURCE LINE # 68
+			; SOURCE LINE # 69
+	MOV  	A,R7
+	CLR  	C
+	RRC  	A
+	MOV  	R7,A
+			; SOURCE LINE # 70
+	JNB  	T_DAT,?C0072
+	ORL  	AR7,#080H
+?C0072:
+			; SOURCE LINE # 71
+	SETB 	T_CLK
+			; SOURCE LINE # 72
+	CLR  	T_CLK
+			; SOURCE LINE # 73
+	INC  	R6
+	SJMP 	?C0069
+?C0070:
+			; SOURCE LINE # 74
+			; SOURCE LINE # 75
+	RET  	
+; END OF read_1302_byte
+
+
+	RSEG  ?PR?_write_1302?MAIN
+_write_1302:
+	USING	0
+			; SOURCE LINE # 79
+;---- Variable 'dat?1678' assigned to Register 'R5' ----
+;---- Variable 'addr?1677' assigned to Register 'R7' ----
+			; SOURCE LINE # 80
+			; SOURCE LINE # 81
+			; SOURCE LINE # 82
+			; SOURCE LINE # 83
+			; SOURCE LINE # 85
+	LCALL	L?0258
+			; SOURCE LINE # 86
+	MOV  	R7,AR5
+	LCALL	_write_1302_byte
+			; SOURCE LINE # 88
+	CLR  	T_RST
+			; SOURCE LINE # 89
+	RET  	
+; END OF _write_1302
+
+
+	RSEG  ?PR?_read_1302?MAIN
+_read_1302:
+	USING	0
+			; SOURCE LINE # 93
+;---- Variable 'addr?1779' assigned to Register 'R7' ----
+			; SOURCE LINE # 94
+			; SOURCE LINE # 97
+			; SOURCE LINE # 98
+			; SOURCE LINE # 99
+			; SOURCE LINE # 101
+	LCALL	L?0258
+			; SOURCE LINE # 102
+	LCALL	read_1302_byte
+;---- Variable 'dat?1780' assigned to Register 'R7' ----
+			; SOURCE LINE # 104
+	CLR  	T_RST
+			; SOURCE LINE # 106
+			; SOURCE LINE # 107
+	RET  	
+; END OF _read_1302
+
+
+	RSEG  ?PR?_read_time?MAIN
+_read_time:
+	USING	0
+			; SOURCE LINE # 113
+	MOV  	p?1881,R3
+	MOV  	p?1881+01H,R2
+	MOV  	p?1881+02H,R1
+			; SOURCE LINE # 114
+			; SOURCE LINE # 116
+;---- Variable 'i?1882' assigned to Register 'R4' ----
+	MOV  	R4,#08DH
+?C0076:
+	MOV  	A,R4
+	CLR  	C
+	SUBB 	A,#081H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JC   	?C0079
+			; SOURCE LINE # 117
+			; SOURCE LINE # 118
+	MOV  	R7,AR4
+	LCALL	_read_1302
+	LCALL	_BCD_Decimal
+	MOV  	R3,p?1881
+	INC  	p?1881+02H
+	MOV  	A,p?1881+02H
+	MOV  	R2,p?1881+01H
+	JNZ  	?C0230
+	INC  	p?1881+01H
+?C0230:
+	DEC  	A
+	MOV  	R1,A
+	MOV  	A,R7
+	LCALL	?C?CSTPTR
+			; SOURCE LINE # 119
+	DEC  	R4
+			; SOURCE LINE # 120
+	DEC  	R4
+	SJMP 	?C0076
+			; SOURCE LINE # 121
+?C0079:
+	RET  	
+; END OF _read_time
+
+
+	RSEG  ?PR?_write_time?MAIN
+_write_time:
+	USING	0
+			; SOURCE LINE # 127
+	MOV  	p?1983,R3
+	MOV  	p?1983+01H,R2
+	MOV  	p?1983+02H,R1
+			; SOURCE LINE # 128
+			; SOURCE LINE # 131
+	CLR  	A
+	MOV  	R5,A
+	MOV  	R7,#08EH
+	LCALL	_write_1302
+			; SOURCE LINE # 132
+;---- Variable 'i?1984' assigned to Register 'R4' ----
+	MOV  	R4,#08CH
+?C0080:
+	MOV  	A,R4
+	CLR  	C
+	SUBB 	A,#080H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JC   	?C0081
+			; SOURCE LINE # 133
+			; SOURCE LINE # 134
+	MOV  	R3,p?1983
+	INC  	p?1983+02H
+	MOV  	A,p?1983+02H
+	MOV  	R2,p?1983+01H
+	JNZ  	?C0231
+	INC  	p?1983+01H
+?C0231:
+	DEC  	A
+	MOV  	R1,A
+	LCALL	?C?CLDPTR
+	MOV  	R7,A
+	LCALL	_Dec_BCD
+	MOV  	R5,AR7
+	MOV  	R7,AR4
+	LCALL	_write_1302
+			; SOURCE LINE # 135
+	DEC  	R4
+			; SOURCE LINE # 136
+	DEC  	R4
+	SJMP 	?C0080
+?C0081:
+			; SOURCE LINE # 137
+	MOV  	R5,#080H
+	MOV  	R7,#08EH
+	LJMP 	_write_1302
+; END OF _write_time
+
+
+	RSEG  ?PR?_DS18_delay?MAIN
+_DS18_delay:
+	USING	0
+			; SOURCE LINE # 6
+;---- Variable 'useconds?2085' assigned to Register 'R6/R7' ----
+			; SOURCE LINE # 7
+			; SOURCE LINE # 9
+;---- Variable 's?2086' assigned to Register 'R4/R5' ----
+	CLR  	A
+	MOV  	R5,A
+	MOV  	R4,A
+?C0084:
+	CLR  	C
+	MOV  	A,R5
+	SUBB 	A,R7
+	MOV  	A,R6
+	XRL  	A,#080H
+	MOV  	R0,A
+	MOV  	A,R4
+	XRL  	A,#080H
+	SUBB 	A,R0
+	JNC  	?C0087
+	INC  	R5
+	CJNE 	R5,#00H,?C0232
+	INC  	R4
+?C0232:
+	SJMP 	?C0084
+			; SOURCE LINE # 10
+?C0087:
+	RET  	
+; END OF _DS18_delay
+
+
+	RSEG  ?PR?ow_reset?MAIN
+ow_reset:
+	USING	0
+			; SOURCE LINE # 12
+			; SOURCE LINE # 13
+			; SOURCE LINE # 15
+	CLR  	DQ
+			; SOURCE LINE # 16
+	MOV  	R7,#01DH
+	MOV  	R6,#00H
+	LCALL	_DS18_delay
+			; SOURCE LINE # 17
+	SETB 	DQ
+			; SOURCE LINE # 18
+	MOV  	R7,#03H
+	LCALL	_DS18_delay
+			; SOURCE LINE # 19
+	MOV  	C,DQ
+	CLR  	A
+	RLC  	A
+;---- Variable 'presence?2187' assigned to Register 'R3' ----
+	MOV  	R3,A
+			; SOURCE LINE # 20
+	MOV  	R7,#019H
+	LCALL	_DS18_delay
+			; SOURCE LINE # 21
+	MOV  	R7,AR3
+			; SOURCE LINE # 22
+	RET  	
+; END OF ow_reset
+
+
+	RSEG  ?PR?_write_bit?MAIN
+_write_bit:
+	USING	0
+			; SOURCE LINE # 24
+;---- Variable 'bitval?2288' assigned to Register 'R7' ----
+			; SOURCE LINE # 25
+			; SOURCE LINE # 26
+	CLR  	DQ
+			; SOURCE LINE # 27
+	MOV  	A,R7
+	RLC  	A
+	SUBB 	A,ACC
+	MOV  	R6,A
+	MOV  	A,R7
+	XRL  	A,#01H
+	ORL  	A,R6
+	JNZ  	?C0089
+	SETB 	DQ
+?C0089:
+			; SOURCE LINE # 28
+	MOV  	R7,#05H
+	MOV  	R6,#00H
+	LCALL	_DS18_delay
+			; SOURCE LINE # 29
+	SETB 	DQ
+			; SOURCE LINE # 30
+	RET  	
+; END OF _write_bit
+
+
+	RSEG  ?PR?_ds18write_byte?MAIN
+_ds18write_byte:
+	USING	0
+			; SOURCE LINE # 32
+;---- Variable 'val?2389' assigned to Register 'R3' ----
+	MOV  	R3,AR7
+			; SOURCE LINE # 33
+			; SOURCE LINE # 36
+;---- Variable 'i?2390' assigned to Register 'R2' ----
+	CLR  	A
+	MOV  	R2,A
+?C0091:
+	MOV  	A,R2
+	CLR  	C
+	SUBB 	A,#08H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0092
+			; SOURCE LINE # 37
+			; SOURCE LINE # 38
+	MOV  	A,R3
+	ANL  	A,#01H
+;---- Variable 't?2391' assigned to Register 'R1' ----
+			; SOURCE LINE # 39
+	MOV  	R7,A
+	LCALL	_write_bit
+			; SOURCE LINE # 40
+	MOV  	A,R3
+	MOV  	C,ACC.7
+	RRC  	A
+	MOV  	R3,A
+			; SOURCE LINE # 41
+	INC  	R2
+	SJMP 	?C0091
+?C0092:
+			; SOURCE LINE # 42
+	MOV  	R7,#05H
+	MOV  	R6,#00H
+	LJMP 	_DS18_delay
+; END OF _ds18write_byte
+
+
+	RSEG  ?PR?read_bit?MAIN
+read_bit:
+	USING	0
+			; SOURCE LINE # 45
+			; SOURCE LINE # 46
+			; SOURCE LINE # 48
+	CLR  	DQ
+			; SOURCE LINE # 49
+	SETB 	DQ
+			; SOURCE LINE # 50
+;---- Variable 'i?2492' assigned to Register 'R7' ----
+	CLR  	A
+	MOV  	R7,A
+?C0095:
+	MOV  	A,R7
+	CLR  	C
+	SUBB 	A,#03H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0096
+	INC  	R7
+	SJMP 	?C0095
+?C0096:
+			; SOURCE LINE # 51
+	MOV  	C,DQ
+	CLR  	A
+	RLC  	A
+	MOV  	R7,A
+			; SOURCE LINE # 52
+	RET  	
+; END OF read_bit
+
+
+	RSEG  ?PR?DSread_byte?MAIN
+DSread_byte:
+	USING	0
+			; SOURCE LINE # 54
+			; SOURCE LINE # 55
+			; SOURCE LINE # 57
+;---- Variable 'value?2594' assigned to Register 'R3' ----
+	CLR  	A
+	MOV  	R3,A
+			; SOURCE LINE # 58
+;---- Variable 'i?2593' assigned to Register 'R2' ----
+	MOV  	R2,A
+?C0099:
+	MOV  	A,R2
+	CLR  	C
+	SUBB 	A,#08H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0100
+			; SOURCE LINE # 59
+			; SOURCE LINE # 60
+	LCALL	read_bit
+	MOV  	A,R7
+	JZ   	?C0102
+			; SOURCE LINE # 61
+	MOV  	R0,AR2
+	MOV  	A,#01H
+	INC  	R0
+	SJMP 	?C0234
+?C0233:
+	CLR  	C
+	RLC  	A
+?C0234:
+	DJNZ 	R0,?C0233
+	ORL  	AR3,A
+?C0102:
+			; SOURCE LINE # 62
+	MOV  	R7,#06H
+	MOV  	R6,#00H
+	LCALL	_DS18_delay
+			; SOURCE LINE # 63
+	INC  	R2
+	SJMP 	?C0099
+?C0100:
+			; SOURCE LINE # 64
+	MOV  	R7,AR3
+			; SOURCE LINE # 65
+	RET  	
+; END OF DSread_byte
+
+
+	RSEG  ?PR?ReadTemperature?MAIN
+ReadTemperature:
+	USING	0
+			; SOURCE LINE # 67
+			; SOURCE LINE # 68
+			; SOURCE LINE # 73
+	LCALL	ow_reset
+			; SOURCE LINE # 74
+	MOV  	R7,#0CCH
+	LCALL	_ds18write_byte
+			; SOURCE LINE # 75
+	MOV  	R7,#044H
+	LCALL	_ds18write_byte
+			; SOURCE LINE # 76
+	MOV  	R7,#05H
+	MOV  	R6,#00H
+	LCALL	_DS18_delay
+			; SOURCE LINE # 77
+	LCALL	ow_reset
+			; SOURCE LINE # 78
+	MOV  	R7,#0CCH
+	LCALL	_ds18write_byte
+			; SOURCE LINE # 79
+	MOV  	R7,#0BEH
+	LCALL	_ds18write_byte
+			; SOURCE LINE # 80
+;---- Variable 'k?2699' assigned to Register 'R1' ----
+	CLR  	A
+	MOV  	R1,A
+?C0104:
+	MOV  	A,R1
+	CLR  	C
+	SUBB 	A,#02H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0105
+			; SOURCE LINE # 81
+	LCALL	DSread_byte
+	MOV  	A,#LOW (get?2695)
+	ADD  	A,R1
+	MOV  	R0,A
+	MOV  	@R0,AR7
+	INC  	R1
+	SJMP 	?C0104
+?C0105:
+			; SOURCE LINE # 83
+;---- Variable 'temp_msb?2696' assigned to Register 'R7' ----
+			; SOURCE LINE # 84
+;---- Variable 'temp_lsb?2697' assigned to Register 'R5' ----
+			; SOURCE LINE # 85
+	MOV  	A,get?2695+01H
+	MOV  	R6,A
+	MOV  	R4,#00H
+	CLR  	A
+	ADD  	A,get?2695
+	MOV  	R7,A
+	MOV  	A,R4
+	ADDC 	A,R6
+	MOV  	R6,A
+;---- Variable 't?2698' assigned to Register 'R6/R7' ----
+			; SOURCE LINE # 86
+	ANL  	AR7,#0F0H
+	ANL  	AR6,#0FH
+			; SOURCE LINE # 87
+	CLR  	C
+	MOV  	A,R7
+	SUBB 	A,#0FFH
+	MOV  	A,R6
+	SUBB 	A,#00H
+	JNC  	?C0107
+	MOV  	A,R7
+	SUBB 	A,#0F0H
+	MOV  	A,R6
+	SUBB 	A,#00H
+	JC   	?C0107
+			; SOURCE LINE # 88
+	MOV  	R4,#0FFH
+	MOV  	R5,#0FFH
+	LCALL	?C?IMUL
+?C0107:
+			; SOURCE LINE # 89
+	MOV  	A,R6
+	SWAP 	A
+	MOV  	R0,A
+	ANL  	A,#0F0H
+	XCH  	A,R0
+	XRL  	A,R0
+	MOV  	R6,A
+	MOV  	A,R7
+	SWAP 	A
+	ANL  	A,#0FH
+	ORL  	A,R0
+	MOV  	R7,A
+			; SOURCE LINE # 90
+	RET  	
+; END OF ReadTemperature
+
+
+	RSEG  ?PR?show_first_word?MAIN
+show_first_word:
+	USING	0
+			; SOURCE LINE # 27
+			; SOURCE LINE # 29
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (HanZi_16)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (HanZi_16)
+	MOV  	R3,#03H
+	MOV  	R5,#020H
+	MOV  	R7,#01H
+	LCALL	_show_font_16
+			; SOURCE LINE # 30
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (HanZi_16+020H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (HanZi_16+020H)
+	MOV  	R3,#03H
+	MOV  	R5,#030H
+	MOV  	R7,#01H
+	LCALL	_show_font_16
+			; SOURCE LINE # 31
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (HanZi_16+040H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (HanZi_16+040H)
+	MOV  	R3,#03H
+	CLR  	A
+	MOV  	R5,A
+	MOV  	R7,#02H
+	LCALL	_show_font_16
+			; SOURCE LINE # 32
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (HanZi_16+060H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (HanZi_16+060H)
+	MOV  	R3,#03H
+	MOV  	R5,#010H
+	MOV  	R7,#02H
+	LCALL	_show_font_16
+			; SOURCE LINE # 33
+	MOV  	R7,#0C4H
+	MOV  	R6,#09H
+	LCALL	_dely_ms
+			; SOURCE LINE # 34
+	MOV  	R7,#03H
+	LJMP 	_cls_disy
+; END OF show_first_word
+
+
+	RSEG  ?PR?show_time?MAIN
+show_time:
+	USING	0
+			; SOURCE LINE # 38
+			; SOURCE LINE # 42
+	MOV  	buf?28100,res
+			; SOURCE LINE # 43
+	MOV  	A,buf?28100
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R5,#08H
+	LCALL	L?0251
+			; SOURCE LINE # 44
+	MOV  	A,buf?28100
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?28100,A
+			; SOURCE LINE # 45
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R5,A
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+			; SOURCE LINE # 47
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,#HIGH (Sing+010H)
+	MOV  	?_show_font_8?BYTE+05H,#LOW (Sing+010H)
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R5,#010H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+			; SOURCE LINE # 49
+	MOV  	buf?28100,res+02H
+			; SOURCE LINE # 50
+	MOV  	A,buf?28100
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R5,#020H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+			; SOURCE LINE # 51
+	MOV  	A,buf?28100
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?28100,A
+			; SOURCE LINE # 52
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R5,#018H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+			; SOURCE LINE # 54
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,#HIGH (Sing+010H)
+	MOV  	?_show_font_8?BYTE+05H,#LOW (Sing+010H)
+	MOV  	R5,#028H
+	LCALL	L?0251
+			; SOURCE LINE # 57
+	MOV  	buf?28100,res+03H
+			; SOURCE LINE # 58
+	MOV  	A,buf?28100
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R5,#038H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+			; SOURCE LINE # 59
+	MOV  	A,buf?28100
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?28100,A
+			; SOURCE LINE # 60
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R5,#030H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+			; SOURCE LINE # 64
+	MOV  	buf?28100,res+04H
+			; SOURCE LINE # 65
+	MOV  	A,buf?28100
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#02H
+	MOV  	R5,#08H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+			; SOURCE LINE # 66
+	MOV  	A,buf?28100
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?28100,A
+			; SOURCE LINE # 67
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#02H
+	CLR  	A
+	MOV  	R5,A
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+			; SOURCE LINE # 69
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,#HIGH (Sing)
+	MOV  	?_show_font_8?BYTE+05H,#LOW (Sing)
+	MOV  	R3,#02H
+	MOV  	R5,#010H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+			; SOURCE LINE # 71
+	MOV  	buf?28100,res+05H
+			; SOURCE LINE # 72
+	MOV  	A,buf?28100
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#02H
+	MOV  	R5,#020H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+			; SOURCE LINE # 73
+	MOV  	A,buf?28100
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?28100,A
+			; SOURCE LINE # 74
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#02H
+	MOV  	R5,#018H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+			; SOURCE LINE # 76
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,#HIGH (Sing)
+	MOV  	?_show_font_8?BYTE+05H,#LOW (Sing)
+	MOV  	R3,#02H
+	MOV  	R5,#028H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+			; SOURCE LINE # 79
+	MOV  	buf?28100,res+06H
+			; SOURCE LINE # 80
+	MOV  	A,buf?28100
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#02H
+	MOV  	R5,#038H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+			; SOURCE LINE # 81
+	MOV  	A,buf?28100
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?28100,A
+			; SOURCE LINE # 82
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#02H
+	MOV  	R5,#030H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+			; SOURCE LINE # 85
+	MOV  	buf?28100,res+01H
+			; SOURCE LINE # 86
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (HanZi_16+080H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (HanZi_16+080H)
+	MOV  	R3,#04H
+	CLR  	A
+	MOV  	R5,A
+	MOV  	R7,#01H
+	LCALL	_show_font_16
+			; SOURCE LINE # 87
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (HanZi_16+0A0H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (HanZi_16+0A0H)
+	MOV  	R3,#04H
+	LCALL	L?0255
+			; SOURCE LINE # 88
+	MOV  	A,buf?28100
+	MOV  	B,#020H
+	MUL  	AB
+	ADD  	A,#LOW (HZ_Num)
+	MOV  	R1,A
+	MOV  	A,#HIGH (HZ_Num)
+	ADDC 	A,B
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,A
+	MOV  	?_show_font_16?BYTE+05H,R1
+	MOV  	R3,#04H
+	MOV  	R5,#020H
+	MOV  	R7,#01H
+	LJMP 	_show_font_16
+; END OF show_time
+
+
+	RSEG  ?PR?show_del?MAIN
+show_del:
+	USING	0
+			; SOURCE LINE # 91
+			; SOURCE LINE # 95
+	MOV  	buf?29101,cla_
+			; SOURCE LINE # 96
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	JNZ  	?C0111
+	MOV  	A,Y_POI
+	JNZ  	?C0111
+	MOV  	R7,#01H
+	SJMP 	?C0112
+?C0111:
+	MOV  	R7,#00H
+?C0112:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	MOV  	R5,#08H
+	LCALL	L?0254
+			; SOURCE LINE # 97
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?29101,A
+			; SOURCE LINE # 98
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	JNZ  	?C0113
+	MOV  	A,Y_POI
+	JNZ  	?C0113
+	MOV  	R7,#01H
+	SJMP 	?C0114
+?C0113:
+	MOV  	R7,#00H
+?C0114:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R5,A
+	MOV  	R7,#02H
+	LCALL	_show_font_8f
+			; SOURCE LINE # 100
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,#HIGH (Sing)
+	MOV  	?_show_font_8?BYTE+05H,#LOW (Sing)
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R5,#010H
+	MOV  	R7,#02H
+	LCALL	_show_font_8
+			; SOURCE LINE # 102
+	MOV  	buf?29101,cla_+01H
+			; SOURCE LINE # 103
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	XRL  	A,#01H
+	JNZ  	?C0115
+	MOV  	A,Y_POI
+	JNZ  	?C0115
+	MOV  	R7,#01H
+	SJMP 	?C0116
+?C0115:
+	MOV  	R7,#00H
+?C0116:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	MOV  	R5,#020H
+	LCALL	L?0254
+			; SOURCE LINE # 104
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?29101,A
+			; SOURCE LINE # 105
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	XRL  	A,#01H
+	JNZ  	?C0117
+	MOV  	A,Y_POI
+	JNZ  	?C0117
+	MOV  	R7,#01H
+	SJMP 	?C0118
+?C0117:
+	MOV  	R7,#00H
+?C0118:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R5,#018H
+	MOV  	R7,#02H
+	LCALL	_show_font_8f
+			; SOURCE LINE # 107
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,#HIGH (Sing)
+	MOV  	?_show_font_8?BYTE+05H,#LOW (Sing)
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R5,#028H
+	MOV  	R7,#02H
+	LCALL	_show_font_8
+			; SOURCE LINE # 110
+	MOV  	buf?29101,cla_+02H
+			; SOURCE LINE # 111
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	XRL  	A,#02H
+	JNZ  	?C0119
+	MOV  	A,Y_POI
+	JNZ  	?C0119
+	MOV  	R7,#01H
+	SJMP 	?C0120
+?C0119:
+	MOV  	R7,#00H
+?C0120:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R5,#038H
+	MOV  	R7,#02H
+	LCALL	_show_font_8f
+			; SOURCE LINE # 112
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?29101,A
+			; SOURCE LINE # 113
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	XRL  	A,#02H
+	JNZ  	?C0121
+	MOV  	A,Y_POI
+	JNZ  	?C0121
+	MOV  	R7,#01H
+	SJMP 	?C0122
+?C0121:
+	MOV  	R7,#00H
+?C0122:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R5,#030H
+	MOV  	R7,#02H
+	LCALL	_show_font_8f
+			; SOURCE LINE # 117
+	MOV  	buf?29101,cla_+03H
+			; SOURCE LINE # 118
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	JNZ  	?C0123
+	MOV  	A,Y_POI
+	XRL  	A,#01H
+	JNZ  	?C0123
+	MOV  	R7,#01H
+	SJMP 	?C0124
+?C0123:
+	MOV  	R7,#00H
+?C0124:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	MOV  	R3,#02H
+	MOV  	R5,#08H
+	MOV  	R7,#02H
+	LCALL	_show_font_8f
+			; SOURCE LINE # 119
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?29101,A
+			; SOURCE LINE # 120
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	JNZ  	?C0125
+	MOV  	A,Y_POI
+	XRL  	A,#01H
+	JNZ  	?C0125
+	MOV  	R7,#01H
+	SJMP 	?C0126
+?C0125:
+	MOV  	R7,#00H
+?C0126:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	MOV  	R3,#02H
+	CLR  	A
+	MOV  	R5,A
+	MOV  	R7,#02H
+	LCALL	_show_font_8f
+			; SOURCE LINE # 122
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,#HIGH (Sing)
+	MOV  	?_show_font_8?BYTE+05H,#LOW (Sing)
+	MOV  	R3,#02H
+	MOV  	R5,#010H
+	MOV  	R7,#02H
+	LCALL	_show_font_8
+			; SOURCE LINE # 124
+	MOV  	buf?29101,cla_+04H
+			; SOURCE LINE # 125
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	XRL  	A,#01H
+	JNZ  	?C0127
+	MOV  	A,Y_POI
+	XRL  	A,#01H
+	JNZ  	?C0127
+	MOV  	R7,#01H
+	SJMP 	?C0128
+?C0127:
+	MOV  	R7,#00H
+?C0128:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	MOV  	R3,#02H
+	MOV  	R5,#020H
+	MOV  	R7,#02H
+	LCALL	_show_font_8f
+			; SOURCE LINE # 126
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?29101,A
+			; SOURCE LINE # 127
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	XRL  	A,#01H
+	JNZ  	?C0129
+	MOV  	A,Y_POI
+	XRL  	A,#01H
+	JNZ  	?C0129
+	MOV  	R7,#01H
+	SJMP 	?C0130
+?C0129:
+	MOV  	R7,#00H
+?C0130:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	MOV  	R3,#02H
+	MOV  	R5,#018H
+	MOV  	R7,#02H
+	LCALL	_show_font_8f
+			; SOURCE LINE # 129
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,#HIGH (Sing)
+	MOV  	?_show_font_8?BYTE+05H,#LOW (Sing)
+	MOV  	R3,#02H
+	MOV  	R5,#028H
+	MOV  	R7,#02H
+	LCALL	_show_font_8
+			; SOURCE LINE # 132
+	MOV  	buf?29101,cla_+05H
+			; SOURCE LINE # 133
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	XRL  	A,#02H
+	JNZ  	?C0131
+	MOV  	A,Y_POI
+	XRL  	A,#01H
+	JNZ  	?C0131
+	MOV  	R7,#01H
+	SJMP 	?C0132
+?C0131:
+	MOV  	R7,#00H
+?C0132:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	MOV  	R3,#02H
+	MOV  	R5,#038H
+	MOV  	R7,#02H
+	LCALL	_show_font_8f
+			; SOURCE LINE # 134
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?29101,A
+			; SOURCE LINE # 135
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	XRL  	A,#02H
+	JNZ  	?C0133
+	MOV  	A,Y_POI
+	XRL  	A,#01H
+	JNZ  	?C0133
+	MOV  	R7,#01H
+	SJMP 	?C0134
+?C0133:
+	MOV  	R7,#00H
+?C0134:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	MOV  	R3,#02H
+	MOV  	R5,#030H
+	MOV  	R7,#02H
+	LCALL	_show_font_8f
+			; SOURCE LINE # 139
+	MOV  	buf?29101,cla_+06H
+			; SOURCE LINE # 140
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	JNZ  	?C0135
+	MOV  	A,Y_POI
+	XRL  	A,#02H
+	JNZ  	?C0135
+	MOV  	R7,#01H
+	SJMP 	?C0136
+?C0135:
+	MOV  	R7,#00H
+?C0136:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	MOV  	R3,#04H
+	MOV  	R5,#08H
+	MOV  	R7,#02H
+	LCALL	_show_font_8f
+			; SOURCE LINE # 141
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?29101,A
+; 	show_font_8f(2,8*0,4,NUM[buf%10],(X_POI == 0 && Y_POI == 2));
+			; SOURCE LINE # 142
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	JNZ  	?C0137
+	MOV  	A,Y_POI
+	XRL  	A,#02H
+	JNZ  	?C0137
+	MOV  	R7,#01H
+	SJMP 	?C0138
+?C0137:
+	MOV  	R7,#00H
+?C0138:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	MOV  	R3,#04H
+	CLR  	A
+	MOV  	R5,A
+	MOV  	R7,#02H
+	LCALL	_show_font_8f
+; 	
+; 	show_font_8(2,8*2,4,Sing[0]);
+			; SOURCE LINE # 144
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,#HIGH (Sing)
+	MOV  	?_show_font_8?BYTE+05H,#LOW (Sing)
+	MOV  	R3,#04H
+	MOV  	R5,#010H
+	MOV  	R7,#02H
+	LCALL	_show_font_8
+; 	//分
+; 	buf = cla_[2][1];
+			; SOURCE LINE # 146
+	MOV  	buf?29101,cla_+07H
+; 	show_font_8f(2,8*4,4,NUM[buf%10],(X_POI == 1 && Y_POI == 2));
+			; SOURCE LINE # 147
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	XRL  	A,#01H
+	JNZ  	?C0139
+	MOV  	A,Y_POI
+	XRL  	A,#02H
+	JNZ  	?C0139
+	MOV  	R7,#01H
+	SJMP 	?C0140
+?C0139:
+	MOV  	R7,#00H
+?C0140:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	MOV  	R3,#04H
+	MOV  	R5,#020H
+	MOV  	R7,#02H
+	LCALL	_show_font_8f
+; 	buf /= 10;
+			; SOURCE LINE # 148
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?29101,A
+; 	show_font_8f(2,8*3,4,NUM[buf%10],(X_POI == 1 && Y_POI == 2));
+			; SOURCE LINE # 149
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	XRL  	A,#01H
+	JNZ  	?C0141
+	MOV  	A,Y_POI
+	XRL  	A,#02H
+	JNZ  	?C0141
+	MOV  	R7,#01H
+	SJMP 	?C0142
+?C0141:
+	MOV  	R7,#00H
+?C0142:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	MOV  	R3,#04H
+	MOV  	R5,#018H
+	MOV  	R7,#02H
+	LCALL	_show_font_8f
+; 	
+; 	show_font_8(2,8*5,4,Sing[0]);
+			; SOURCE LINE # 151
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,#HIGH (Sing)
+	MOV  	?_show_font_8?BYTE+05H,#LOW (Sing)
+	MOV  	R3,#04H
+	MOV  	R5,#028H
+	MOV  	R7,#02H
+	LCALL	_show_font_8
+; 	
+; 	//秒
+; 	buf = cla_[2][2];
+			; SOURCE LINE # 154
+	MOV  	buf?29101,cla_+08H
+; 	show_font_8f(2,8*7,4,NUM[buf%10],(X_POI == 2 && Y_POI == 2));
+			; SOURCE LINE # 155
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	XRL  	A,#02H
+	JNZ  	?C0143
+	MOV  	A,Y_POI
+	XRL  	A,#02H
+	JNZ  	?C0143
+	MOV  	R7,#01H
+	SJMP 	?C0144
+?C0143:
+	MOV  	R7,#00H
+?C0144:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	MOV  	R3,#04H
+	MOV  	R5,#038H
+	MOV  	R7,#02H
+	LCALL	_show_font_8f
+; 	buf /= 10;
+			; SOURCE LINE # 156
+	MOV  	A,buf?29101
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?29101,A
+; 	show_font_8f(2,8*6,4,NUM[buf%10],(X_POI == 2 && Y_POI == 2));
+			; SOURCE LINE # 157
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8f?BYTE+03H,#0FFH
+	MOV  	?_show_font_8f?BYTE+04H,A
+	MOV  	?_show_font_8f?BYTE+05H,R1
+	MOV  	A,X_POI
+	XRL  	A,#02H
+	JNZ  	?C0145
+	MOV  	A,Y_POI
+	XRL  	A,#02H
+	JNZ  	?C0145
+	MOV  	R7,#01H
+	SJMP 	?C0146
+?C0145:
+	MOV  	R7,#00H
+?C0146:
+	MOV  	?_show_font_8f?BYTE+06H,R7
+	MOV  	R3,#04H
+	MOV  	R5,#030H
+	MOV  	R7,#02H
+	LJMP 	_show_font_8f
+; END OF show_del
+
+; 	
+; }
+; void drmatic_display(){
+
+	RSEG  ?PR?drmatic_display?MAIN
+drmatic_display:
+	USING	0
+			; SOURCE LINE # 160
+; 	show_time();
+			; SOURCE LINE # 161
+	LCALL	show_time
+; 	show_del();
+			; SOURCE LINE # 162
+	LJMP 	show_del
+; END OF drmatic_display
+
+; }
+; 
+; uchar on_time(){
+
+	RSEG  ?PR?on_time?MAIN
+on_time:
+	USING	0
+			; SOURCE LINE # 165
+; 	uchar ans,x;
+; 	ans = 0;
+			; SOURCE LINE # 167
+;---- Variable 'ans?31102' assigned to Register 'R7' ----
+	CLR  	A
+	MOV  	R7,A
+; 	for(x = 0 ; x < 3 ; ++x){
+			; SOURCE LINE # 168
+;---- Variable 'x?31103' assigned to Register 'R6' ----
+	MOV  	R6,A
+?C0149:
+	MOV  	A,R6
+	CLR  	C
+	SUBB 	A,#03H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0150
+; 		if(
+			; SOURCE LINE # 169
+	MOV  	A,R6
+	MOV  	B,#03H
+	MUL  	AB
+	ADD  	A,#LOW (cla_)
+	MOV  	R0,A
+	MOV  	A,@R0
+	XRL  	A,res+02H
+	JNZ  	?C0151
+	MOV  	A,R6
+	MOV  	B,#03H
+	MUL  	AB
+	ADD  	A,#LOW (cla_+01H)
+	MOV  	R0,A
+	MOV  	A,@R0
+	CJNE 	A,res+01H,?C0151
+	MOV  	A,R6
+	MOV  	B,#03H
+	MUL  	AB
+	ADD  	A,#LOW (cla_+02H)
+	MOV  	R0,A
+	MOV  	A,@R0
+	CJNE 	A,res,?C0151
+; 			(cla_[x][0] == res[2]) &&
+; 			cla_[x][1] == res[1] &&
+; 			cla_[x][2] == res[0]
+; 		){
+			; SOURCE LINE # 173
+; 			ans = 1;
+			; SOURCE LINE # 174
+	MOV  	R7,#01H
+; 			break;
+			; SOURCE LINE # 175
+	RET  	
+; 		}
+			; SOURCE LINE # 176
+; 	}
+			; SOURCE LINE # 177
+?C0151:
+	INC  	R6
+	SJMP 	?C0149
+?C0150:
+; 	return ans;
+			; SOURCE LINE # 178
+; }
+			; SOURCE LINE # 179
+	RET  	
+; END OF on_time
+
+; uint last_val = 0;
+; void show_temper(){
+
+	RSEG  ?PR?show_temper?MAIN
+show_temper:
+	USING	0
+			; SOURCE LINE # 181
+; 	
+; 	uint te = ReadTemperature();
+			; SOURCE LINE # 183
+	LCALL	ReadTemperature
+	MOV  	te?32104,R6
+	MOV  	te?32104+01H,R7
+; 	
+; 	if(last_val == te) return;
+			; SOURCE LINE # 185
+	MOV  	A,last_val+01H
+	XRL  	A,te?32104+01H
+	JNZ  	?C0235
+	MOV  	A,last_val
+	XRL  	A,te?32104
+?C0235:
+	JNZ  	$ + 5H
+	LJMP 	?C0155
+; 	last_val = te;
+			; SOURCE LINE # 186
+	MOV  	last_val,te?32104
+	MOV  	last_val+01H,te?32104+01H
+; 	show_font_16(1,16*0,6,HanZi_16[6]);
+			; SOURCE LINE # 187
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (HanZi_16+0C0H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (HanZi_16+0C0H)
+	MOV  	R3,#06H
+	CLR  	A
+	MOV  	R5,A
+	MOV  	R7,#01H
+	LCALL	_show_font_16
+; 	show_font_16(1,16*1,6,HanZi_16[7]);
+			; SOURCE LINE # 188
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (HanZi_16+0E0H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (HanZi_16+0E0H)
+	MOV  	R3,#06H
+	LCALL	L?0255
+; 	show_font_16(1,16*2,6,HanZi_16[8]);
+			; SOURCE LINE # 189
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (HanZi_16+0100H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (HanZi_16+0100H)
+	MOV  	R3,#06H
+	MOV  	R5,#020H
+	MOV  	R7,#01H
+	LCALL	_show_font_16
+; 	
+; 	show_font_8(1,16*2,6,NUM[te/10]);
+			; SOURCE LINE # 191
+	MOV  	R6,te?32104
+	MOV  	R7,te?32104+01H
+	MOV  	R4,#00H
+	MOV  	R5,#0AH
+	LCALL	?C?UIDIV
+	MOV  	A,R7
+	SWAP 	A
+	MOV  	R0,A
+	ANL  	A,#0FH
+	XCH  	A,R0
+	XRL  	A,R0
+	MOV  	R7,A
+	MOV  	A,R6
+	SWAP 	A
+	ANL  	A,#0F0H
+	ORL  	A,R0
+	MOV  	R6,A
+	MOV  	A,#LOW (NUM)
+	ADD  	A,R7
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,R6
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#06H
+	MOV  	R5,#020H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+; 	show_font_8(1,16*2+8,6,NUM[te%10]);
+			; SOURCE LINE # 192
+	MOV  	R6,te?32104
+	MOV  	R7,te?32104+01H
+	MOV  	R4,#00H
+	MOV  	R5,#0AH
+	LCALL	?C?UIDIV
+	MOV  	A,R5
+	SWAP 	A
+	MOV  	R0,A
+	ANL  	A,#0FH
+	XCH  	A,R0
+	XRL  	A,R0
+	MOV  	R7,A
+	MOV  	A,R4
+	SWAP 	A
+	ANL  	A,#0F0H
+	ORL  	A,R0
+	MOV  	R6,A
+	MOV  	A,#LOW (NUM)
+	ADD  	A,R7
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,R6
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#06H
+	MOV  	R5,#028H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+; 	
+; 	show_font_16(1,16*2+8+8,6,HanZi_16[9]);
+			; SOURCE LINE # 194
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (HanZi_16+0120H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (HanZi_16+0120H)
+	MOV  	R3,#06H
+	MOV  	R5,#030H
+	MOV  	R7,#01H
+	LCALL	_show_font_16
+; }
+			; SOURCE LINE # 195
+?C0155:
+	RET  	
+; END OF show_temper
+
+; 
+; 
+; 
+; void set_view(uchar opt){
+
+	RSEG  ?PR?_set_view?MAIN
+_set_view:
+	USING	0
+			; SOURCE LINE # 199
+;---- Variable 'opt?33105' assigned to Register 'R7' ----
+; 	uchar buf;
+; 	
+; 	
+; 	if(opt != 0)
+			; SOURCE LINE # 203
+	MOV  	A,R7
+	JNZ  	$ + 5H
+	LJMP 	?C0156
+; 	{
+			; SOURCE LINE # 204
+; 		if(opt == 1){
+			; SOURCE LINE # 205
+	XRL  	A,#01H
+	JNZ  	?C0157
+; 			++res[LOC[POI]];
+			; SOURCE LINE # 206
+	MOV  	A,#LOW (LOC)
+	ADD  	A,POI
+	MOV  	R0,A
+	MOV  	A,@R0
+	ADD  	A,#LOW (res)
+	MOV  	R0,A
+	INC  	@R0
+; 		}else if(opt == 2){
+			; SOURCE LINE # 207
+	SJMP 	?C0158
+?C0157:
+	MOV  	A,R7
+	MOV  	R5,A
+	MOV  	R4,#00H
+	XRL  	A,#02H
+	JNZ  	?C0159
+; 			--res[LOC[POI]];
+			; SOURCE LINE # 208
+	MOV  	A,#LOW (LOC)
+	ADD  	A,POI
+	MOV  	R0,A
+	MOV  	A,@R0
+	ADD  	A,#LOW (res)
+	MOV  	R0,A
+	DEC  	@R0
+; 		}else if(opt == 3){
+			; SOURCE LINE # 209
+	SJMP 	?C0158
+?C0159:
+	MOV  	A,R5
+	XRL  	A,#03H
+	ORL  	A,R4
+	JNZ  	?C0161
+; 			POI = (POI + 5) % 6;
+			; SOURCE LINE # 210
+	MOV  	A,POI
+	ADD  	A,#05H
+; 		}else if(opt == 4){
+			; SOURCE LINE # 211
+	SJMP 	?C0238
+?C0161:
+	MOV  	A,R7
+	XRL  	A,#04H
+	JNZ  	?C0158
+; 			POI = (POI + 1) % 6;
+			; SOURCE LINE # 212
+	MOV  	A,POI
+	ADD  	A,#01H
+?C0238:
+	MOV  	R7,A
+	CLR  	A
+	RLC  	A
+	MOV  	R6,A
+	MOV  	R4,#00H
+	MOV  	R5,#06H
+	LCALL	?C?UIDIV
+	MOV  	POI,R5
+; 		}
+			; SOURCE LINE # 213
+?C0158:
+; 		if(POI == 1){
+			; SOURCE LINE # 214
+	MOV  	R7,POI
+	MOV  	R6,#00H
+	MOV  	A,R7
+	XRL  	A,#01H
+	JNZ  	?C0164
+; 			if(res[LOC[POI]] == 0) res[LOC[POI]] = 12;
+			; SOURCE LINE # 215
+	MOV  	A,#LOW (LOC)
+	ADD  	A,POI
+	MOV  	R0,A
+	MOV  	A,@R0
+	MOV  	R5,A
+	ADD  	A,#LOW (res)
+	MOV  	R0,A
+	MOV  	A,@R0
+	MOV  	R3,A
+	MOV  	R2,#00H
+	JNZ  	?C0165
+	MOV  	A,#LOW (res)
+	ADD  	A,R5
+	MOV  	R0,A
+	MOV  	@R0,#0CH
+	LJMP 	?C0168
+?C0165:
+; 			else if(res[LOC[POI]] > 12) res[LOC[POI]] = 1;
+			; SOURCE LINE # 216
+	SETB 	C
+	MOV  	A,R3
+	SUBB 	A,#0CH
+	MOV  	A,R2
+	XRL  	A,#080H
+	SUBB 	A,#080H
+	JNC  	$ + 5H
+	LJMP 	?C0168
+; 		}else if(POI == 2){
+			; SOURCE LINE # 217
+	LJMP 	?C0243
+?C0164:
+	MOV  	A,R7
+	XRL  	A,#02H
+	ORL  	A,R6
+	JNZ  	?C0169
+; 			if(res[LOC[POI]] == 0) res[LOC[POI]] = 30;
+			; SOURCE LINE # 218
+	MOV  	A,#LOW (LOC)
+	ADD  	A,POI
+	MOV  	R0,A
+	MOV  	A,@R0
+	MOV  	R7,A
+	ADD  	A,#LOW (res)
+	MOV  	R0,A
+	MOV  	A,@R0
+	MOV  	R5,A
+	MOV  	R4,#00H
+	JNZ  	?C0170
+	MOV  	A,#LOW (res)
+	ADD  	A,R7
+	MOV  	R0,A
+	MOV  	@R0,#01EH
+	LJMP 	?C0168
+?C0170:
+; 			else if(res[LOC[POI]] > 30) res[LOC[POI]] = 1;
+			; SOURCE LINE # 219
+	SETB 	C
+	MOV  	A,R5
+	SUBB 	A,#01EH
+	MOV  	A,R4
+	XRL  	A,#080H
+	SUBB 	A,#080H
+	JNC  	$ + 5H
+	LJMP 	?C0168
+?C0239:
+; 		}else if(POI == 3){
+			; SOURCE LINE # 220
+	SJMP 	?C0243
+?C0169:
+	MOV  	R7,POI
+	MOV  	R6,#00H
+	MOV  	A,R7
+	XRL  	A,#03H
+	JNZ  	?C0174
+; 			if(res[LOC[POI]] == 0) res[LOC[POI]] = 24;
+			; SOURCE LINE # 221
+	MOV  	A,#LOW (LOC)
+	ADD  	A,POI
+	MOV  	R0,A
+	MOV  	A,@R0
+	MOV  	R5,A
+	ADD  	A,#LOW (res)
+	MOV  	R0,A
+	MOV  	A,@R0
+	MOV  	R3,A
+	MOV  	R2,#00H
+	JNZ  	?C0175
+	MOV  	A,#LOW (res)
+	ADD  	A,R5
+	MOV  	R0,A
+	MOV  	@R0,#018H
+	SJMP 	?C0168
+?C0175:
+; 			else if(res[LOC[POI]] > 24) res[LOC[POI]] = 1;
+			; SOURCE LINE # 222
+	SETB 	C
+	MOV  	A,R3
+	SUBB 	A,#018H
+	MOV  	A,R2
+	XRL  	A,#080H
+	SUBB 	A,#080H
+	JC   	?C0168
+?C0240:
+; 		}else if(POI == 4){
+			; SOURCE LINE # 223
+	SJMP 	?C0243
+?C0174:
+	MOV  	A,R7
+	XRL  	A,#04H
+	ORL  	A,R6
+	JNZ  	?C0179
+; 			if(res[LOC[POI]] == 0) res[LOC[POI]] = 60;
+			; SOURCE LINE # 224
+	MOV  	A,#LOW (LOC)
+	ADD  	A,POI
+	MOV  	R0,A
+	MOV  	A,@R0
+	MOV  	R7,A
+	ADD  	A,#LOW (res)
+	MOV  	R0,A
+	MOV  	A,@R0
+	MOV  	R5,A
+	MOV  	R4,#00H
+	JNZ  	?C0180
+	SJMP 	?C0242
+?C0180:
+; 			else if(res[LOC[POI]] > 60) res[LOC[POI]] = 1;
+			; SOURCE LINE # 225
+	SETB 	C
+	MOV  	A,R5
+	SUBB 	A,#03CH
+	MOV  	A,R4
+	XRL  	A,#080H
+	SUBB 	A,#080H
+	JC   	?C0168
+?C0241:
+; 		}else if(POI == 5){
+			; SOURCE LINE # 226
+	SJMP 	?C0243
+?C0179:
+	MOV  	A,POI
+	XRL  	A,#05H
+	JNZ  	?C0168
+; 			if(res[LOC[POI]] == 0) res[LOC[POI]] = 60;
+			; SOURCE LINE # 227
+	MOV  	A,#LOW (LOC)
+	ADD  	A,POI
+	MOV  	R0,A
+	MOV  	A,@R0
+	MOV  	R7,A
+	ADD  	A,#LOW (res)
+	MOV  	R0,A
+	MOV  	A,@R0
+	MOV  	R5,A
+	MOV  	R4,#00H
+	JNZ  	?C0185
+?C0242:
+	MOV  	A,#LOW (res)
+	ADD  	A,R7
+	MOV  	R0,A
+	MOV  	@R0,#03CH
+	SJMP 	?C0168
+?C0185:
+; 			else if(res[LOC[POI]] > 60) res[LOC[POI]] = 1;
+			; SOURCE LINE # 228
+	SETB 	C
+	MOV  	A,R5
+	SUBB 	A,#03CH
+	MOV  	A,R4
+	XRL  	A,#080H
+	SUBB 	A,#080H
+	JC   	?C0168
+?C0243:
+	MOV  	A,#LOW (LOC)
+	ADD  	A,POI
+	MOV  	R0,A
+	MOV  	A,@R0
+	ADD  	A,#LOW (res)
+	MOV  	R0,A
+	MOV  	@R0,#01H
+; 		}
+			; SOURCE LINE # 229
+?C0168:
+; 		cls_disy(3);
+			; SOURCE LINE # 230
+	MOV  	R7,#03H
+	LCALL	_cls_disy
+; 	}
+			; SOURCE LINE # 231
+?C0156:
+; 	
+; 	if(POI < 3){
+			; SOURCE LINE # 233
+	CLR  	C
+	MOV  	A,POI
+	SUBB 	A,#03H
+	MOV  	A,#080H
+	SUBB 	A,#080H
+	MOV  	A,POI
+	JNC  	?C0188
+; 		show_font_16(1,16*POI,0,HanZi_16[10]);
+			; SOURCE LINE # 234
+	SWAP 	A
+	ANL  	A,#0F0H
+	MOV  	R5,A
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (HanZi_16+0140H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (HanZi_16+0140H)
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R7,#01H
+; 	}else{
+			; SOURCE LINE # 235
+	SJMP 	?C0244
+?C0188:
+; 		show_font_16(2,16*(POI-3),0,HanZi_16[10]);
+			; SOURCE LINE # 236
+	ADD  	A,#0FDH
+	SWAP 	A
+	ANL  	A,#0F0H
+	MOV  	R5,A
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (HanZi_16+0140H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (HanZi_16+0140H)
+	CLR  	A
+	MOV  	R3,A
+	MOV  	R7,#02H
+?C0244:
+	LCALL	_show_font_16
+; 	}
+			; SOURCE LINE # 237
+?C0189:
+; 	
+; 	// 年 月 日 时 分 秒
+; 	show_font_16(1,16*0,2,RiZi[0]);
+			; SOURCE LINE # 240
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (RiZi)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (RiZi)
+	MOV  	R3,#02H
+	CLR  	A
+	MOV  	R5,A
+	MOV  	R7,#01H
+	LCALL	_show_font_16
+; 	show_font_16(1,16*1,2,RiZi[1]);
+			; SOURCE LINE # 241
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (RiZi+020H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (RiZi+020H)
+	MOV  	R3,#02H
+	LCALL	L?0256
+; 	show_font_16(1,16*2,2,RiZi[2]);
+			; SOURCE LINE # 242
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (RiZi+040H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (RiZi+040H)
+	MOV  	R3,#02H
+	MOV  	R5,#020H
+	MOV  	R7,#01H
+	LCALL	_show_font_16
+; 	show_font_16(2,16*0,2,RiZi[3]);
+			; SOURCE LINE # 243
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (RiZi+060H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (RiZi+060H)
+	MOV  	R3,#02H
+	CLR  	A
+	MOV  	R5,A
+	MOV  	R7,#02H
+	LCALL	_show_font_16
+; 	show_font_16(2,16*1,2,RiZi[4]);
+			; SOURCE LINE # 244
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (RiZi+080H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (RiZi+080H)
+	MOV  	R3,#02H
+	MOV  	R5,#010H
+	MOV  	R7,#02H
+	LCALL	_show_font_16
+; 	show_font_16(2,16*2,2,RiZi[5]);
+			; SOURCE LINE # 245
+	MOV  	?_show_font_16?BYTE+03H,#0FFH
+	MOV  	?_show_font_16?BYTE+04H,#HIGH (RiZi+0A0H)
+	MOV  	?_show_font_16?BYTE+05H,#LOW (RiZi+0A0H)
+	MOV  	R3,#02H
+	MOV  	R5,#020H
+	MOV  	R7,#02H
+	LCALL	_show_font_16
+; 	
+; 	
+; 	// 第一行
+; 	// 年
+; 	buf = res[0];
+			; SOURCE LINE # 250
+	MOV  	buf?33106,res
+; 	show_font_8(1,8*1,4,NUM[buf%10]);
+			; SOURCE LINE # 251
+	MOV  	A,buf?33106
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#04H
+	MOV  	R5,#08H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+; 	buf /= 10;
+			; SOURCE LINE # 252
+	MOV  	A,buf?33106
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?33106,A
+; 	show_font_8(1,8*0,4,NUM[buf%10]);
+			; SOURCE LINE # 253
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#04H
+	CLR  	A
+	MOV  	R5,A
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+; 	
+; 	
+; 	//月
+; 	buf = res[2];
+			; SOURCE LINE # 257
+	MOV  	buf?33106,res+02H
+; 	show_font_8(1,8*3,4,NUM[buf%10]);
+			; SOURCE LINE # 258
+	MOV  	A,buf?33106
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#04H
+	MOV  	R5,#018H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+; 	buf /= 10;
+			; SOURCE LINE # 259
+	MOV  	A,buf?33106
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?33106,A
+; 	show_font_8(1,8*2,4,NUM[buf%10]);
+			; SOURCE LINE # 260
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#04H
+	MOV  	R5,#010H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+; 	
+; 	
+; 	//日
+; 	buf = res[3];
+			; SOURCE LINE # 264
+	MOV  	buf?33106,res+03H
+; 	show_font_8(1,8*5,4,NUM[buf%10]);
+			; SOURCE LINE # 265
+	MOV  	A,buf?33106
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#04H
+	MOV  	R5,#028H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+; 	buf /= 10;
+			; SOURCE LINE # 266
+	MOV  	A,buf?33106
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?33106,A
+; 	show_font_8(1,8*4,4,NUM[buf%10]);
+			; SOURCE LINE # 267
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#04H
+	MOV  	R5,#020H
+	MOV  	R7,#01H
+	LCALL	_show_font_8
+; 	
+; 	//第二行
+; 	// 时
+; 	buf = res[4];
+			; SOURCE LINE # 271
+	MOV  	buf?33106,res+04H
+; 	show_font_8(2,8*1,4,NUM[buf%10]);
+			; SOURCE LINE # 272
+	MOV  	A,buf?33106
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#04H
+	MOV  	R5,#08H
+	MOV  	R7,#02H
+	LCALL	_show_font_8
+; 	buf /= 10;
+			; SOURCE LINE # 273
+	MOV  	A,buf?33106
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?33106,A
+; 	show_font_8(2,8*0,4,NUM[buf%10]);
+			; SOURCE LINE # 274
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#04H
+	CLR  	A
+	MOV  	R5,A
+	MOV  	R7,#02H
+	LCALL	_show_font_8
+; 	
+; 	//分
+; 	buf = res[5];
+			; SOURCE LINE # 277
+	MOV  	buf?33106,res+05H
+; 	show_font_8(2,8*3,4,NUM[buf%10]);
+			; SOURCE LINE # 278
+	MOV  	A,buf?33106
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#04H
+	MOV  	R5,#018H
+	MOV  	R7,#02H
+	LCALL	_show_font_8
+; 	buf /= 10;
+			; SOURCE LINE # 279
+	MOV  	A,buf?33106
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?33106,A
+; 	show_font_8(2,8*2,4,NUM[buf%10]);
+			; SOURCE LINE # 280
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#04H
+	MOV  	R5,#010H
+	MOV  	R7,#02H
+	LCALL	_show_font_8
+; 	
+; 	
+; 	//秒
+; 	buf = res[6];
+			; SOURCE LINE # 284
+	MOV  	buf?33106,res+06H
+; 	show_font_8(2,8*5,4,NUM[buf%10]);
+			; SOURCE LINE # 285
+	MOV  	A,buf?33106
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#04H
+	MOV  	R5,#028H
+	MOV  	R7,#02H
+	LCALL	_show_font_8
+; 	buf /= 10;
+			; SOURCE LINE # 286
+	MOV  	A,buf?33106
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	buf?33106,A
+; 	show_font_8(2,8*4,4,NUM[buf%10]);
+			; SOURCE LINE # 287
+	MOV  	B,#0AH
+	DIV  	AB
+	MOV  	A,B
+	MOV  	B,#010H
+	MUL  	AB
+	ADD  	A,#LOW (NUM)
+	MOV  	R1,A
+	MOV  	A,#HIGH (NUM)
+	ADDC 	A,B
+	MOV  	?_show_font_8?BYTE+03H,#0FFH
+	MOV  	?_show_font_8?BYTE+04H,A
+	MOV  	?_show_font_8?BYTE+05H,R1
+	MOV  	R3,#04H
+	MOV  	R5,#020H
+	MOV  	R7,#02H
+	LJMP 	_show_font_8
+; END OF _set_view
+
+; }
+; 
+; 
+; 
+; void key_scan(){
+
+	RSEG  ?PR?key_scan?MAIN
+key_scan:
+	USING	0
+			; SOURCE LINE # 292
+; 	LED = 0;
+			; SOURCE LINE # 293
+	CLR  	LED
+; 	if(UP == 0 || DOWN == 0 || LEFT == 0 || RIGHT == 0){
+			; SOURCE LINE # 294
+	JNB  	UP,?C0192
+	JNB  	DOWN,?C0192
+	JNB  	LEFT,?C0192
+	JNB  	RIGHT,$ + 6H
+	LJMP 	?C0202
+?C0192:
+; 		dely_ms(50);
+			; SOURCE LINE # 295
+	MOV  	R7,#032H
+	MOV  	R6,#00H
+	LCALL	_dely_ms
+; 		if(UP == 0 || DOWN == 0 || LEFT == 0 || RIGHT == 0){
+			; SOURCE LINE # 296
+	JNB  	UP,?C0194
+	JNB  	DOWN,?C0194
+	JNB  	LEFT,?C0194
+	JNB  	RIGHT,$ + 6H
+	LJMP 	?C0202
+?C0194:
+; 			if(UP == 0){
+			; SOURCE LINE # 297
+	JB   	UP,?C0195
+; 				cla_[Y_POI][X_POI] =
+			; SOURCE LINE # 298
+	MOV  	A,Y_POI
+	MOV  	B,#03H
+	MUL  	AB
+	ADD  	A,#LOW (cla_)
+	ADD  	A,X_POI
+	MOV  	R0,A
+	MOV  	A,@R0
+	ADD  	A,#01H
+	MOV  	R7,A
+	CLR  	A
+	RLC  	A
+	MOV  	R6,A
+	MOV  	A,X_POI
+	MOV  	DPTR,#MAX_LOC
+	MOVC 	A,@A+DPTR
+	MOV  	R5,A
+; 					(cla_[Y_POI][X_POI] + 1) % MAX_LOC[X_POI];
+; 			}else if(DOWN == 0){
+			; SOURCE LINE # 300
+	SJMP 	?C0245
+?C0195:
+	JB   	DOWN,?C0197
+; 				cla_[Y_POI][X_POI] = (cla_[Y_POI][X_POI] + MAX_LOC[X_POI] - 1) % MAX_LOC[X_POI];
+			; SOURCE LINE # 301
+	MOV  	A,Y_POI
+	MOV  	B,#03H
+	MUL  	AB
+	ADD  	A,#LOW (cla_)
+	ADD  	A,X_POI
+	MOV  	R0,A
+	MOV  	A,@R0
+	MOV  	R7,A
+	MOV  	A,X_POI
+	MOV  	DPTR,#MAX_LOC
+	MOVC 	A,@A+DPTR
+	MOV  	R5,A
+	ADD  	A,R7
+	MOV  	R7,A
+	CLR  	A
+	RLC  	A
+	XCH  	A,R7
+	ADD  	A,#0FFH
+	XCH  	A,R7
+	ADDC 	A,#0FFH
+	MOV  	R6,A
+?C0245:
+	MOV  	R4,#00H
+	LCALL	?C?UIDIV
+	MOV  	A,Y_POI
+	MOV  	B,#03H
+	MUL  	AB
+	ADD  	A,#LOW (cla_)
+	ADD  	A,X_POI
+	MOV  	R0,A
+	MOV  	@R0,AR5
+; 			}else if(LEFT == 0){
+			; SOURCE LINE # 302
+	RET  	
+?C0197:
+	JB   	LEFT,?C0199
+; 				XY_POI = (XY_POI + 8) % 9;
+			; SOURCE LINE # 303
+	MOV  	A,XY_POI
+	ADD  	A,#08H
+; 				X_POI = XLOC[XY_POI];
+			; SOURCE LINE # 304
+; 				Y_POI = YLOC[XY_POI];
+			; SOURCE LINE # 305
+; 			}else if(RIGHT == 0){
+			; SOURCE LINE # 306
+	SJMP 	?C0246
+?C0199:
+	JB   	RIGHT,?C0202
+; 				XY_POI = (XY_POI + 1) % 9;
+			; SOURCE LINE # 307
+	MOV  	A,XY_POI
+	ADD  	A,#01H
+?C0246:
+	MOV  	R7,A
+	CLR  	A
+	RLC  	A
+	MOV  	R6,A
+	MOV  	R4,#00H
+	MOV  	R5,#09H
+	LCALL	?C?UIDIV
+	MOV  	XY_POI,R5
+; 				X_POI = XLOC[XY_POI];
+			; SOURCE LINE # 308
+	MOV  	A,XY_POI
+	MOV  	DPTR,#XLOC
+	MOVC 	A,@A+DPTR
+	MOV  	X_POI,A
+; 				Y_POI = YLOC[XY_POI];
+			; SOURCE LINE # 309
+	MOV  	A,XY_POI
+	MOV  	DPTR,#YLOC
+	MOVC 	A,@A+DPTR
+	MOV  	Y_POI,A
+; 			}
+			; SOURCE LINE # 310
+; 		}
+			; SOURCE LINE # 311
+; 	}
+			; SOURCE LINE # 312
+; }
+			; SOURCE LINE # 313
+?C0202:
+	RET  	
+; END OF key_scan
+
+; 
+; void main(void){
+
+	RSEG  ?PR?main?MAIN
+main:
+	USING	0
+			; SOURCE LINE # 315
+; 	uchar x= 16,y,z=0,flag;
+			; SOURCE LINE # 316
+	MOV  	x?35107,#010H
+	CLR  	A
+	MOV  	z?35109,A
+; 	uchar buf_time[3];
+; 	int buf;
+; 	
+; 	flag = 0;
+			; SOURCE LINE # 320
+	MOV  	flag?35110,A
+; 	// 初始化 显示器
+; 	select_side(3);
+			; SOURCE LINE # 322
+	MOV  	R7,#03H
+	LCALL	_select_side
+; 	led_init();	
+			; SOURCE LINE # 323
+	LCALL	led_init
+; 	show_first_word();
+			; SOURCE LINE # 324
+	LCALL	show_first_word
+; 	
+; 	// 中断
+; 	IT0 = 1;	//设置外部中断1的触发方式为下降沿触发。
+			; SOURCE LINE # 327
+	SETB 	IT0
+; 	EX0 = 1;	//开启外部中断1
+			; SOURCE LINE # 328
+	SETB 	EX0
+; 	EA = 1;		//中断总开关
+			; SOURCE LINE # 329
+	SETB 	EA
+?C0203:
+; 	
+; 	while(1){
+			; SOURCE LINE # 331
+; 		
+; 		if(SWITCH){
+			; SOURCE LINE # 333
+	MOV  	A,SWITCH
+	JZ   	?C0205
+; 			if(UP == 0 || DOWN == 0 || LEFT == 0 || RIGHT == 0 || EXIT == 0){
+			; SOURCE LINE # 334
+	JNB  	UP,?C0207
+	JNB  	DOWN,?C0207
+	JNB  	LEFT,?C0207
+	JNB  	RIGHT,?C0207
+	JB   	EXIT,?C0206
+?C0207:
+; 			
+; 				dely_ms(100);
+			; SOURCE LINE # 336
+	MOV  	R7,#064H
+	MOV  	R6,#00H
+	LCALL	_dely_ms
+; 				if(UP == 0 || DOWN == 0 || LEFT == 0 || RIGHT == 0 || EXIT == 0){
+			; SOURCE LINE # 337
+	JNB  	UP,?C0209
+	JNB  	DOWN,?C0209
+	JNB  	LEFT,?C0209
+	JNB  	RIGHT,?C0209
+	JB   	EXIT,?C0203
+?C0209:
+; 					if(UP == 0)
+			; SOURCE LINE # 338
+	JB   	UP,?C0210
+; 						set_view(1);
+			; SOURCE LINE # 339
+	MOV  	R7,#01H
+	SJMP 	?C0250
+?C0210:
+; 					else if(DOWN == 0)
+			; SOURCE LINE # 340
+	JB   	DOWN,?C0212
+; 						set_view(2);
+			; SOURCE LINE # 341
+	MOV  	R7,#02H
+?C0247:
+	SJMP 	?C0250
+?C0212:
+; 					else if(LEFT == 0)
+			; SOURCE LINE # 342
+	JB   	LEFT,?C0214
+; 						set_view(3);
+			; SOURCE LINE # 343
+	MOV  	R7,#03H
+?C0248:
+	SJMP 	?C0250
+?C0214:
+; 					else if(RIGHT == 0)
+			; SOURCE LINE # 344
+	JB   	RIGHT,?C0216
+; 						set_view(4);
+			; SOURCE LINE # 345
+	MOV  	R7,#04H
+?C0249:
+	SJMP 	?C0250
+?C0216:
+; 					else if(EXIT == 0){
+			; SOURCE LINE # 346
+	JB   	EXIT,?C0203
+; 						SWITCH = 0;
+			; SOURCE LINE # 347
+	CLR  	A
+	MOV  	SWITCH,A
+; 						EA = 1;
+			; SOURCE LINE # 348
+	SETB 	EA
+; 						LED = 1;
+			; SOURCE LINE # 349
+	SETB 	LED
+; 						last_val = 0;
+			; SOURCE LINE # 350
+	MOV  	last_val,A
+	MOV  	last_val+01H,A
+; 						// 写日期
+; 						//for(y = 0 ; y < 7 ; ++y)
+; 						//	res[y] = Dec_BCD(res[y]);
+; 						write_time(res);
+			; SOURCE LINE # 354
+	MOV  	R3,A
+	MOV  	R2,#HIGH (res)
+	MOV  	R1,#LOW (res)
+	LCALL	_write_time
+; 					}
+			; SOURCE LINE # 355
+; 				}
+			; SOURCE LINE # 356
+; 			}else{
+			; SOURCE LINE # 357
+	SJMP 	?C0203
+?C0206:
+; 				set_view(0);
+			; SOURCE LINE # 358
+	CLR  	A
+	MOV  	R7,A
+?C0250:
+	LCALL	_set_view
+; 			}
+			; SOURCE LINE # 359
+; 			
+; 		}else{
+			; SOURCE LINE # 361
+	SJMP 	?C0203
+?C0205:
+; 			read_time(res);
+			; SOURCE LINE # 362
+	MOV  	R3,#00H
+	MOV  	R2,#HIGH (res)
+	MOV  	R1,#LOW (res)
+	LCALL	_read_time
+; 			//for(y = 0 ; y < 7 ; ++y)
+; 				//res[y] = BCD_Decimal(res[y]);
+; 			key_scan();
+			; SOURCE LINE # 365
+	LCALL	key_scan
+; 			drmatic_display();
+			; SOURCE LINE # 366
+	LCALL	drmatic_display
+; 			show_temper();
+			; SOURCE LINE # 367
+	LCALL	show_temper
+; 			if(on_time()){
+			; SOURCE LINE # 368
+	LCALL	on_time
+	MOV  	A,R7
+	JZ   	?C0221
+; 				flag = 1;
+			; SOURCE LINE # 369
+	MOV  	flag?35110,#01H
+; 				buf_time[2] = res[2];
+			; SOURCE LINE # 370
+	MOV  	buf_time?35111+02H,res+02H
+; 				buf_time[1] = res[1];
+			; SOURCE LINE # 371
+	MOV  	buf_time?35111+01H,res+01H
+; 				buf_time[0] = res[0];
+			; SOURCE LINE # 372
+	MOV  	buf_time?35111,res
+; 			}
+			; SOURCE LINE # 373
+?C0221:
+; 			if(flag){
+			; SOURCE LINE # 374
+	MOV  	A,flag?35110
+	JNZ  	$ + 5H
+	LJMP 	?C0222
+; 				buf = (res[2]*60*60 + res[1]*60 + res[0]) 
+			; SOURCE LINE # 375
+	MOV  	A,buf_time?35111+01H
+	MOV  	B,#03CH
+	MUL  	AB
+	MOV  	R3,A
+	MOV  	R2,B
+	MOV  	R6,buf_time?35111+02H
+	MOV  	A,buf_time?35111+02H
+	MOV  	B,#0EH
+	MUL  	AB
+	XCH  	A,R6
+	MOV  	B,#010H
+	MUL  	AB
+	MOV  	R7,A
+	MOV  	A,B
+	ADD  	A,R6
+	MOV  	R6,A
+	MOV  	A,R7
+	ADD  	A,R3
+	MOV  	R7,A
+	MOV  	A,R6
+	ADDC 	A,R2
+	MOV  	R6,A
+	MOV  	R4,#00H
+	MOV  	A,R7
+	ADD  	A,buf_time?35111
+	MOV  	R3,A
+	MOV  	A,R4
+	ADDC 	A,R6
+	MOV  	R2,A
+	MOV  	A,res+01H
+	MOV  	B,#03CH
+	MUL  	AB
+	MOV  	DPL,A
+	MOV  	DPH,B
+	MOV  	R6,res+02H
+	MOV  	A,res+02H
+	MOV  	B,#0EH
+	MUL  	AB
+	XCH  	A,R6
+	MOV  	B,#010H
+	MUL  	AB
+	MOV  	R7,A
+	MOV  	A,B
+	ADD  	A,R6
+	MOV  	R6,A
+	MOV  	A,R7
+	ADD  	A,DPL
+	MOV  	R7,A
+	MOV  	A,R6
+	ADDC 	A,DPH
+	MOV  	R6,A
+	MOV  	A,R7
+	ADD  	A,res
+	MOV  	R7,A
+	MOV  	A,R4
+	ADDC 	A,R6
+	XCH  	A,R7
+	CLR  	C
+	SUBB 	A,R3
+	XCH  	A,R7
+	SUBB 	A,R2
+	MOV  	R6,A
+;---- Variable 'buf?35112' assigned to Register 'R6/R7' ----
+; 					- (buf_time[2]*60*60 + buf_time[1]*60 + buf_time[0]);
+; 				if(buf<0) buf = -buf;
+			; SOURCE LINE # 377
+	CLR  	C
+	XRL  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0223
+	CLR  	C
+	CLR  	A
+	SUBB 	A,R7
+	MOV  	R7,A
+	CLR  	A
+	SUBB 	A,R6
+	MOV  	R6,A
+?C0223:
+; 				if(buf <= 5){
+			; SOURCE LINE # 378
+	SETB 	C
+	MOV  	A,R7
+	SUBB 	A,#05H
+	MOV  	A,R6
+	XRL  	A,#080H
+	SUBB 	A,#080H
+	JNC  	?C0224
+; 					SOUND = 0;
+			; SOURCE LINE # 379
+	CLR  	SOUND
+; 				}else {
+			; SOURCE LINE # 380
+	SJMP 	?C0222
+?C0224:
+; 					SOUND =1;
+			; SOURCE LINE # 381
+	SETB 	SOUND
+; 					flag = 0;
+			; SOURCE LINE # 382
+	CLR  	A
+	MOV  	flag?35110,A
+; 				}	
+			; SOURCE LINE # 383
+; 			}
+			; SOURCE LINE # 384
+?C0222:
+; 			dely_ms(50);
+			; SOURCE LINE # 385
+	MOV  	R7,#032H
+	MOV  	R6,#00H
+	LCALL	_dely_ms
+; 		}
+			; SOURCE LINE # 386
+; 	}
+			; SOURCE LINE # 387
+	LJMP 	?C0203
+; END OF main
+
+CSEG	AT	00003H
+	LJMP	int0_fun
+
+; 		
+; 	return;
+; }
+; 
+; 
+; void int0_fun(void) interrupt 0 {
+
+	RSEG  ?PR?int0_fun?MAIN
+	USING	0
+int0_fun:
+	PUSH 	ACC
+	PUSH 	B
+	PUSH 	DPH
+	PUSH 	DPL
+	PUSH 	PSW
+	MOV  	PSW,#00H
+	PUSH 	AR0
+	PUSH 	AR1
+	PUSH 	AR2
+	PUSH 	AR3
+	PUSH 	AR4
+	PUSH 	AR5
+	PUSH 	AR6
+	PUSH 	AR7
+	USING	0
+			; SOURCE LINE # 393
+; 	EA = 0;
+			; SOURCE LINE # 394
+	CLR  	EA
+; 	set_view(0);
+			; SOURCE LINE # 395
+	CLR  	A
+	MOV  	R7,A
+	LCALL	_set_view
+; 	cls_disy(3);
+			; SOURCE LINE # 396
+	MOV  	R7,#03H
+	LCALL	_cls_disy
+; 	LED = 0;
+			; SOURCE LINE # 397
+	CLR  	LED
+; 	SWITCH = 1;
+			; SOURCE LINE # 398
+	MOV  	SWITCH,#01H
+; }			; SOURCE LINE # 399
+	POP  	AR7
+	POP  	AR6
+	POP  	AR5
+	POP  	AR4
+	POP  	AR3
+	POP  	AR2
+	POP  	AR1
+	POP  	AR0
+	POP  	PSW
+	POP  	DPL
+	POP  	DPH
+	POP  	B
+	POP  	ACC
+	RETI 	
+; END OF int0_fun
+
+	END

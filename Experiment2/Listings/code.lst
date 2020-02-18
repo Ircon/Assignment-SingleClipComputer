@@ -1,0 +1,171 @@
+A51 MACRO ASSEMBLER  CODE                                                                 11/21/2019 22:29:53 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\code.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE code.asm SET(SMALL) DEBUG PRINT(.\Listings\code.lst) OBJECT(.\Objects\c
+                      ode.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; P1.0-P1.3ÎªÁÐÏß,P1.4-P1.7ÎªÐÐÏß
+                       2     ;-------------¶¨Òå±äÁ¿--------------
+  00A2                 3     DS_595 EQU P2.2
+  00A1                 4     SHCP_595 EQU P2.1
+  00A0                 5     STCP_595 EQU P2.0
+  0031                 6     DIS_DAT  EQU 31H
+  0032                 7     DIS_ADDR EQU 32H
+  0030                 8     KEY_NUM  EQU 30H
+                       9     ;-------------¶¨ÒåµØÖ·--------------
+0000                  10     ORG 0000H
+0000 020030           11     LJMP  MAIN
+0030                  12     ORG 0030H
+                      13     ;-------------Ö÷º¯Ê---------------
+0030                  14     MAIN:
+0030 12008C           15     LCALL KEY_IN
+0033 853031           16     MOV  DIS_DAT,KEY_NUM
+0036 753200           17     MOV  DIS_ADDR,#00H
+0039 120041           18     LCALL SEND_LED
+003C 1170             19     CALL  DELAY
+003E 020030           20     LJMP  MAIN
+                      21     ;--------------¹Ì¶¨Î»ÖÃËÍÏÔÊ¾-----------
+                      22     ;32H: Î»Ñ¡µØÖ·
+                      23     ;31H: ¶ÎÑ¡Ê¾Ý
+0041                  24     SEND_LED:
+0041 E532             25     MOV  A,DIS_ADDR
+0043 9000C7           26     MOV  DPTR,#SEG_ADDR
+0046 93               27     MOVC A,@A+DPTR
+0047 120054           28     LCALL OUT_595
+004A E531             29     MOV  A,DIS_DAT
+004C 9000B7           30     MOV  DPTR,#SEG_DAT
+004F 93               31     MOVC A,@A+DPTR
+0050 120054           32     LCALL OUT_595
+0053 22               33     RET
+                      34     ;--------------595Êä³ö---------------
+0054                  35     OUT_595:
+0054 120062           36     LCALL WR_595 ;Ð´595
+0057 C2A0             37     CLR STCP_595  ;´æ´¢¼Ä´æÆ÷ÊäÈë
+0059 00               38     NOP
+005A 00               39     NOP
+005B D2A0             40     SETB  STCP_595
+005D 00               41     NOP
+005E 00               42     NOP
+005F C2A0             43     CLR STCP_595
+0061 22               44     RET
+                      45     ;--------------Ð´595-------------------
+0062                  46     WR_595:
+0062 7D08             47     MOV  R5,#8  ;ÊÂë¹ÜµÄ8Î»
+0064                  48     LOOP1:
+0064 33               49     RLC A
+0065 92A2             50     MOV  DS_595,C  ;ËÍÊ¾Ý½ø595
+0067 D2A1             51     SETB  SHCP_595  ;ÒÆÎ»¼Ä´æÆ÷Ê±ÖÓ£¬¸ù¾ÝDATASHEET£¬ËÍÊ¾Ý½øÈ¥ÒªÒ»¸öSCKÊ±ÖÓÖÜÆÚ¡£
+0069 00               52     NOP
+006A 00               53     NOP
+006B C2A1             54     CLR SHCP_595
+006D DDF5             55     DJNZ  R5,LOOP1  ;8Î»Ê¾ÝÊÇ·ñËÍÍê
+006F 22               56     RET
+                      57     ;--------------DELAY------------------
+A51 MACRO ASSEMBLER  CODE                                                                 11/21/2019 22:29:53 PAGE     2
+
+0070                  58     DELAY:
+0070 7A02             59     MOV  R2,#02H
+0072                  60     L0:
+0072 7E00             61     MOV  R6,#00H
+0074                  62     L1:
+0074 7F00             63     MOV  R7,#00H
+0076                  64     L2:
+0076 DFFE             65     DJNZ  R7,L2
+0078 DEFA             66     DJNZ  R6,L1
+007A DAF6             67     DJNZ  R2,L0
+007C 22               68     RET
+                      69     ;------------ÇåÏÔÊ¾------------------
+007D                  70     DIS_CLR:
+007D 7B00             71     MOV  R3,#00H
+007F 0B               72     LOOP_DIS: INC R3
+0080 8B32             73     MOV  DIS_ADDR,R3
+0082 7531FF           74     MOV  DIS_DAT,#0FFH
+0085 120041           75     LCALL SEND_LED
+0088 BB08F4           76     CJNE  R3,#08H,LOOP_DIS
+008B 22               77     RET
+                      78     ;------------°´¼üÉ¨Ãè----------------
+008C 7590F0           79     KEY_IN: MOV P1,#0F0H ;ÖÃÁÐÏßÎª0£¬ÐÐÏßÎª1
+008F E590             80     MOV A,P1
+0091 54F0             81     ANL A,#0F0H
+0093 F5F0             82     MOV B,A
+0095 75900F           83     MOV P1,#0FH ;ÖÃÁÐÏßÎª1£¬ÐÐÏßÎª0
+0098 E590             84     MOV A,P1
+009A 540F             85     ANL A,#0FH
+009C 45F0             86     ORL A,B ;¸ßËÄÎ»ÓëµÍËÄÎ»ÖØÐÂ×éºÏ
+009E B4FF01           87     CJNE A,#0FFH,KEY_IN1 ;0FFHÎªÄ©°´¼ü
+00A1 22               88     RET
+00A2 F5F0             89     KEY_IN1: MOV B,A
+00A4 9000D1           90     MOV DPTR,#KEYTABLE
+00A7 7BFF             91     MOV R3,#0FFH ;
+00A9 0B               92     KEY_IN2: INC R3
+00AA EB               93     MOV A,R3
+00AB 93               94     MOVC A,@A+DPTR
+00AC B5F004           95     CJNE A,B,KEY_IN3
+00AF EB               96     MOV A,R3 ;ÕÒµ½£¬È¡Ë³ÐòÂë
+00B0 F530             97     MOV KEY_NUM,A
+00B2 22               98     RET
+00B3 B4FFF3           99     KEY_IN3: CJNE A,#0FFH,KEY_IN2 ;Ä©Íê£¬¼ÌÐø²é
+00B6 22              100     RET ;0FFHÎª½áÊøÂë
+                     101     ;-----------------------------------
+00B7 C0F9A4B0        102     SEG_DAT  : DB 0C0H,0F9H,0A4H,0B0H,99H,92H,82H,0F8H,80H,90H,88H,83H,0C6H,0A1H,86H,8EH
+00BB 999282F8                
+00BF 80908883                
+00C3 C6A1868E                
+00C7 01020408        103     SEG_ADDR: DB 01H,02H,04H,08H,10H,20H,40H,80H,0FFH,00H
+00CB 10204080                
+00CF FF00                    
+00D1                 104     KEYTABLE:
+00D1 EEEDEBE7        105     DB 0EEH,0EDH,0EBH,0E7H,0DEH ;0,1,2,3,4, Ë³ÐòÂë
+00D5 DE                      
+00D6 DDDBD7BE        106     DB 0DDH,0DBH,0D7H,0BEH,0BDH ;5,6,7,8,9,
+00DA BD                      
+                     107     
+00DB BBB77E7D        108     DB 0BBH,0B7H,07EH,07DH,07BH ;A,B,C,D,E,
+00DF 7B                      
+00E0 77FF            109     DB 077H,0FFH ;F 0FFÎª½áÊøÂë
+                     110     END
+A51 MACRO ASSEMBLER  CODE                                                                 11/21/2019 22:29:53 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . .  D ADDR   00F0H   A   
+DELAY. . . . . . .  C ADDR   0070H   A   
+DIS_ADDR . . . . .  N NUMB   0032H   A   
+DIS_CLR. . . . . .  C ADDR   007DH   A   
+DIS_DAT. . . . . .  N NUMB   0031H   A   
+DS_595 . . . . . .  B ADDR   00A0H.2 A   
+KEYTABLE . . . . .  C ADDR   00D1H   A   
+KEY_IN . . . . . .  C ADDR   008CH   A   
+KEY_IN1. . . . . .  C ADDR   00A2H   A   
+KEY_IN2. . . . . .  C ADDR   00A9H   A   
+KEY_IN3. . . . . .  C ADDR   00B3H   A   
+KEY_NUM. . . . . .  N NUMB   0030H   A   
+L0 . . . . . . . .  C ADDR   0072H   A   
+L1 . . . . . . . .  C ADDR   0074H   A   
+L2 . . . . . . . .  C ADDR   0076H   A   
+LOOP1. . . . . . .  C ADDR   0064H   A   
+LOOP_DIS . . . . .  C ADDR   007FH   A   
+MAIN . . . . . . .  C ADDR   0030H   A   
+OUT_595. . . . . .  C ADDR   0054H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+SEG_ADDR . . . . .  C ADDR   00C7H   A   
+SEG_DAT. . . . . .  C ADDR   00B7H   A   
+SEND_LED . . . . .  C ADDR   0041H   A   
+SHCP_595 . . . . .  B ADDR   00A0H.1 A   
+STCP_595 . . . . .  B ADDR   00A0H.0 A   
+WR_595 . . . . . .  C ADDR   0062H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,374 @@
+; .\Objects\main.SRC generated from: main.c
+; COMPILER INVOKED BY:
+;        C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) SRC(.\Objects\main.SRC)
+
+$NOMOD51
+
+NAME	MAIN
+
+P0	DATA	080H
+P1	DATA	090H
+P2	DATA	0A0H
+P3	DATA	0B0H
+T0	BIT	0B0H.4
+AC	BIT	0D0H.6
+T1	BIT	0B0H.5
+EA	BIT	0A8H.7
+LED1	BIT	0A0H.5
+LED2	BIT	0A0H.6
+LED3	BIT	0A0H.7
+IE	DATA	0A8H
+EN	BIT	0A0H.4
+RD	BIT	0B0H.7
+ES	BIT	0A8H.4
+IP	DATA	0B8H
+RI	BIT	098H.0
+INT0	BIT	0B0H.2
+CY	BIT	0D0H.7
+TI	BIT	098H.1
+INT1	BIT	0B0H.3
+PS	BIT	0B8H.4
+SP	DATA	081H
+RS	BIT	0A0H.3
+OV	BIT	0D0H.2
+RW	BIT	0A0H.2
+WR	BIT	0B0H.6
+SBUF	DATA	099H
+PCON	DATA	087H
+SCON	DATA	098H
+TMOD	DATA	089H
+TCON	DATA	088H
+IE0	BIT	088H.1
+IE1	BIT	088H.3
+B	DATA	0F0H
+CS1	BIT	0A0H.0
+ACC	DATA	0E0H
+CS2	BIT	0A0H.1
+ET0	BIT	0A8H.1
+ET1	BIT	0A8H.3
+TF0	BIT	088H.5
+TF1	BIT	088H.7
+RB8	BIT	098H.2
+TH0	DATA	08CH
+EX0	BIT	0A8H.0
+IT0	BIT	088H.0
+TH1	DATA	08DH
+TB8	BIT	098H.3
+EX1	BIT	0A8H.2
+IT1	BIT	088H.2
+P	BIT	0D0H.0
+SM0	BIT	098H.7
+TL0	DATA	08AH
+SM1	BIT	098H.6
+TL1	DATA	08BH
+SM2	BIT	098H.5
+PT0	BIT	0B8H.1
+PT1	BIT	0B8H.3
+RS0	BIT	0D0H.3
+TR0	BIT	088H.4
+RS1	BIT	0D0H.4
+TR1	BIT	088H.6
+PX0	BIT	0B8H.0
+PX1	BIT	0B8H.2
+DPH	DATA	083H
+DPL	DATA	082H
+REN	BIT	098H.4
+RXD	BIT	0B0H.0
+TXD	BIT	0B0H.1
+F0	BIT	0D0H.5
+PSW	DATA	0D0H
+?PR?_select_side?MAIN                    SEGMENT CODE 
+?PR?wait_busy?MAIN   SEGMENT CODE 
+?PR?_writ_com?MAIN   SEGMENT CODE 
+?PR?_writ_data?MAIN  SEGMENT CODE 
+?PR?clr_view?MAIN    SEGMENT CODE 
+?DT?clr_view?MAIN    SEGMENT DATA OVERLAYABLE 
+?PR?lcd_init?MAIN    SEGMENT CODE 
+?PR?main?MAIN        SEGMENT CODE 
+	EXTRN	CODE (?C_STARTUP)
+	PUBLIC	main
+	PUBLIC	lcd_init
+	PUBLIC	clr_view
+	PUBLIC	_writ_data
+	PUBLIC	_writ_com
+	PUBLIC	wait_busy
+	PUBLIC	_select_side
+
+	RSEG  ?DT?clr_view?MAIN
+?clr_view?BYTE:
+          i?447:   DS   1
+	ORG  1
+          j?448:   DS   1
+	ORG  2
+          z?449:   DS   1
+; #include <reg51.h>
+; 
+; typedef unsigned int uint;
+; typedef unsigned char uchar;
+; 
+; #define DATA (P0)
+; sbit CS1 = P2 ^ 0;
+; sbit CS2 = P2 ^ 1;
+; sbit RW = P2 ^ 2;
+; sbit RS = P2 ^ 3;
+; sbit EN = P2 ^ 4;
+; 
+; sbit LED1 = P2 ^ 5;
+; sbit LED2 = P2 ^ 6;
+; sbit LED3 = P2 ^ 7;
+; 
+; void select_side (uchar buf){
+
+	RSEG  ?PR?_select_side?MAIN
+_select_side:
+			; SOURCE LINE # 17
+;---- Variable 'buf?040' assigned to Register 'R7' ----
+; 	if(buf & 1){
+			; SOURCE LINE # 18
+	MOV  	A,R7
+	JNB  	ACC.0,?C0001
+; 		CS1 = 0;
+			; SOURCE LINE # 19
+	CLR  	CS1
+; 	}else{
+			; SOURCE LINE # 20
+	SJMP 	?C0002
+?C0001:
+; 		CS1 = 1;
+			; SOURCE LINE # 21
+	SETB 	CS1
+; 	}
+			; SOURCE LINE # 22
+?C0002:
+; 	
+; 	if(buf & (uchar)2){
+			; SOURCE LINE # 24
+	MOV  	A,R7
+	JNB  	ACC.1,?C0003
+; 		CS2 = 0;
+			; SOURCE LINE # 25
+	CLR  	CS2
+; 	}else{
+			; SOURCE LINE # 26
+	RET  	
+?C0003:
+; 		CS2 = 1;
+			; SOURCE LINE # 27
+	SETB 	CS2
+; 	}
+			; SOURCE LINE # 28
+; }
+			; SOURCE LINE # 29
+?C0005:
+	RET  	
+; END OF _select_side
+
+; void wait_busy(){ // ?
+
+	RSEG  ?PR?wait_busy?MAIN
+wait_busy:
+	USING	0
+			; SOURCE LINE # 30
+; 	uchar buf;
+; 	RS = 0;
+			; SOURCE LINE # 32
+	CLR  	RS
+; 	RW = 1;
+			; SOURCE LINE # 33
+	SETB 	RW
+; 	LED2 = 0;
+			; SOURCE LINE # 34
+	CLR  	LED2
+?C0008:
+; 	//return;
+; 	do{
+			; SOURCE LINE # 36
+; 		DATA = 0x00; // ?
+			; SOURCE LINE # 37
+	CLR  	A
+	MOV  	P0,A
+; 		EN = 1;
+			; SOURCE LINE # 38
+	SETB 	EN
+; 		EN = 0;
+			; SOURCE LINE # 39
+	CLR  	EN
+; 		
+; 		buf = DATA;
+			; SOURCE LINE # 41
+;---- Variable 'buf?141' assigned to Register 'R7' ----
+	MOV  	R7,P0
+; 		P1 = DATA;
+			; SOURCE LINE # 42
+	MOV  	P1,P0
+; 	}while(buf & 0x80);
+			; SOURCE LINE # 43
+	MOV  	A,R7
+	JB   	ACC.7,?C0008
+; 	LED1 = 0;
+			; SOURCE LINE # 44
+	CLR  	LED1
+; }
+			; SOURCE LINE # 45
+	RET  	
+; END OF wait_busy
+
+; void writ_com(uchar com){
+
+	RSEG  ?PR?_writ_com?MAIN
+_writ_com:
+	USING	0
+			; SOURCE LINE # 46
+;---- Variable 'com?242' assigned to Register 'R6' ----
+	MOV  	R6,AR7
+; 	wait_busy();
+			; SOURCE LINE # 47
+	LCALL	wait_busy
+; 	
+; 	RS = 0;
+			; SOURCE LINE # 49
+	CLR  	RS
+; 	RW = 0;
+			; SOURCE LINE # 50
+	CLR  	RW
+; 	DATA = com;
+			; SOURCE LINE # 51
+	MOV  	P0,R6
+; 	EN = 1;
+			; SOURCE LINE # 52
+	SETB 	EN
+; 	EN = 0;
+			; SOURCE LINE # 53
+	CLR  	EN
+; }
+			; SOURCE LINE # 54
+	RET  	
+; END OF _writ_com
+
+; void writ_data(uchar info){
+
+	RSEG  ?PR?_writ_data?MAIN
+_writ_data:
+	USING	0
+			; SOURCE LINE # 55
+;---- Variable 'info?343' assigned to Register 'R6' ----
+	MOV  	R6,AR7
+; 	wait_busy();
+			; SOURCE LINE # 56
+	LCALL	wait_busy
+; 	RS = 1;
+			; SOURCE LINE # 57
+	SETB 	RS
+; 	RW = 0;
+			; SOURCE LINE # 58
+	CLR  	RW
+; 	DATA = info;
+			; SOURCE LINE # 59
+	MOV  	P0,R6
+; 	EN = 1;
+			; SOURCE LINE # 60
+	SETB 	EN
+; 	EN = 0;
+			; SOURCE LINE # 61
+	CLR  	EN
+; }
+			; SOURCE LINE # 62
+	RET  	
+; END OF _writ_data
+
+; void clr_view(){
+
+	RSEG  ?PR?clr_view?MAIN
+clr_view:
+	USING	0
+			; SOURCE LINE # 63
+; 
+; 	uchar YE = 0xb8; // < 8
+			; SOURCE LINE # 65
+;---- Variable 'YE?444' assigned to Register 'R6' ----
+	MOV  	R6,#0B8H
+; 	uchar LIE = 0x40; // < 64
+			; SOURCE LINE # 66
+;---- Variable 'LIE?445' assigned to Register 'R5' ----
+	MOV  	R5,#040H
+; 	uchar play = 0x00;
+			; SOURCE LINE # 67
+;---- Variable 'play?446' assigned to Register 'R4' ----
+	CLR  	A
+	MOV  	R4,A
+; 	uchar i,j,z;
+; 	select_side(3);
+			; SOURCE LINE # 69
+	MOV  	R7,#03H
+	LCALL	_select_side
+; 	/*
+; 	for(i = 0 ; i < 8 ; ++i){
+; 		writ_com(YE | i);
+; 		for(j = 0 ; j < 64 ; ++j){
+; 
+; 			
+; 			writ_com(LIE | j);
+; 			writ_data(play);
+; 			//for(z = 0 ; z < 16 ; ++z)
+; 				//writ_data(play);
+; 			
+; 			
+; 		}
+; 	}*/
+; 	writ_com(YE | 0);
+			; SOURCE LINE # 84
+	MOV  	R7,#0B8H
+	LCALL	_writ_com
+; 	writ_com(LIE | 32);
+			; SOURCE LINE # 85
+	MOV  	A,R5
+	ORL  	A,#020H
+	MOV  	R7,A
+	LCALL	_writ_com
+; 	writ_data(play);
+			; SOURCE LINE # 86
+	MOV  	R7,#00H
+	LJMP 	_writ_data
+; END OF clr_view
+
+; 	//for(z = 0 ; z < 64 ; ++z)
+; 		
+; }
+; 
+; void lcd_init(){
+
+	RSEG  ?PR?lcd_init?MAIN
+lcd_init:
+	USING	0
+			; SOURCE LINE # 91
+; 	
+; 	writ_com(0x3f);
+			; SOURCE LINE # 93
+	MOV  	R7,#03FH
+	LCALL	_writ_com
+; 	writ_com(0xc0);
+			; SOURCE LINE # 94
+	MOV  	R7,#0C0H
+	LJMP 	_writ_com
+; END OF lcd_init
+
+; }
+; void main(void){
+
+	RSEG  ?PR?main?MAIN
+main:
+	USING	0
+			; SOURCE LINE # 96
+; 	lcd_init();
+			; SOURCE LINE # 97
+	LCALL	lcd_init
+; 	clr_view();
+			; SOURCE LINE # 98
+	LCALL	clr_view
+?C0014:
+; 	while(1){}
+			; SOURCE LINE # 99
+	SJMP 	?C0014
+; END OF main
+
+	END

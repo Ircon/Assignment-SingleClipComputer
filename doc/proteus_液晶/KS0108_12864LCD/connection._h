@@ -1,0 +1,16 @@
+#ifndef CONNECTION_H
+#define CONNECTION_H
+
+//*************************************************
+//definition of the ports connected to LED
+//************************************************
+#define CS1          PB0         
+#define CS2          PB1
+#define D_I          PB2
+#define R_W          PB3
+#define E            PB4
+#define DATA_PORT    PORTA
+#define LCDCTRLPORT  PORTB
+//************************************************
+
+#endif

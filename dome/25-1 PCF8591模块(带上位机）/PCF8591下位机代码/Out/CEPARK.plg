@@ -1,0 +1,47 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+G:\设计中\多合一底板\程序\51\51配套程序整理\PCF8591模块(带上位机）\PCF8591下位机代码\Project\PCF8591.uv2
+Project File Date:  01/09/2013
+
+<h2>Output:</h2>
+Build target 'CEPARK多功能开发学习板/实验箱'
+compiling main.c...
+..\Source\main.c(18): warning C318: can't open file 'STC12C5A.h'
+..\SOURCE\PCF8591_STC12C5A.H(17): error C202: 'p3': undefined identifier
+..\SOURCE\PCF8591_STC12C5A.H(18): error C202: 'p3': undefined identifier
+..\SOURCE\PCF8591_STC12C5A.H(24): error C129: missing ';' before 'i2c_write'
+Target not created
+Build target 'CEPARK多功能开发学习板/实验箱'
+compiling main.c...
+..\Source\main.c(18): warning C318: can't open file 'STC12C5A.h'
+..\SOURCE\PCF8591_STC12C5A.H(17): error C202: 'p3': undefined identifier
+..\SOURCE\PCF8591_STC12C5A.H(18): error C202: 'p3': undefined identifier
+..\SOURCE\PCF8591_STC12C5A.H(24): error C129: missing ';' before 'i2c_write'
+Target not created
+Build target 'CEPARK多功能开发学习板/实验箱'
+compiling main.c...
+linking...
+Program Size: data=26.0 xdata=0 code=2775
+creating hex file from "..\Out\CEPARK"...
+"..\Out\CEPARK" - 0 Error(s), 0 Warning(s).
+Build target 'CEPARK多功能开发学习板/实验箱'
+compiling main.c...
+linking...
+Program Size: data=26.0 xdata=0 code=2775
+creating hex file from "..\Out\CEPARK"...
+"..\Out\CEPARK" - 0 Error(s), 0 Warning(s).
+Build target 'CEPARK多功能开发学习板/实验箱'
+compiling main.c...
+linking...
+Program Size: data=26.0 xdata=0 code=2775
+creating hex file from "..\Out\CEPARK"...
+"..\Out\CEPARK" - 0 Error(s), 0 Warning(s).
+Build target 'CEPARK多功能开发学习板/实验箱'
+compiling main.c...
+linking...
+Program Size: data=26.0 xdata=0 code=2775
+creating hex file from "..\Out\CEPARK"...
+"..\Out\CEPARK" - 0 Error(s), 0 Warning(s).

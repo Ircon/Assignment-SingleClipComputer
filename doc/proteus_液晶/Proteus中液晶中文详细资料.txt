@@ -1,0 +1,26 @@
+Proteus中液晶中文详细资料
+
+Proteus中图形液晶模块驱动芯片一览表
+
+
+Toshiba T6963C Controller  
+
+  LM3228    LM3229    LM3267    LM3283 
+  LM3287    LM4228    LM4265    LM4267 
+  LM4283    LM4287    PG12864F    PG24064F 
+  PG128128A    PG160128A            
+
+
+Sharp SED1520 Controller 
+
+  AGM1232G    EW12A03GLY    HDM32GS12-B    HDM32GS12Y-B 
+
+
+Sharp SED1565 Controller 
+
+  HDG12864F-1    HDS12864F-3    HDG12864L-4    HDG12864L-6 
+  NOKIA7110    TG126410GFSB    TG13650FEY      
+
+Samsung KS0108 Controller 
+
+  AMPIRE128x64    LGM12641BS1R

@@ -1,0 +1,188 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              12/28/2019 19:40:14 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include<reg51.h>         
+   2          #include<intrins.h>
+   3          typedef unsigned char uchar;
+   4          // “˝Ω≈…Ë÷√
+   5          sbit SDA = P1^0;         
+   6          sbit SCL = P1^1;          
+   7          sbit STCP = P2^0;
+   8          sbit SHCP = P2^1;
+   9          sbit DS = P2^2;
+  10          sbit MADA = P0 ^ 0;
+  11          
+  12          uchar code LED_DIG[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+  13          
+  14          void Dely_US(uchar tim){
+  15   1              while(tim--);
+  16   1      }
+  17                               
+  18          void start(){   
+  19   1              SDA=1;   
+  20   1              _nop_(); 
+  21   1              SCL=1;   
+  22   1              _nop_();  
+  23   1              SDA=0;   
+  24   1              _nop_(); 
+  25   1              SCL=0;    
+  26   1              _nop_();
+  27   1      }
+  28          
+  29          void stop(){
+  30   1              SDA=0;                   
+  31   1              _nop_();                
+  32   1              SCL=1;                  
+  33   1              _nop_();               
+  34   1              SDA=1;                  
+  35   1              _nop_();               
+  36   1      }
+  37          
+  38          void checkACK(){
+  39   1              SCL=1;                        
+  40   1              _nop_();                      
+  41   1              while(SDA==1);                
+  42   1              SCL=0;                      
+  43   1              _nop_();                     
+  44   1      }
+  45          
+  46          void sendACK(bit ACK){
+  47   1          if(ACK)SDA=1;           
+  48   1            else SDA=0;               
+  49   1          SCL=1;                   
+  50   1              _nop_();                
+  51   1              SCL=0;                   
+  52   1              _nop_();                
+  53   1      }
+  54          
+C51 COMPILER V9.60.0.0   MAIN                                                              12/28/2019 19:40:14 PAGE 2   
+
+  55          void send_byte(uchar date){
+  56   1              uchar i,temp;                
+  57   1              temp=date;                  
+  58   1              for(i=0;i<8;i++)             
+  59   1              {
+  60   2              if(temp&0x80)SDA=1;      
+  61   2                else SDA=0;           
+  62   2                  _nop_();                
+  63   2                      SCL=1;                  
+  64   2                      _nop_();                  
+  65   2                      _nop_();              
+  66   2                      _nop_();                 
+  67   2                      _nop_();                 
+  68   2                      _nop_();                
+  69   2                      SCL=0;                  
+  70   2                  _nop_();                
+  71   2                      _nop_();              
+  72   2                      _nop_();                 
+  73   2                      _nop_();                 
+  74   2                      _nop_();  
+  75   2                      temp=temp<<1;          
+  76   2              }
+  77   1              checkACK();                 
+  78   1      }
+  79          
+  80          uchar receive_byte(){
+  81   1              uchar i,temp;           
+  82   1              SDA=1;                  
+  83   1              _nop_();                
+  84   1              for(i=0;i<8;i++){
+  85   2                      SCL=1;                         
+  86   2                      _nop_();             
+  87   2                      _nop_();              
+  88   2                      _nop_();                 
+  89   2                      _nop_();                 
+  90   2                      _nop_();
+  91   2                      temp=(temp<<1)|SDA; 
+  92   2                      SCL=0;               
+  93   2                  _nop_();             
+  94   2                      _nop_();              
+  95   2                      _nop_();                 
+  96   2                      _nop_();                 
+  97   2                      _nop_();       
+  98   2              }
+  99   1          sendACK(0);              
+ 100   1              return temp;            
+ 101   1      }
+ 102          uchar Read_AD(uchar chn){
+ 103   1         uchar  ad_data;          
+ 104   1         start();                
+ 105   1         send_byte(0x90);         
+ 106   1         send_byte(0x40|chn);     
+ 107   1         
+ 108   1         start();                 
+ 109   1         send_byte(0x91);        
+ 110   1      
+ 111   1         ad_data=receive_byte();  
+ 112   1         sendACK(1);             
+ 113   1         stop();                 
+ 114   1         return(ad_data);
+ 115   1      }
+ 116          void HC595(uchar x){
+C51 COMPILER V9.60.0.0   MAIN                                                              12/28/2019 19:40:14 PAGE 3   
+
+ 117   1              uchar i;
+ 118   1              for(i=0;i<8;i++){
+ 119   2                      SHCP=0;
+ 120   2                      if((x<<i)&0x80)
+ 121   2                              DS=1;
+ 122   2                      else
+ 123   2                      DS=0;
+ 124   2                      SHCP=1;
+ 125   2              }
+ 126   1      }
+ 127          void send_num(uchar f,uchar s){
+ 128   1              STCP=0; 
+ 129   1              HC595(f);
+ 130   1              HC595(s);
+ 131   1              STCP=1; 
+ 132   1              Dely_US(36);
+ 133   1      }
+ 134          void LED(uchar n){
+ 135   1              send_num(0x20,LED_DIG[n/100]);
+ 136   1              send_num(0x20,0xff);
+ 137   1              
+ 138   1              send_num(0x40,LED_DIG[(n%100)/10]);
+ 139   1              send_num(0x20,0xff);
+ 140   1              
+ 141   1              send_num(0x40,LED_DIG[(n%100)/10]);
+ 142   1              send_num(0x40,0xff);
+ 143   1      
+ 144   1              
+ 145   1              send_num(0x80,LED_DIG[n%10]);
+ 146   1              send_num(0x80,0xff); 
+ 147   1      }
+ 148          
+ 149          void main(){
+ 150   1              uchar temp;
+ 151   1              MADA = 1;
+ 152   1              while(1){
+ 153   2                      temp=Read_AD(0);             
+ 154   2                      LED(temp); 
+ 155   2                      if(temp > 100)
+ 156   2                              MADA = 0;
+ 157   2                      else
+ 158   2                              MADA = 1;
+ 159   2              }
+ 160   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    345    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

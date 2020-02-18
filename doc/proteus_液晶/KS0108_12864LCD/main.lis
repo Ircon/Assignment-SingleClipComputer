@@ -1,0 +1,409 @@
+                        .module main.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile C:\ygksb0108\programme2_can_run/m32_init.c
+ 0000                   .dbfunc e port_init _port_init fV
+                        .even
+ 0000           _port_init::
+ 0000                   .dbline -1
+ 0000                   .dbline 9
+ 0000           ; //******************************************************************************
+ 0000           ; //                                 本程序介绍
+ 0000           ; //                                          ---北京交通大学电气学院 杨罡 2008.8
+ 0000           ; //
+ 0000           ; //       编译环境ICC6.31，
+ 0000           ; //       使用ATMEGA32单片机 & KS0108B/HD61202控制器的128*64液晶
+ 0000           ; //
+ 0000           ; //   1、 本程序实现了基本的GUI绘图函数
+ 0000           ; //       void lcd_fill( uint8_t pattern);全屏幕填充函数
+ 0000                   .dbline 10
+ 0000           ; //       void lcd_erase(void);           擦除全屏幕的函数
+ 0000 2224              clr R2
+ 0002 2BBA              out 0x1b,R2
+ 0004                   .dbline 11
+ 0004           ; //       void lcd_update_all(void);      把缓冲区显示到液晶上的刷新函数
+ 0004 8FEF              ldi R24,255
+ 0006 8ABB              out 0x1a,R24
+ 0008                   .dbline 12
+ 0008           ; //       void lcd_dot( uint8_t x,  uint8_t y,  uint8_t mode); 任意坐标画点的函数
+ 0008 28BA              out 0x18,R2
+ 000A                   .dbline 13
+ 000A           ; //       void lcd_line( uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t mode );
+ 000A 87BB              out 0x17,R24
+ 000C                   .dbline 14
+ 000C           ; //       任意（x1,y1）（x2,y2）两点之间的画直线函数，这个函数化很短的斜线时会出问题，一般的长斜线无问题
+ 000C 25BA              out 0x15,R2
+ 000E                   .dbline 15
+ 000E           ; //       void lcd_rect(  uint8_t x, uint8_t y, uint8_t width, uint8_t height,  uint8_t mode);
+ 000E 84BB              out 0x14,R24
+ 0010                   .dbline 16
+ 0010           ; //       画以（x,y）为左上角，高height，长width 的矩形的函数
+ 0010 22BA              out 0x12,R2
+ 0012                   .dbline 17
+ 0012           ; //       void lcd_box( uint8_t x,  uint8_t y, uint8_t width,  uint8_t height,  uint8_t mode);
+ 0012 81BB              out 0x11,R24
+ 0014                   .dbline -2
+ 0014           L1:
+ 0014                   .dbline 0 ; func end
+ 0014 0895              ret
+ 0016                   .dbend
+ 0016                   .dbfunc e init_devices _init_devices fV
+                        .even
+ 0016           _init_devices::
+ 0016                   .dbline -1
+ 0016                   .dbline 22
+ 0016           ; //       画以（x,y）为左上角，高height，长width 的矩形并且用mode方式填充的函数
+ 0016           ; //       void lcd_circle( uint8_t xCenter,  uint8_t yCenter, uint8_t radius,  uint8_t mode);
+ 0016           ; //       画（xCenter,yCenter）为圆心，半径为radius的函数，圆心可以在屏幕外面，所以可以画弧:)
+ 0016           ; //    2、本程序实现多种字体
+ 0016           ; //         可以根据需求去font.h文件选择你需要的字体，提供了5点6点7点9点10点15点18点
+ 0016                   .dbline 24
+ 0016           ; //       的英文字体供用户选择，中文字库太大没有实现，不过一般英文就公用了吧
+ 0016           ; //       void lcd_text(uint8_t left, uint8_t top, uint8_t font,   char *str);
+ 0016 F894              cli
+ 0018                   .dbline 25
+ 0018           ; //       显示在坐标为（left,top）处显示字体为 font 的即时字符串 str
+ 0018 F3DF              xcall _port_init
+ 001A                   .dbline 27
+ 001A           ; //       void lcd_text_p(uint8_t left, uint8_t top, uint8_t font,  const char *str);  
+ 001A           ; //       显示在坐标为（left,top）处显示字体为 font 的存放在flash中的字符串 str
+ 001A 2224              clr R2
+ 001C 25BE              out 0x35,R2
+ 001E                   .dbline 28
+ 001E           ; //       font 参见font.h中的定义，需要先选择后使用
+ 001E 2BBE              out 0x3b,R2
+ 0020                   .dbline 29
+ 0020           ; //    3、移植性
+ 0020 29BE              out 0x39,R2
+ 0022                   .dbline 30
+ 0022           ; //         液晶很多，这个只是其中一种的程序，但是本程序是可以移植的，你只需根据具体
+ 0022 7894              sei
+ 0024                   .dbline -2
+ 0024           L2:
+ 0024                   .dbline 0 ; func end
+ 0024 0895              ret
+ 0026                   .dbend
+ 0026                   .dbfile C:\ygksb0108\programme2_can_run\main.c
+ 0026                   .dbfunc e project_init _project_init fV
+                        .even
+ 0026           _project_init::
+ 0026                   .dbline -1
+ 0026                   .dbline 51
+ 0026           ; //       具体的液晶控制器去重写 LCD_DRIVER.H 和LCD_DRIVER.C 就可以了 
+ 0026           ; //    4、使用                                           
+ 0026           ; //         由于使用显示缓存区的缘故所以RAM容量在1K一下的AVR器件将无法使用本程序
+ 0026           ; //       建议使用ATMEGA32或者ATMEGA64等大容量的片子，或者你课以将缓存区去掉，直接使用
+ 0026           ; //       液晶的显示缓存读写，那么就可以用于任何AVR了:)
+ 0026           ; //       !!!!!!!!值得注意的是：当你下载到片子运行时，请把LCD_DRIVER.C文件中的这一行注释掉
+ 0026           ; //               #define debug_protues     
+ 0026           ; //       否则将产生显示混乱。！！！！！！！！！！！！！！！！！！！！！！！    
+ 0026           ; //     5、关于demo
+ 0026           ; //        demo程序放在了main函数中，一共三个画面，可以改动其中的函数来熟悉以上介绍
+ 0026           ; //       函数。调入位图的函数没有在demo中运行，你可以试着调用，但是需要加位图数据。                             
+ 0026           ; //******************************************************************************
+ 0026           ; #include "LCD_DRIVER.h"
+ 0026           ; #include "m32_init.c"
+ 0026           ; #include  "connection.h"
+ 0026           ; #include  "font.h"
+ 0026           ; #include  "bitmap.h"
+ 0026           ; #include  "graphic.h"
+ 0026           ; #include  "m32macro.h"
+ 0026           ; void project_init(void)
+ 0026           ; { 
+ 0026                   .dbline 52
+ 0026           ;   init_devices();
+ 0026 F7DF              xcall _init_devices
+ 0028                   .dbline 53
+ 0028           ;   PORTB=0x00;
+ 0028 2224              clr R2
+ 002A 28BA              out 0x18,R2
+ 002C                   .dbline 54
+ 002C           ;   lcd_init();
+ 002C 0E940000          xcall _lcd_init
+ 0030                   .dbline -2
+ 0030           L4:
+ 0030                   .dbline 0 ; func end
+ 0030 0895              ret
+ 0032                   .dbend
+ 0032                   .dbfunc e main _main fV
+                        .even
+ 0032           _main::
+ 0032 2597              sbiw R28,5
+ 0034                   .dbline -1
+ 0034                   .dbline 58
+ 0034           ; }
+ 0034           ; 
+ 0034           ; void main()
+ 0034           ; {
+ 0034                   .dbline 59
+ 0034           ;  project_init();
+ 0034 F8DF              xcall _project_init
+ 0036 D0C0              xjmp L7
+ 0038           L6:
+ 0038                   .dbline 60
+ 0038                   .dbline 64
+ 0038 80E0              ldi R24,<L9
+ 003A 90E0              ldi R25,>L9
+ 003C 9B83              std y+3,R25
+ 003E 8A83              std y+2,R24
+ 0040 2224              clr R2
+ 0042 2882              std y+0,R2
+ 0044 2DE0              ldi R18,13
+ 0046 0FE0              ldi R16,15
+ 0048 0E940000          xcall _lcd_text
+ 004C                   .dbline 65
+ 004C 81E0              ldi R24,1
+ 004E 8C83              std y+4,R24
+ 0050 80E4              ldi R24,64
+ 0052 8A83              std y+2,R24
+ 0054 80E8              ldi R24,128
+ 0056 8883              std y+0,R24
+ 0058 2227              clr R18
+ 005A 0027              clr R16
+ 005C 0E940000          xcall _lcd_rect
+ 0060                   .dbline 66
+ 0060 81E0              ldi R24,1
+ 0062 8A83              std y+2,R24
+ 0064 8AE0              ldi R24,10
+ 0066 8883              std y+0,R24
+ 0068 2FE1              ldi R18,31
+ 006A 00E3              ldi R16,48
+ 006C 0E940000          xcall _lcd_circle
+ 0070                   .dbline 67
+ 0070 81E0              ldi R24,1
+ 0072 8A83              std y+2,R24
+ 0074 8AE0              ldi R24,10
+ 0076 8883              std y+0,R24
+ 0078 2FE1              ldi R18,31
+ 007A 0FE3              ldi R16,63
+ 007C 0E940000          xcall _lcd_circle
+ 0080                   .dbline 68
+ 0080 81E0              ldi R24,1
+ 0082 8A83              std y+2,R24
+ 0084 8AE0              ldi R24,10
+ 0086 8883              std y+0,R24
+ 0088 2FE1              ldi R18,31
+ 008A 0EE4              ldi R16,78
+ 008C 0E940000          xcall _lcd_circle
+ 0090                   .dbline 69
+ 0090 81E0              ldi R24,1
+ 0092 8A83              std y+2,R24
+ 0094 8AE0              ldi R24,10
+ 0096 8883              std y+0,R24
+ 0098 2EE2              ldi R18,46
+ 009A 0AE3              ldi R16,58
+ 009C 0E940000          xcall _lcd_circle
+ 00A0                   .dbline 70
+ 00A0 81E0              ldi R24,1
+ 00A2 8A83              std y+2,R24
+ 00A4 8AE0              ldi R24,10
+ 00A6 8883              std y+0,R24
+ 00A8 2EE2              ldi R18,46
+ 00AA 06E4              ldi R16,70
+ 00AC 0E940000          xcall _lcd_circle
+ 00B0                   .dbline 71
+ 00B0 0E940000          xcall _lcd_update_all
+ 00B4                   .dbline 73
+ 00B4 08EB              ldi R16,3000
+ 00B6 1BE0              ldi R17,11
+ 00B8 0E940000          xcall __delay_ms
+ 00BC                   .dbline 74
+ 00BC 0E940000          xcall _lcd_erase
+ 00C0                   .dbline 75
+ 00C0 0E940000          xcall _lcd_update_all
+ 00C4                   .dbline 80
+ 00C4 81E0              ldi R24,1
+ 00C6 8C83              std y+4,R24
+ 00C8 8AE0              ldi R24,10
+ 00CA 8A83              std y+2,R24
+ 00CC 8883              std y+0,R24
+ 00CE 2AE0              ldi R18,10
+ 00D0 0AE0              ldi R16,10
+ 00D2 0E940000          xcall _lcd_rect
+ 00D6                   .dbline 81
+ 00D6 81E0              ldi R24,1
+ 00D8 8C83              std y+4,R24
+ 00DA 8AE0              ldi R24,10
+ 00DC 8A83              std y+2,R24
+ 00DE 8883              std y+0,R24
+ 00E0 2AE0              ldi R18,10
+ 00E2 0EE1              ldi R16,30
+ 00E4 0E940000          xcall _lcd_box
+ 00E8                   .dbline 82
+ 00E8 80E0              ldi R24,<L10
+ 00EA 90E0              ldi R25,>L10
+ 00EC 9B83              std y+3,R25
+ 00EE 8A83              std y+2,R24
+ 00F0 2224              clr R2
+ 00F2 2882              std y+0,R2
+ 00F4 29E1              ldi R18,25
+ 00F6 0AE0              ldi R16,10
+ 00F8 0E940000          xcall _lcd_text
+ 00FC                   .dbline 83
+ 00FC 80E0              ldi R24,<L11
+ 00FE 90E0              ldi R25,>L11
+ 0100 9B83              std y+3,R25
+ 0102 8A83              std y+2,R24
+ 0104 81E0              ldi R24,1
+ 0106 8883              std y+0,R24
+ 0108 28E2              ldi R18,40
+ 010A 0AE0              ldi R16,10
+ 010C 0E940000          xcall _lcd_text
+ 0110                   .dbline 84
+ 0110 0E940000          xcall _lcd_update_all
+ 0114                   .dbline 86
+ 0114 08EB              ldi R16,3000
+ 0116 1BE0              ldi R17,11
+ 0118 0E940000          xcall __delay_ms
+ 011C                   .dbline 87
+ 011C 0E940000          xcall _lcd_erase
+ 0120                   .dbline 88
+ 0120 0E940000          xcall _lcd_update_all
+ 0124                   .dbline 94
+ 0124 80E0              ldi R24,<L12
+ 0126 90E0              ldi R25,>L12
+ 0128 9B83              std y+3,R25
+ 012A 8A83              std y+2,R24
+ 012C 2224              clr R2
+ 012E 2882              std y+0,R2
+ 0130 22E0              ldi R18,2
+ 0132 0EE1              ldi R16,30
+ 0134 0E940000          xcall _lcd_text
+ 0138                   .dbline 95
+ 0138 82E0              ldi R24,2
+ 013A 8C83              std y+4,R24
+ 013C 8BE0              ldi R24,11
+ 013E 8A83              std y+2,R24
+ 0140 80E8              ldi R24,128
+ 0142 8883              std y+0,R24
+ 0144 2227              clr R18
+ 0146 0027              clr R16
+ 0148 0E940000          xcall _lcd_box
+ 014C                   .dbline 96
+ 014C 81E0              ldi R24,1
+ 014E 8C83              std y+4,R24
+ 0150 80E4              ldi R24,64
+ 0152 8A83              std y+2,R24
+ 0154 80E8              ldi R24,128
+ 0156 8883              std y+0,R24
+ 0158 2227              clr R18
+ 015A 0027              clr R16
+ 015C 0E940000          xcall _lcd_rect
+ 0160                   .dbline 97
+ 0160 80E0              ldi R24,<L13
+ 0162 90E0              ldi R25,>L13
+ 0164 9B83              std y+3,R25
+ 0166 8A83              std y+2,R24
+ 0168 2224              clr R2
+ 016A 2882              std y+0,R2
+ 016C 2EE1              ldi R18,30
+ 016E 04E1              ldi R16,20
+ 0170 0E940000          xcall _lcd_text
+ 0174                   .dbline 98
+ 0174 80E0              ldi R24,<L14
+ 0176 90E0              ldi R25,>L14
+ 0178 9B83              std y+3,R25
+ 017A 8A83              std y+2,R24
+ 017C 2224              clr R2
+ 017E 2882              std y+0,R2
+ 0180 22E3              ldi R18,50
+ 0182 00E5              ldi R16,80
+ 0184 0E940000          xcall _lcd_text
+ 0188                   .dbline 99
+ 0188 80E0              ldi R24,<L15
+ 018A 90E0              ldi R25,>L15
+ 018C 9B83              std y+3,R25
+ 018E 8A83              std y+2,R24
+ 0190 2224              clr R2
+ 0192 2882              std y+0,R2
+ 0194 22E3              ldi R18,50
+ 0196 04E6              ldi R16,100
+ 0198 0E940000          xcall _lcd_text
+ 019C                   .dbline 100
+ 019C 82E0              ldi R24,2
+ 019E 8C83              std y+4,R24
+ 01A0 8AE0              ldi R24,10
+ 01A2 8A83              std y+2,R24
+ 01A4 8FE0              ldi R24,15
+ 01A6 8883              std y+0,R24
+ 01A8 20E3              ldi R18,48
+ 01AA 0FE4              ldi R16,79
+ 01AC 0E940000          xcall _lcd_box
+ 01B0                   .dbline 101
+ 01B0 82E0              ldi R24,2
+ 01B2 8C83              std y+4,R24
+ 01B4 8AE0              ldi R24,10
+ 01B6 8A83              std y+2,R24
+ 01B8 84E1              ldi R24,20
+ 01BA 8883              std y+0,R24
+ 01BC 20E3              ldi R18,48
+ 01BE 03E6              ldi R16,99
+ 01C0 0E940000          xcall _lcd_box
+ 01C4                   .dbline 102
+ 01C4 0E940000          xcall _lcd_update_all
+ 01C8                   .dbline 104
+ 01C8 08EB              ldi R16,3000
+ 01CA 1BE0              ldi R17,11
+ 01CC 0E940000          xcall __delay_ms
+ 01D0                   .dbline 105
+ 01D0 0E940000          xcall _lcd_erase
+ 01D4                   .dbline 106
+ 01D4 0E940000          xcall _lcd_update_all
+ 01D8                   .dbline 108
+ 01D8           L7:
+ 01D8                   .dbline 60
+ 01D8 2FCF              xjmp L6
+ 01DA           X0:
+ 01DA                   .dbline -2
+ 01DA           L5:
+ 01DA 2596              adiw R28,5
+ 01DC                   .dbline 0 ; func end
+ 01DC 0895              ret
+ 01DE                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile C:\ygksb0108\programme2_can_run\main.c
+ 0000           L15:
+ 0000                   .blkb 5
+                        .area idata
+ 0000 6578697400        .byte 'e,'x,'i,'t,0
+                        .area data(ram, con, rel)
+ 0005                   .dbfile C:\ygksb0108\programme2_can_run\main.c
+ 0005           L14:
+ 0005                   .blkb 3
+                        .area idata
+ 0005 6F6B00            .byte 'o,'k,0
+                        .area data(ram, con, rel)
+ 0008                   .dbfile C:\ygksb0108\programme2_can_run\main.c
+ 0008           L13:
+ 0008                   .blkb 21
+                        .area idata
+ 0008 77656C636F6D6520746F206D79207769  .byte 'w,'e,'l,'c,'o,'m,'e,32,'t,'o,32,'m,'y,32,'w,'i
+ 0018 6E646F7700        .byte 'n,'d,'o,'w,0
+                        .area data(ram, con, rel)
+ 001D                   .dbfile C:\ygksb0108\programme2_can_run\main.c
+ 001D           L12:
+ 001D                   .blkb 18
+                        .area idata
+ 001D 79616E6767616E6727732077696E646F  .byte 'y,'a,'n,'g,'g,'a,'n,'g,39,'s,32,'w,'i,'n,'d,'o
+ 002D 7700              .byte 'w,0
+                        .area data(ram, con, rel)
+ 002F                   .dbfile C:\ygksb0108\programme2_can_run\main.c
+ 002F           L11:
+ 002F                   .blkb 9
+                        .area idata
+ 002F 79616E6767616E6700        .byte 'y,'a,'n,'g,'g,'a,'n,'g,0
+                        .area data(ram, con, rel)
+ 0038                   .dbfile C:\ygksb0108\programme2_can_run\main.c
+ 0038           L10:
+ 0038                   .blkb 18
+                        .area idata
+ 0038 79616E6767616E672031323A30303A30  .byte 'y,'a,'n,'g,'g,'a,'n,'g,32,49,50,58,48,48,58,48
+ 0048 3000              .byte 48,0
+                        .area data(ram, con, rel)
+ 004A                   .dbfile C:\ygksb0108\programme2_can_run\main.c
+ 004A           L9:
+ 004A                   .blkb 27
+                        .area idata
+ 004A 77656C636F6D6520746F206265696A69  .byte 'w,'e,'l,'c,'o,'m,'e,32,'t,'o,32,'b,'e,'i,'j,'i
+ 005A 6E67206F6C796D70696300    .byte 'n,'g,32,'o,'l,'y,'m,'p,'i,'c,0
+                        .area data(ram, con, rel)
+ 0065                   .dbfile C:\ygksb0108\programme2_can_run\main.c

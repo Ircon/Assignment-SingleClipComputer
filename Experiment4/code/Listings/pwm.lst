@@ -1,0 +1,206 @@
+A51 MACRO ASSEMBLER  PWM                                                                  11/27/2019 23:43:25 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\pwm.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE pwm.asm SET(SMALL) DEBUG PRINT(.\Listings\pwm.lst) OBJECT(.\Objects\pwm
+                      .obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;分配内存
+                       2     ;栈从 50H 开始
+                       3     ;30h 40h 随便用
+                       4     
+                       5     ; ---- RAM ----
+  0030                 6     REG_PRE                 DATA    30H
+  0031                 7     REG_CNT                 DATA    31H
+                       8     
+                       9     
+                      10     ; ---- PIN ----
+  0091                11     PIN_SOUND               EQU     P1.1
+  0092                12     PIN_LED                 EQU     P1.2
+                      13     
+  0080                14     PIN_K1                  EQU             P0.0
+  0081                15     PIN_K2                  EQU             P0.1
+  0082                16     PIN_K3                  EQU             P0.2
+  0083                17     PIN_K4                  EQU             P0.3
+  0084                18     PIN_K5                  EQU             P0.4
+  0085                19     PIN_K6                  EQU             P0.5
+                      20     
+                      21     ; ---- CONST NUMBER ----
+  00D8                22     COS_TH0_INIT    EQU             0D8H
+  00F0                23     COS_TL0_INIT    EQU             0F0H
+  0001                24     COS_TMOD                EQU             01H
+                      25     
+                      26     
+                      27     ; ---- CODE ----
+0000                  28     ORG 0000H
+0000 020030           29             LJMP INIT
+000B                  30     ORG 000BH
+000B 0200A8           31             LJMP T0_INT
+                      32     
+0030                  33     ORG 0030H
+0030                  34     INIT:
+0030 758150           35             MOV SP,#50H
+0033 758901           36             MOV TMOD,#COS_TMOD
+0036 758CD8           37             MOV TH0,#COS_TH0_INIT
+0039 758AF0           38             MOV TL0,#COS_TL0_INIT
+                      39             
+003C D2A9             40             SETB ET0
+003E D2AF             41             SETB EA
+0040 D28C             42             SETB TR0
+                      43             
+0042 12007A           44             LCALL DO_SOM_SET
+                      45             
+                      46             ;FOR TEST
+0045 753005           47             MOV REG_PRE,#5
+                      48             
+0048                  49     MAIN:
+                      50             ;FOR TEST
+                      51             ;LCALL T0_INT
+                      52             
+                      53             ;Search for key
+0048 A280             54             MOV C,PIN_K1
+004A 4003             55             JC K2
+004C 753000           56             MOV REG_PRE,#0
+004F                  57     K2:
+A51 MACRO ASSEMBLER  PWM                                                                  11/27/2019 23:43:25 PAGE     2
+
+004F A281             58             MOV C,PIN_K2
+0051 4003             59             JC K3
+0053 753002           60             MOV REG_PRE,#2
+0056                  61     K3:
+0056 A282             62             MOV C,PIN_K3
+0058 4003             63             JC K4
+005A 753004           64             MOV REG_PRE,#4
+005D                  65     K4:
+005D A283             66             MOV C,PIN_K4
+005F 4003             67             JC K5
+0061 753006           68             MOV REG_PRE,#6
+0064                  69     K5:
+0064 A284             70             MOV C,PIN_K5
+0066 4003             71             JC K6
+0068 753008           72             MOV REG_PRE,#8
+006B                  73     K6:
+006B A285             74             MOV C,PIN_K6
+006D 4003             75             JC K_END
+006F 75300A           76             MOV REG_PRE,#10
+0072                  77     K_END:
+0072 020048           78             LJMP MAIN
+                      79     
+                      80     ; ---- FUN ----
+                      81     
+                      82     ; CLR BIT
+0075                  83     DO_SOM_CLR:
+0075 C291             84             CLR PIN_SOUND
+0077 C292             85             CLR PIN_LED
+0079 22               86             RET
+                      87     
+                      88     ; SETB BIT
+007A                  89     DO_SOM_SET:
+007A D291             90             SETB PIN_SOUND
+007C D292             91             SETB PIN_LED
+007E 22               92             RET
+                      93     
+                      94     ; 100HZ TO CALL
+007F                  95     TIMER_CALL:
+                      96             
+007F C0E0             97             PUSH ACC
+0081 C0D0             98             PUSH PSW
+                      99             
+                     100             
+0083 E531            101             MOV A,REG_CNT
+0085 B40A08          102             CJNE A,#10,TIMER_PRE
+0088 7400            103             MOV A,#0
+008A 12007A          104             LCALL DO_SOM_SET
+008D 0200A0          105             LJMP TIMER_CALL_END
+                     106             
+0090                 107     TIMER_PRE:
+0090 4008            108             JC TIMER_PRE_1
+                     109             
+0092 7400            110             MOV A,#0
+0094 12007A          111             LCALL DO_SOM_SET
+0097 0200A0          112             LJMP TIMER_CALL_END
+                     113             
+009A                 114     TIMER_PRE_1:
+009A B53003          115             CJNE A,REG_PRE,TIMER_CALL_END
+009D 120075          116             LCALL DO_SOM_CLR
+                     117     
+00A0                 118     TIMER_CALL_END:
+                     119     
+00A0 04              120             INC A
+00A1 F531            121             MOV REG_CNT,A
+00A3 D0D0            122             POP PSW
+00A5 D0E0            123             POP ACC
+A51 MACRO ASSEMBLER  PWM                                                                  11/27/2019 23:43:25 PAGE     3
+
+                     124             
+00A7 22              125             RET
+                     126             
+                     127     
+                     128     ; ---- INT FUN ----
+                     129     
+                     130     ; 100HZ to call this in interrupte
+00A8                 131     T0_INT:
+                     132             
+00A8 758CD8          133             MOV TH0,#COS_TH0_INIT
+00AB 758AF0          134             MOV TL0,#COS_TL0_INIT
+00AE 12007F          135             LCALL TIMER_CALL
+                     136             
+00B1 32              137             RETI
+                     138     
+                     139     END
+A51 MACRO ASSEMBLER  PWM                                                                  11/27/2019 23:43:25 PAGE     4
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+COS_TH0_INIT . . .  N NUMB   00D8H   A   
+COS_TL0_INIT . . .  N NUMB   00F0H   A   
+COS_TMOD . . . . .  N NUMB   0001H   A   
+DO_SOM_CLR . . . .  C ADDR   0075H   A   
+DO_SOM_SET . . . .  C ADDR   007AH   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+INIT . . . . . . .  C ADDR   0030H   A   
+K2 . . . . . . . .  C ADDR   004FH   A   
+K3 . . . . . . . .  C ADDR   0056H   A   
+K4 . . . . . . . .  C ADDR   005DH   A   
+K5 . . . . . . . .  C ADDR   0064H   A   
+K6 . . . . . . . .  C ADDR   006BH   A   
+K_END. . . . . . .  C ADDR   0072H   A   
+MAIN . . . . . . .  C ADDR   0048H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PIN_K1 . . . . . .  B ADDR   0080H.0 A   
+PIN_K2 . . . . . .  B ADDR   0080H.1 A   
+PIN_K3 . . . . . .  B ADDR   0080H.2 A   
+PIN_K4 . . . . . .  B ADDR   0080H.3 A   
+PIN_K5 . . . . . .  B ADDR   0080H.4 A   
+PIN_K6 . . . . . .  B ADDR   0080H.5 A   
+PIN_LED. . . . . .  B ADDR   0090H.2 A   
+PIN_SOUND. . . . .  B ADDR   0090H.1 A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+REG_CNT. . . . . .  D ADDR   0031H   A   
+REG_PRE. . . . . .  D ADDR   0030H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+T0_INT . . . . . .  C ADDR   00A8H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TIMER_CALL . . . .  C ADDR   007FH   A   
+TIMER_CALL_END . .  C ADDR   00A0H   A   
+TIMER_PRE. . . . .  C ADDR   0090H   A   
+TIMER_PRE_1. . . .  C ADDR   009AH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
